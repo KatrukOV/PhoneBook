@@ -24,5 +24,6 @@ nbdist/
 .nb-gradle/
 
 ###
+.
 log
 diagram
