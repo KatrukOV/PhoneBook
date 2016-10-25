@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:tiles="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>PhoneBook</title>
+<link href="/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/css/myStyle.css" rel="stylesheet" />
+<link rel="shortcut icon" href="/img/title-icon.png" />
+</head>
+<body>
+	<div class="header">
+	    <div class="container-fluid nav-bar">
+	        <div class="container">
+	            <a class="brand" href="/">PhoneBook</a>
+						<div class="dropdown nav-button">
+						  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						    Menu
+						    <span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+						    <li><a href="/phoneBook/add">Add Contacts</a></li>
+						    <li><a href="/phoneBook">Main</a></li>
+						  </ul>
+	                    <a class="btn btn-danger" href="/logOut">Log Out</a>
+						</div>
+	                    <h4 class="welcome" th:text="'Welcome, ' + ${login} + '!'"></h4>
+	        </div>
+	    </div>
+	</div>
+
+	<div class="container">
+		<div class="row col-sm-6 col-sm-offset-3 form-bg">
+			<div class="row form-bg-title">
+				Change Contact
+			</div>
+			<hr />
+			<div class="row form-row">
+				<form id="form" class="form-horizontal" role="form" method="post" action="/phoneBook/editPhone"> 
+					<div class="form-group" style="display: none;" >
+						<label for="phoneId" class="col-sm-3 control-label">ID</label>
+						<div class="col-sm-offset-1 col-sm-8">
+					   		<input name="phoneId" type="text" class="form-control" id="phoneId" th:value="${phoneId}" />
+						</div>
+					</div>
+					<div class="form-group">
+					   		<input name="id" type="text" class="form-control" id="id" th:value="${phoneId}" style="display: none;" />
+						<label for="lastName" class="col-sm-3 control-label">Last Name *</label>
+						<div class="col-sm-offset-1 col-sm-8">
+					   		<input name="lastName" type="text" class="form-control" id="lastName" placeholder="Last Name" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="firstName" class="col-sm-3 control-label">First Name *</label>
+						<div class="col-sm-offset-1 col-sm-8">
+					   		<input name="firstName" type="text" class="form-control" id="firstName" placeholder="First Name" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="middleName" class="col-sm-3 control-label">Middle Name *</label>
+						<div class="col-sm-offset-1 col-sm-8">
+					   		<input name="middleName" type="text" class="form-control" id="middleName" placeholder="Middle Name" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="mobilePhone" class="col-sm-3 control-label">Mobile *</label>
+						<div class="col-sm-offset-1 col-sm-8">
+					   		<input name="mobilePhone" type="text" class="form-control" id="mobilePhone" placeholder="Format: +XXX(XX)XXXXXXX" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="homePhone" class="col-sm-3 control-label">Home</label>
+						<div class="col-sm-offset-1 col-sm-8">
+					   		<input name="homePhone" type="text" class="form-control" id="homePhone" placeholder="Format: +XXX(XX)XXXXXXX" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="address" class="col-sm-3 control-label">Address</label>
+						<div class="col-sm-offset-1 col-sm-8">
+					   		<input name="address" type="text" class="form-control" id="address" placeholder="Address" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="email" class="col-sm-3 control-label">E-mail</label>
+						<div class="col-sm-offset-1 col-sm-8">
+					   		<input name="email" type="text" class="form-control" id="email" placeholder="E-mail" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-4 col-sm-8">
+      						<button type="button" class="btn btn-default editPhone">Change</button>
+      						<a href="/phoneBook" class="btn btn-default">Back</a>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="row form-answer" th:text="${answer}"></div>
+		</div>
+	</div>
+	
+	<script src="../../js/jquery-2.2.3.min.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/script.js"></script>
+</body>
+</html>
