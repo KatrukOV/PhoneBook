@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8"/>
+    <title>PhoneBook</title>
+
+</head>
+<body>
+
+<h3> Add new Contact</h3>
+
+<form id="form" role="form" method="post" action="/user/addNew">
+    <div>
+        <label for="lastName">Last Name *</label>
+        <input name="lastName" type="text" id="lastName" placeholder="Last Name"/>
+    </div>
+    <div>
+        <label for="name">Name *</label>
+        <input name="name" type="text" id="name" placeholder="Name"/>
+    </div>
+    <div>
+        <label for="patronymic">Middle Name *</label>
+        <input name="patronymic" type="text" id="patronymic" placeholder="Patronymic"/>
+    </div>
+    <div>
+        <label for="mobilePhone">Mobile *</label>
+        <input name="mobilePhone" type="text" id="mobilePhone"
+               placeholder="Format: +380(XX)XXXXXXX"/>
+    </div>
+    <div>
+        <label for="homePhone">Home</label>
+        <input name="homePhone" type="text" id="homePhone" placeholder="Format: +380(XX)XXXXXXX"/>
+    </div>
+    <div>
+        <label for="email">E-mail</label>
+        <input name="email" type="text" id="email" placeholder="E-mail"/>
+    </div>
+    <div>
+        <label for="addressCity">Address city</label>
+        <input name="addressCity" type="text" id="addressCity" placeholder="Address City"/>
+    </div>
+    <div>
+        <label for="addressCity">Address city</label>
+        <input name="addressCity" type="text" id="addressCity" placeholder="Address City"/>
+    </div>
+    <div>
+        <label for="addressCity">Address city</label>
+        <input name="addressCity" type="text" id="addressCity" placeholder="Address City"/>
+    </div>
+    <div>
+        <label for="addressCity">Address city</label>
+        <input name="addressCity" type="text" id="addressCity" placeholder="Address City"/>
+    </div>
+
+
+    <div>
+        <button type="button">Add New</button>
+        <a href="/user">Back</a>
+    </div>
+
+</form>
+
+<div class="row form-answer" th:text="${answer}"></div>
+
+
+<a href="/logOut">Log Out</a>
+
+</body>
+</html>

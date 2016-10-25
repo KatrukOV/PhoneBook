@@ -6,7 +6,6 @@ public interface UserDao {
 
   User getUserByLogin(String login);
 
-  <S extends User> S save(S s);
-
+  void save(User user);
 }
 

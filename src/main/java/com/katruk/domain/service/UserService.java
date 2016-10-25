@@ -2,32 +2,26 @@ package com.katruk.domain.service;
 
 import com.katruk.domain.entity.User;
 
-import org.springframework.stereotype.Service;
+import java.util.regex.Pattern;
 
-import java.util.HashMap;
-import java.util.Map;
 
-@Service
-public class UserService {
+public interface UserService {
 
-  Map<Integer, User> users = new HashMap<>();
+  Pattern LOGIN_PATTERN = Pattern.compile("^[A-Za-z]{3,}$");
+  Pattern PASSWORD_PATTERN = Pattern.compile("^[A-Za-z0-9]{5,}$");
 
-  public UserService() {
+  User getUserByLogin(String login);
 
+  UserStatus regUser(String lastName, String name, String patronymic, String login,
+                     String password);
+
+  enum UserStatus {
+    SUCCESS,
+    EXISTS,
+    INCORRECT_LAST_NAME,
+    INCORRECT_NAME,
+    INCORRECT_PATRONYMIC,
+    INCORRECT_LOGIN,
+    INCORRECT_PASSWORD,
   }
-
-  public User getUser(Integer id) {
-    if (users.containsKey(id)) {
-      return users.get(id);
-    } else {
-      return null;
-    }
-
-  }
-
-  public Map<Integer, User> getAllUser() {
-    return users;
-  }
-
-
 }

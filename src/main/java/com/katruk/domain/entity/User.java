@@ -2,15 +2,27 @@ package com.katruk.domain.entity;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+@Entity
+@Table(name = "User")
 public class User extends Person {
 
   private String login;
   private String password;  //sha1Hex encrypted
-  private List<Contact> contacts = new ArrayList<>();
+  private Set<Contact> contacts = new HashSet<>();
 
   public User() {
   }
@@ -19,6 +31,7 @@ public class User extends Person {
     super(id);
   }
 
+  //todo bilder
   public User(String lastName, String name, String patronymic, String login,
               String password) {
     this.lastName = lastName;
@@ -28,6 +41,22 @@ public class User extends Person {
     this.password = encodePassword(password);
   }
 
+//  @Id
+//  @GeneratedValue(strategy = GenerationType.AUTO)
+//  @Column(name = "user_person_id", nullable = false)
+//  @Override
+
+  @OneToOne(mappedBy = "Person")
+  @PrimaryKeyJoinColumn
+  @Column(name = "user_person_id", nullable = false)
+  @Override
+  public int getId() {
+    return super.getId();
+  }
+
+  @Basic
+  @Column(name = "login", nullable = false, unique = true, length = 30)
+  @Size(min = 3)
   public String getLogin() {
     return login;
   }
@@ -36,6 +65,9 @@ public class User extends Person {
     this.login = login;
   }
 
+  @Basic
+  @Column(name = "password", nullable = false, length = 30)
+  @Size(min = 5)
   public String getPassword() {
     return password;
   }
@@ -49,11 +81,12 @@ public class User extends Person {
     return DigestUtils.sha1Hex(password);
   }
 
-  public List<Contact> getContacts() {
+  @OneToMany(mappedBy = "Contact", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  public Set<Contact> getContacts() {
     return contacts;
   }
 
-  public void setContacts(List<Contact> contacts) {
+  public void setContacts(Set<Contact> contacts) {
     this.contacts = contacts;
   }
 
@@ -102,5 +135,4 @@ public class User extends Person {
     sb.append('}');
     return sb.toString();
   }
-
 }

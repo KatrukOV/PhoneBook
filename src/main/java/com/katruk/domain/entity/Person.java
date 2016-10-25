@@ -1,5 +1,22 @@
 package com.katruk.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.springframework.data.annotation.Id;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@Entity
+@Table(name = "Person")
 public class Person extends Model {
 
   protected String lastName;
@@ -7,28 +24,29 @@ public class Person extends Model {
   protected String patronymic;
 
   public Person() {
-    super();
   }
 
   public Person(int id) {
-    this.id = id;
+    super(id);
   }
 
   public Person(String lastName, String name, String patronymic) {
     this.lastName = lastName;
     this.name = name;
     this.patronymic = patronymic;
-
   }
 
-  public String getName() {
-    return name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "person_id", nullable = false)
+  @Override
+  public int getId() {
+    return super.getId();
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
+  @Basic
+  @Column(name = "last_name", nullable = false, length = 30)
+  @Size(min = 4)
   public String getLastName() {
     return lastName;
   }
@@ -37,6 +55,20 @@ public class Person extends Model {
     this.lastName = lastName;
   }
 
+  @Basic
+  @Column(name = "name", nullable = false, length = 30)
+  @Size(min = 4)
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  @Basic
+  @Column(name = "patronymic", nullable = false, length = 30)
+  @Size(min = 4)
   public String getPatronymic() {
     return patronymic;
   }
