@@ -117,7 +117,6 @@ public class Contact extends Model {
     this.address = address;
   }
 
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
