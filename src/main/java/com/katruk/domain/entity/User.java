@@ -48,7 +48,7 @@ public class User extends Person {
 
   @OneToOne(mappedBy = "Person")
   @PrimaryKeyJoinColumn
-  @Column(name = "user_person_id", nullable = false)
+  @Column(name = "person_id", nullable = false)
   @Override
   public int getId() {
     return super.getId();

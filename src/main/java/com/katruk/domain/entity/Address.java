@@ -1,8 +1,12 @@
 package com.katruk.domain.entity;
 
+import org.springframework.data.annotation.Id;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
 @Entity
@@ -26,6 +30,14 @@ public class Address extends Model {
     this.street = street;
     this.building = building;
     this.apartment = apartment;
+  }
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false)
+  @Override
+  public int getId() {
+    return super.getId();
   }
 
   @Basic

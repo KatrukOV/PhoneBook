@@ -1,14 +1,15 @@
 package com.katruk.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import org.springframework.data.annotation.Id;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -16,6 +17,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
+@Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
+//name &&&
+@DiscriminatorColumn(name="EMP_TYPE",
+    discriminatorType= DiscriminatorType.INTEGER)
 @Table(name = "Person")
 public class Person extends Model {
 
@@ -37,8 +42,8 @@ public class Person extends Model {
   }
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "person_id", nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false)
   @Override
   public int getId() {
     return super.getId();

@@ -2,11 +2,15 @@ package com.katruk.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.data.annotation.Id;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -49,9 +53,16 @@ public class Contact extends Model {
     this.email = email;
   }
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false)
+  @Override
+  public int getId() {
+    return super.getId();
+  }
+
   @ManyToOne()
   @JoinColumn(name = "user_person_id")
-  @JsonIgnore
   public User getUser() {
     return user;
   }
