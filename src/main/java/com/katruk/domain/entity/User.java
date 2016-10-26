@@ -18,6 +18,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "User")
+@PrimaryKeyJoinColumn(name="person_Id", referencedColumnName="Id")
 public class User extends Person {
 
   private String login;
@@ -31,7 +32,7 @@ public class User extends Person {
     super(id);
   }
 
-  //todo bilder
+  //todo Builder
   public User(String lastName, String name, String patronymic, String login,
               String password) {
     this.lastName = lastName;
@@ -39,19 +40,6 @@ public class User extends Person {
     this.patronymic = patronymic;
     this.login = login;
     this.password = encodePassword(password);
-  }
-
-//  @Id
-//  @GeneratedValue(strategy = GenerationType.AUTO)
-//  @Column(name = "user_person_id", nullable = false)
-//  @Override
-
-  @OneToOne(mappedBy = "Person")
-  @PrimaryKeyJoinColumn
-  @Column(name = "person_id", nullable = false)
-  @Override
-  public int getId() {
-    return super.getId();
   }
 
   @Basic
@@ -81,7 +69,7 @@ public class User extends Person {
     return DigestUtils.sha1Hex(password);
   }
 
-  @OneToMany(mappedBy = "Contact", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   public Set<Contact> getContacts() {
     return contacts;
   }
@@ -90,49 +78,49 @@ public class User extends Person {
     this.contacts = contacts;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    if (!super.equals(o)) {
-      return false;
-    }
-
-    User user = (User) o;
-
-    if (!login.equals(user.login)) {
-      return false;
-    }
-    if (!password.equals(user.password)) {
-      return false;
-    }
-    return contacts.equals(user.contacts);
-
-  }
-
-  @Override
-  public int hashCode() {
-    int result = super.hashCode();
-    result = 31 * result + login.hashCode();
-    result = 31 * result + password.hashCode();
-    result = 31 * result + contacts.hashCode();
-    return result;
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder sb = new StringBuilder("User{");
-    sb.append("lastName='").append(lastName).append('\'');
-    sb.append(", name='").append(name).append('\'');
-    sb.append(", patronymic='").append(patronymic).append('\'');
-    sb.append(", login='").append(login).append('\'');
-    //without password
-    sb.append(", contacts=").append(contacts);
-    sb.append('}');
-    return sb.toString();
-  }
+//  @Override
+//  public boolean equals(Object o) {
+//    if (this == o) {
+//      return true;
+//    }
+//    if (o == null || getClass() != o.getClass()) {
+//      return false;
+//    }
+//    if (!super.equals(o)) {
+//      return false;
+//    }
+//
+//    User user = (User) o;
+//
+//    if (!login.equals(user.login)) {
+//      return false;
+//    }
+//    if (!password.equals(user.password)) {
+//      return false;
+//    }
+//    return contacts.equals(user.contacts);
+//
+//  }
+//
+//  @Override
+//  public int hashCode() {
+//    int result = super.hashCode();
+//    result = 31 * result + login.hashCode();
+//    result = 31 * result + password.hashCode();
+//    result = 31 * result + contacts.hashCode();
+//    return result;
+//  }
+//
+//  @Override
+//  public String toString() {
+//    final StringBuilder sb = new StringBuilder("User{");
+//    sb.append("lastName='").append(lastName).append('\'');
+//    sb.append(", name='").append(name).append('\'');
+//    sb.append(", patronymic='").append(patronymic).append('\'');
+//    sb.append(", login='").append(login).append('\'');
+//    //without password
+//    sb.append(", contacts=").append(contacts);
+//    sb.append('}');
+//    return sb.toString();
+//  }
 }

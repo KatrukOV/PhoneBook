@@ -1,23 +1,14 @@
 package com.katruk.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
@@ -26,10 +17,10 @@ import javax.validation.constraints.Pattern;
 public class Contact extends Model {
 
   private User user;
-  private Person person = new Person();
+  private Person person;
   private String mobilePhone;
   private String homePhone;
-  private Address address = new Address();
+  private Address address;
   private String email;
 
   public Contact() {
@@ -43,7 +34,8 @@ public class Contact extends Model {
     this.person = person;
     this.mobilePhone = MobilePhone;
   }
-//todo bilder
+
+  //todo bilder
   public Contact(Person person, String MobilePhone, String HomePhone,
                  Address address, String email) {
     this.person = person;
@@ -53,15 +45,7 @@ public class Contact extends Model {
     this.email = email;
   }
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
-  @Override
-  public int getId() {
-    return super.getId();
-  }
-
-  @ManyToOne()
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_person_id")
   public User getUser() {
     return user;
@@ -71,11 +55,9 @@ public class Contact extends Model {
     this.user = user;
   }
 
-  //todo
-  @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-  @JoinTable(name = "contact_person",
-      joinColumns = @JoinColumn(name = "contact_id"),
-      inverseJoinColumns = @JoinColumn(name = "person_id"))
+
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "person_id", nullable = false)
   public Person getPerson() {
     return person;
   }
@@ -86,7 +68,8 @@ public class Contact extends Model {
 
   @Basic
   @Column(name = "mobile_phone", nullable = false)
-  @Pattern(regexp = "^\\+380\\d{9,}$")
+  @Pattern(regexp = "^(\\+38)*(\\(*0\\d{2}\\)*)[-|\\s](\\d{3})[-|\\s]((\\d{2})-|\\s)+$",
+      message = "Format +38(0XX)XXX-XX-XX")
   public String getMobilePhone() {
     return mobilePhone;
   }
@@ -97,7 +80,8 @@ public class Contact extends Model {
 
   @Basic
   @Column(name = "home_phone")
-  @Pattern(regexp = "^\\+380\\d{9,}$")
+  @Pattern(regexp = "^(\\+38)*(\\(*0\\d{2}\\)*)[-|\\s](\\d{3})[-|\\s]((\\d{2})-|\\s)+$",
+      message = "Format +38(0XX)XXX-XX-XX")
   public String getHomePhone() {
     return homePhone;
   }
@@ -117,9 +101,8 @@ public class Contact extends Model {
     this.homePhone = homePhone;
   }
 
-  //todo
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "address_id")
-  @JsonIgnore
   public Address getAddress() {
     return address;
   }

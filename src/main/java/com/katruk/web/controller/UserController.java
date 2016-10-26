@@ -32,7 +32,8 @@ public class UserController {
     if (null != session.getAttribute("login")) {
       User user = userService.getUserByLogin(session.getAttribute("login").toString());
       model.addAttribute("login", user.getLogin());
-      model.addAttribute("contacts", user.getContacts());
+
+//      model.addAttribute("contacts", user.getContacts());
       return "user";
     } else {
       return "redirect:/";

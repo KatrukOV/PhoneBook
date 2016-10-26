@@ -1,20 +1,15 @@
 package com.katruk.domain.entity;
 
-import org.springframework.data.annotation.Id;
-
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-//@MappedSuperclass
-@Inheritance(strategy= InheritanceType.JOINED)
+@MappedSuperclass
 abstract class Model implements Serializable {
-
 
   protected int id;
 
@@ -36,4 +31,23 @@ abstract class Model implements Serializable {
     this.id = id;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Model model = (Model) o;
+
+    return id == model.id;
+
+  }
+
+  @Override
+  public int hashCode() {
+    return id;
+  }
 }
