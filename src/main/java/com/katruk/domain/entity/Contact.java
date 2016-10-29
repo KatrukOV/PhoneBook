@@ -26,25 +26,6 @@ public class Contact extends Model {
   public Contact() {
   }
 
-  public Contact(int id) {
-    super(id);
-  }
-
-  public Contact(Person person, String MobilePhone) {
-    this.person = person;
-    this.mobilePhone = MobilePhone;
-  }
-
-  //todo bilder
-  public Contact(Person person, String MobilePhone, String HomePhone,
-                 Address address, String email) {
-    this.person = person;
-    this.mobilePhone = MobilePhone;
-    this.homePhone = HomePhone;
-    this.address = address;
-    this.email = email;
-  }
-
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_person_id")
   public User getUser() {
@@ -54,7 +35,6 @@ public class Contact extends Model {
   public void setUser(User user) {
     this.user = user;
   }
-
 
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "person_id", nullable = false)
@@ -67,9 +47,7 @@ public class Contact extends Model {
   }
 
   @Basic
-  @Column(name = "mobile_phone", nullable = false)
-  @Pattern(regexp = "^(\\+38)*(\\(*0\\d{2}\\)*)[-|\\s](\\d{3})[-|\\s]((\\d{2})-|\\s)+$",
-      message = "Format +38(0XX)XXX-XX-XX")
+  @Column(name = "mobile_phone", nullable = false, length = 17)
   public String getMobilePhone() {
     return mobilePhone;
   }
@@ -79,9 +57,7 @@ public class Contact extends Model {
   }
 
   @Basic
-  @Column(name = "home_phone")
-  @Pattern(regexp = "^(\\+38)*(\\(*0\\d{2}\\)*)[-|\\s](\\d{3})[-|\\s]((\\d{2})-|\\s)+$",
-      message = "Format +38(0XX)XXX-XX-XX")
+  @Column(name = "home_phone", length = 17)
   public String getHomePhone() {
     return homePhone;
   }
@@ -109,58 +85,5 @@ public class Contact extends Model {
 
   public void setAddress(Address address) {
     this.address = address;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    Contact contact = (Contact) o;
-
-    if (!user.equals(contact.user)) {
-      return false;
-    }
-    if (!person.equals(contact.person)) {
-      return false;
-    }
-    if (!mobilePhone.equals(contact.mobilePhone)) {
-      return false;
-    }
-    if (homePhone != null ? !homePhone.equals(contact.homePhone) : contact.homePhone != null) {
-      return false;
-    }
-    if (address != null ? !address.equals(contact.address) : contact.address != null) {
-      return false;
-    }
-    return email != null ? email.equals(contact.email) : contact.email == null;
-  }
-
-  @Override
-  public int hashCode() {
-    int result = user.hashCode();
-    result = 31 * result + person.hashCode();
-    result = 31 * result + mobilePhone.hashCode();
-    result = 31 * result + (homePhone != null ? homePhone.hashCode() : 0);
-    result = 31 * result + (address != null ? address.hashCode() : 0);
-    result = 31 * result + (email != null ? email.hashCode() : 0);
-    return result;
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder sb = new StringBuilder("Contact{");
-    sb.append("user=").append(user);
-    sb.append(", person=").append(person);
-    sb.append(", mobilePhone='").append(mobilePhone).append('\'');
-    sb.append(", homePhone='").append(homePhone).append('\'');
-    sb.append(", address=").append(address);
-    sb.append(", email='").append(email).append('\'');
-    sb.append('}');
-    return sb.toString();
   }
 }

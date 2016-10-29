@@ -1,28 +1,22 @@
 package com.katruk.dao.mysql;
 
+
 import com.katruk.dao.UserDao;
 import com.katruk.domain.entity.User;
-import javax.transaction.Transactional;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Repository;
 
-@Profile("phone_book")
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 @Repository
 @Transactional
-public class UserDaoMySql implements UserDao {
+public interface UserDaoMySql extends CrudRepository<User, Integer>, UserDao {
 
-  @Autowired
-  private SessionFactory sessionFactory;
+//  @Override
+//  @Query(value = "SELECT u.last_name, u.name, u.patronymic,  u.login, u.password, FROM User u WHERE u.login = :login", nativeQuery = true)
+//  User findUserByLogin(@Param("login") String login);
 
-  @Override
-  public User getUserByLogin(String login) {
-    return sessionFactory.getCurrentSession().get(User.class, login);
-  }
+//  @Override
+//  public User getUserByLogin(String login);
 
-  @Override
-  public void save(User user) {
-    sessionFactory.getCurrentSession().save(user);
-  }
 }

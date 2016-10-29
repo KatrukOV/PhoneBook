@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 public interface UserService {
 
   Pattern LOGIN_PATTERN = Pattern.compile("^[A-Za-z]{3,}$");
+  Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z]{4,}$");
   Pattern PASSWORD_PATTERN = Pattern.compile("^[A-Za-z0-9]{5,}$");
 
   User getUserByLogin(String login);

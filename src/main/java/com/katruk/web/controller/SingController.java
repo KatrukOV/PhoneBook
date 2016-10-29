@@ -1,8 +1,8 @@
 package com.katruk.web.controller;
 
-
 import com.katruk.domain.entity.User;
 import com.katruk.domain.service.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,8 @@ public class SingController {
   public String singIn(@RequestParam String login, @RequestParam String password,
                        HttpSession session, RedirectAttributes redirectAttributes) {
     User user = userService.getUserByLogin(login);
-    if (user == null || !user.getPassword().equals(password)) {
+    String encodedPassword = DigestUtils.sha1Hex(password);
+    if (user == null || !user.getPassword().equals(encodedPassword)) {
       redirectAttributes.addFlashAttribute("message", "Wrong Login or Password!");
       return "redirect:/";
     } else {
@@ -37,7 +38,7 @@ public class SingController {
     return "/registration";
   }
 
-  @RequestMapping(value = "/registration", method = RequestMethod.POST)
+  @RequestMapping(value = "/doRegistration", method = RequestMethod.POST)
   public String reg(@RequestParam String lastName,
                     @RequestParam String name,
                     @RequestParam String patronymic,
@@ -45,6 +46,9 @@ public class SingController {
                     @RequestParam String password,
                     HttpSession session,
                     RedirectAttributes redirectAttributes) {
+
+    System.out.println(">>>>name= "+ name);
+
     UserService.UserStatus
         status =
         userService.regUser(lastName, name, patronymic, login, password);
@@ -58,15 +62,15 @@ public class SingController {
         return "redirect:/registration";
       case INCORRECT_LAST_NAME:
         redirectAttributes
-            .addFlashAttribute("message", "Last Name must contain at least 5 symbols");
+            .addFlashAttribute("message", "Last Name must contain at least 4 symbols");
         return "redirect:/registration";
       case INCORRECT_NAME:
         redirectAttributes
-            .addFlashAttribute("message", "Last Name must contain at least 5 symbols");
+            .addFlashAttribute("message", "Name must contain at least 4 symbols");
         return "redirect:/registration";
       case INCORRECT_PATRONYMIC:
         redirectAttributes
-            .addFlashAttribute("message", "Last Name must contain at least 5 symbols");
+            .addFlashAttribute("message", "Patronymic must contain at least 4 symbols");
         return "redirect:/registration";
       case INCORRECT_LOGIN:
         redirectAttributes

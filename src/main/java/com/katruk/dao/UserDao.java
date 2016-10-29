@@ -2,10 +2,16 @@ package com.katruk.dao;
 
 import com.katruk.domain.entity.User;
 
-public interface UserDao {
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-  User getUserByLogin(String login);
+//@Repository
+//@Transactional
+public interface UserDao  {
 
-  void save(User user);
+  User findUserByLogin(String login);
+  User save(User user);
+
 }
 

@@ -16,10 +16,6 @@ abstract class Model implements Serializable {
   Model() {
   }
 
-  Model(int id) {
-    this.id = id;
-  }
-
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
@@ -29,25 +25,5 @@ abstract class Model implements Serializable {
 
   public void setId(int id) {
     this.id = id;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    Model model = (Model) o;
-
-    return id == model.id;
-
-  }
-
-  @Override
-  public int hashCode() {
-    return id;
   }
 }

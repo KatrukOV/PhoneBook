@@ -31,7 +31,9 @@ public class UserController {
   public String phoneBook(HttpSession session, Model model) {
     if (null != session.getAttribute("login")) {
       User user = userService.getUserByLogin(session.getAttribute("login").toString());
-      model.addAttribute("login", user.getLogin());
+//      model.addAttribute("login", user.getLogin());
+      model.addAttribute("contacts", user.getContacts());
+//      model.addAttribute("user", user);
 
 //      model.addAttribute("contacts", user.getContacts());
       return "user";
@@ -45,7 +47,7 @@ public class UserController {
     if (null != session.getAttribute("login")) {
       User user = userService.getUserByLogin(session.getAttribute("login").toString());
       model.addAttribute("login", user.getLogin());
-      return "adds";
+      return "add";
     } else {
       return "redirect:/";
     }
@@ -53,9 +55,9 @@ public class UserController {
 
 
   @RequestMapping(value = "/user/addNew", method = RequestMethod.POST)
-  public String addNew(@RequestParam String personLastName,
-                       @RequestParam String personName,
-                       @RequestParam String personPatronymic,
+  public String addNew(@RequestParam String lastName,
+                       @RequestParam String name,
+                       @RequestParam String patronymic,
                        @RequestParam String mobilePhone,
                        @RequestParam String homePhone,
                        @RequestParam String email,
@@ -65,12 +67,13 @@ public class UserController {
                        @RequestParam String addressApartment,
                        HttpSession session,
                        RedirectAttributes redirectAttributes) {
+    System.out.println("addNew method -------------");
     User user = userService.getUserByLogin(session.getAttribute("login").toString());
 
     Person person = new Person();
-    person.setLastName(personLastName);
-    person.setName(personName);
-    person.setPatronymic(personPatronymic);
+    person.setLastName(lastName);
+    person.setName(name);
+    person.setPatronymic(patronymic);
 
     Address address = new Address();
     address.setCity(addressCity);
@@ -79,6 +82,7 @@ public class UserController {
     address.setApartment(Integer.valueOf(addressApartment));
 
     Contact contact = new Contact();
+    contact.setUser(user);
     contact.setPerson(person);
     contact.setMobilePhone(mobilePhone);
     contact.setHomePhone(homePhone);
@@ -86,6 +90,7 @@ public class UserController {
     contact.setAddress(address);
 
     ContactService.ContactStatus status = contactService.addContact(contact);
+    System.out.println("status = " + status);
     switch (status) {
       case INCORRECT_LAST_NAME:
         redirectAttributes
@@ -113,6 +118,8 @@ public class UserController {
         return "redirect:/user/add";
       case SUCCESS:
         redirectAttributes.addFlashAttribute("message", "New Contact Added To Your PhoneBook");
+
+//        redirectAttributes.addFlashAttribute("contact",contact);
         return "redirect:/user/add";
     }
     return "redirect:/user/add";
@@ -124,7 +131,9 @@ public class UserController {
     if (session.getAttribute("login") != null) {
       model.addAttribute("login", session.getAttribute("login").toString());
       model.addAttribute("contactId", contactId);
-      return "edits";
+      Contact contact = contactService.getById(Integer.parseInt(contactId));
+      model.addAttribute("contact", contact);
+      return "edit";
     }
     return "redirect:/";
   }

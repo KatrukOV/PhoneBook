@@ -17,17 +17,6 @@ public class Address extends Model {
   public Address() {
   }
 
-  public Address(int id) {
-    super(id);
-  }
-
-  public Address(String city, String street, String building, int apartment) {
-    this.city = city;
-    this.street = street;
-    this.building = building;
-    this.apartment = apartment;
-  }
-
   @Basic
   @Column(name = "city", length = 30)
   public String getCity() {
@@ -67,5 +56,4 @@ public class Address extends Model {
   public void setApartment(int apartment) {
     this.apartment = apartment;
   }
-
 }
