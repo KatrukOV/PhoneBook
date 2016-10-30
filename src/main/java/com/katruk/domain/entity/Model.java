@@ -9,9 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-abstract class Model implements Serializable {
+public abstract class Model implements Serializable {
 
-  protected int id;
+  protected Integer id;
 
   Model() {
   }
@@ -19,11 +19,27 @@ abstract class Model implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Model model = (Model) o;
+
+    return id.equals(model.id);
+
+  }
+
 }

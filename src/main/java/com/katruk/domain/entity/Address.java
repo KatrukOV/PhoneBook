@@ -12,7 +12,7 @@ public class Address extends Model {
   private String city;
   private String street;
   private String building;
-  private int apartment;
+  private Integer apartment;
 
   public Address() {
   }
@@ -49,11 +49,36 @@ public class Address extends Model {
 
   @Basic
   @Column(name = "apartment")
-  public int getApartment() {
+  public Integer getApartment() {
     return apartment;
   }
 
-  public void setApartment(int apartment) {
+  public void setApartment(Integer apartment) {
     this.apartment = apartment;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Address address = (Address) o;
+
+    if (city != null ? !city.equals(address.city) : address.city != null) {
+      return false;
+    }
+    if (street != null ? !street.equals(address.street) : address.street != null) {
+      return false;
+    }
+    if (building != null ? !building.equals(address.building) : address.building != null) {
+      return false;
+    }
+    return apartment != null ? apartment.equals(address.apartment) : address.apartment == null;
+
+  }
+
 }

@@ -9,10 +9,7 @@ public class PhoneBookApplication {
 
   public static void main(String[] args) {
     Locale.setDefault(Locale.ENGLISH);
-    SpringApplication.run(
-        new Class<?>[]{PhoneBookApplication.class
-//            , JpaConfig.class
-        }, args);
+    SpringApplication.run(PhoneBookApplication.class, args);
   }
 
 }

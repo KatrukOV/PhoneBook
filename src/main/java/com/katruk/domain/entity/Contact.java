@@ -17,10 +17,10 @@ import javax.validation.constraints.Pattern;
 public class Contact extends Model {
 
   private User user;
-  private Person person;
+  private Person person = new Person();
   private String mobilePhone;
   private String homePhone;
-  private Address address;
+  private Address address = new Address();
   private String email;
 
   public Contact() {
@@ -85,5 +85,35 @@ public class Contact extends Model {
 
   public void setAddress(Address address) {
     this.address = address;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Contact contact = (Contact) o;
+
+    if (!user.equals(contact.user)) {
+      return false;
+    }
+    if (!person.equals(contact.person)) {
+      return false;
+    }
+    if (!mobilePhone.equals(contact.mobilePhone)) {
+      return false;
+    }
+    if (homePhone != null ? !homePhone.equals(contact.homePhone) : contact.homePhone != null) {
+      return false;
+    }
+    if (address != null ? !address.equals(contact.address) : contact.address != null) {
+      return false;
+    }
+    return email != null ? email.equals(contact.email) : contact.email == null;
+
   }
 }

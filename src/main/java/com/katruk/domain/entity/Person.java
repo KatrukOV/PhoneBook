@@ -60,4 +60,29 @@ public class Person extends Model {
   public void setPatronymic(String patronymic) {
     this.patronymic = patronymic;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    if (!super.equals(o)) {
+      return false;
+    }
+
+    Person person = (Person) o;
+
+    if (!lastName.equals(person.lastName)) {
+      return false;
+    }
+    if (!name.equals(person.name)) {
+      return false;
+    }
+    return patronymic.equals(person.patronymic);
+
   }
+
+}

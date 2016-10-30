@@ -1,9 +1,9 @@
 package com.katruk.domain.service;
 
+import com.katruk.domain.dto.UserDto;
 import com.katruk.domain.entity.User;
 
 import java.util.regex.Pattern;
-
 
 public interface UserService {
 
@@ -11,12 +11,13 @@ public interface UserService {
   Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z]{4,}$");
   Pattern PASSWORD_PATTERN = Pattern.compile("^[A-Za-z0-9]{5,}$");
 
-  User getUserByLogin(String login);
+  User getByLogin(String login);
 
-  UserStatus regUser(String lastName, String name, String patronymic, String login,
-                     String password);
+  UserStatus checkUser(UserDto userDto);
 
-  enum UserStatus {
+  UserValid regUser(UserDto userDto);
+
+  enum UserValid {
     SUCCESS,
     EXISTS,
     INCORRECT_LAST_NAME,
@@ -24,5 +25,9 @@ public interface UserService {
     INCORRECT_PATRONYMIC,
     INCORRECT_LOGIN,
     INCORRECT_PASSWORD,
+  }
+  enum UserStatus {
+    OK,
+    ABSENT
   }
 }

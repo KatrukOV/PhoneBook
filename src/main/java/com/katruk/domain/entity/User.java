@@ -1,23 +1,21 @@
 package com.katruk.domain.entity;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "User")
-@PrimaryKeyJoinColumn(name="person_Id", referencedColumnName="Id")
+@PrimaryKeyJoinColumn(name = "person_Id", referencedColumnName = "Id")
 public class User extends Person {
 
   private String login;
@@ -56,4 +54,29 @@ public class User extends Person {
   public void setContacts(Set<Contact> contacts) {
     this.contacts = contacts;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    if (!super.equals(o)) {
+      return false;
+    }
+
+    User user = (User) o;
+
+    if (!login.equals(user.login)) {
+      return false;
+    }
+    if (!password.equals(user.password)) {
+      return false;
+    }
+    return contacts != null ? contacts.equals(user.contacts) : user.contacts == null;
+
+  }
+
 }
