@@ -117,7 +117,6 @@ public class ContactController {
     return "edit";
   }
 
-
   @RequestMapping(value = "/contact/editContact", method = RequestMethod.POST)
   public String editContact(
       @RequestParam Integer contactId,
