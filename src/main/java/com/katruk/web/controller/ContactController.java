@@ -183,7 +183,6 @@ public class ContactController {
   }
 
   @RequestMapping(value = "/contact/delete", method = RequestMethod.POST)
-  @ResponseBody
   public String delete(
       @RequestParam String contactId,
 //      HttpSession session,
