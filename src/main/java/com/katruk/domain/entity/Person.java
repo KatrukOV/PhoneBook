@@ -1,23 +1,15 @@
 package com.katruk.domain.entity;
 
-import org.springframework.data.annotation.Id;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Inheritance(strategy= InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "Person")
 public class Person extends Model {
 
@@ -72,17 +64,17 @@ public class Person extends Model {
     if (!super.equals(o)) {
       return false;
     }
-
     Person person = (Person) o;
-
-    if (!lastName.equals(person.lastName)) {
-      return false;
-    }
-    if (!name.equals(person.name)) {
-      return false;
-    }
-    return patronymic.equals(person.patronymic);
-
+    return lastName.equals(person.lastName)
+           && name.equals(person.name)
+           && patronymic.equals(person.patronymic);
   }
 
+  @Override
+  public int hashCode() {
+    int result = lastName.hashCode();
+    result = 31 * result + name.hashCode();
+    result = 31 * result + patronymic.hashCode();
+    return result;
+  }
 }

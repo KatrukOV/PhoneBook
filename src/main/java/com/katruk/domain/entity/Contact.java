@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "Contact")
@@ -26,7 +25,7 @@ public class Contact extends Model {
   public Contact() {
   }
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_person_id")
   public User getUser() {
     return user;
@@ -36,7 +35,7 @@ public class Contact extends Model {
     this.user = user;
   }
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "person_id", nullable = false)
   public Person getPerson() {
     return person;
@@ -63,7 +62,6 @@ public class Contact extends Model {
   }
 
   @Basic
-  @Email
   @Column(name = "email", length = 30)
   public String getEmail() {
     return email;
@@ -95,25 +93,26 @@ public class Contact extends Model {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-
+    if (!super.equals(o)) {
+      return false;
+    }
     Contact contact = (Contact) o;
+    return user.equals(contact.user)
+           && person.equals(contact.person)
+           && mobilePhone.equals(contact.mobilePhone)
+           && (homePhone != null ? homePhone.equals(contact.homePhone) : contact.homePhone == null)
+           && (address != null ? address.equals(contact.address) : contact.address == null)
+           && (email != null ? email.equals(contact.email) : contact.email == null);
+  }
 
-    if (!user.equals(contact.user)) {
-      return false;
-    }
-    if (!person.equals(contact.person)) {
-      return false;
-    }
-    if (!mobilePhone.equals(contact.mobilePhone)) {
-      return false;
-    }
-    if (homePhone != null ? !homePhone.equals(contact.homePhone) : contact.homePhone != null) {
-      return false;
-    }
-    if (address != null ? !address.equals(contact.address) : contact.address != null) {
-      return false;
-    }
-    return email != null ? email.equals(contact.email) : contact.email == null;
-
+  @Override
+  public int hashCode() {
+    int result = user.hashCode();
+    result = 31 * result + person.hashCode();
+    result = 31 * result + mobilePhone.hashCode();
+    result = 31 * result + (homePhone != null ? homePhone.hashCode() : 0);
+    result = 31 * result + (address != null ? address.hashCode() : 0);
+    result = 31 * result + (email != null ? email.hashCode() : 0);
+    return result;
   }
 }

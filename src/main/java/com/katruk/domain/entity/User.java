@@ -37,7 +37,7 @@ public class User extends Person {
   }
 
   @Basic
-  @Column(name = "password", nullable = false, length = 100)
+  @Column(name = "password", nullable = false)
   public String getPassword() {
     return password;
   }
@@ -66,17 +66,18 @@ public class User extends Person {
     if (!super.equals(o)) {
       return false;
     }
-
     User user = (User) o;
-
-    if (!login.equals(user.login)) {
-      return false;
-    }
-    if (!password.equals(user.password)) {
-      return false;
-    }
-    return contacts != null ? contacts.equals(user.contacts) : user.contacts == null;
-
+    return login.equals(user.login)
+           && password.equals(user.password)
+           && (contacts != null ? contacts.equals(user.contacts) : user.contacts == null);
   }
 
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + login.hashCode();
+    result = 31 * result + password.hashCode();
+    result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
+    return result;
+  }
 }

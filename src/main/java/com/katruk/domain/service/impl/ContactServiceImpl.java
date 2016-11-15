@@ -12,89 +12,71 @@ import com.katruk.domain.service.AddressService;
 import com.katruk.domain.service.ContactService;
 import com.katruk.domain.service.PersonService;
 import com.katruk.domain.service.UserService;
+import com.katruk.domain.util.Converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Service
 public class ContactServiceImpl implements ContactService {
 
-  @Autowired(required = false)
-  @Qualifier("ContactDaoMySql")
-  private ContactDao contactDao;
+  private final ContactDao contactDao;
+  private final PersonService personService;
+  private final AddressService addressService;
+  private final UserService userService;
 
   @Autowired
-  private PersonService personService;
-
-  @Autowired
-  private AddressService addressService;
-
-  @Autowired
-  private UserService userService;
+  public ContactServiceImpl(ContactDao contactDao, PersonService personService,
+                            AddressService addressService, UserService userService) {
+    this.contactDao = contactDao;
+    this.personService = personService;
+    this.addressService = addressService;
+    this.userService = userService;
+  }
 
   @Override
   public Set<ContactDto> getByUserLogin(String login) {
 
-    System.out.println(">>> login"+login);
+    System.out.println(">>> getByUserLogin login=" + login);
 
-    User user = userService.getByLogin(login);
+    User user = userService.getUserByLogin(login);
 
-    System.out.println(">>> user"+user);
+    System.out.println(">>> user" + user);
 
     Set<ContactDto> contactDtoSet = new HashSet<>();
     ContactDto contactDto;
     for (Contact contact : user.getContacts()) {
-      contactDto = new ContactDto.Builder()
-          .id(contact.getId())
-          .lastName(contact.getPerson().getLastName())
-          .name(contact.getPerson().getName())
-          .patronymic(contact.getPerson().getPatronymic())
-          .mobilePhone(contact.getMobilePhone())
-          .homePhone(contact.getHomePhone())
-          .email(contact.getEmail())
-          .city(contact.getAddress().getCity())
-          .street(contact.getAddress().getStreet())
-          .building(contact.getAddress().getBuilding())
-          .apartment(contact.getAddress().getApartment())
-          .build();
+      contactDto = new Converter().makeContactDto(contact);
       contactDtoSet.add(contactDto);
     }
     return contactDtoSet;
   }
 
+  //todo
   @Override
-  public ContactDto getById(Integer contactId) {
-    Contact contact = contactDao.findOne(contactId);
-    return new ContactDto.Builder()
-        .id(contact.getId())
-        .lastName(contact.getPerson().getLastName())
-        .name(contact.getPerson().getName())
-        .patronymic(contact.getPerson().getPatronymic())
-        .mobilePhone(contact.getMobilePhone())
-        .homePhone(contact.getHomePhone())
-        .email(contact.getEmail())
-        .city(contact.getAddress().getCity())
-        .street(contact.getAddress().getStreet())
-        .building(contact.getAddress().getBuilding())
-        .apartment(contact.getAddress().getApartment())
-        .build();
+  public ContactDto getById(Long contactId) {
+    Contact contact = contactDao.findOneById(contactId)
+        .orElseThrow(() -> new NoSuchElementException(
+            String.format("Contact with id=%s not found", contactId)));
+    return new Converter().makeContactDto(contact);
   }
 
   @Override
-  public ContactStatus addContact(ContactDto contactDto) {
-    System.out.println("begin contactDto= " + contactDto);
-    ContactStatus incorrectStatus = isContactValid(contactDto);
-    if (incorrectStatus != null) {
-      return incorrectStatus;
-    }
+  public Contact addContact(ContactDto contactDto) {
+    System.out.println("begin addContact contactDto= " + contactDto);
     Contact contact = createContact(contactDto);
-    System.out.println("Before saving contact= " + contact);
-    contactDao.save(contact);
-    return ContactStatus.SUCCESS;
+    return contactDao.saveAndFlush(contact);
+  }
+
+  @Override
+  public Contact editContact(ContactDto contactDto) {
+    return null;
   }
 
   private Contact createContact(ContactDto contactDto) {
@@ -116,7 +98,11 @@ public class ContactServiceImpl implements ContactService {
     System.out.println("Before saving address =" + address);
     address = addressService.save(address);
 
-    User user = userService.getByLogin(contactDto.getLogin());
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String login = authentication.getName();
+    System.out.println(">>> createContact login =" + login);
+    User user = userService.getUserByLogin(login);
+
     contact.setPerson(person);
     contact.setAddress(address);
     contact.setUser(user);
@@ -126,48 +112,50 @@ public class ContactServiceImpl implements ContactService {
     return contact;
   }
 
-  private ContactStatus isContactValid(ContactDto contactDto) {
-    if (contactDto.getLastName().length() < 4) {
-      return ContactStatus.INCORRECT_LAST_NAME;
-    }
-    if (contactDto.getName().length() < 4) {
-      return ContactStatus.INCORRECT_NAME;
-    }
-    if (contactDto.getPatronymic().length() < 4) {
-      return ContactStatus.INCORRECT_PATRONYMIC;
-    }
-    if (!PHONE_PATTERN.matcher(contactDto.getMobilePhone()).matches()) {
-      return ContactStatus.INCORRECT_MOBILE_PHONE;
-    }
-    if (!contactDto.getHomePhone().isEmpty() &&
-        !PHONE_PATTERN.matcher(contactDto.getHomePhone()).matches()) {
-      return ContactStatus.INCORRECT_HOME_PHONE;
-    }
-    if (!contactDto.getEmail().isEmpty() &&
-        !EMAIL_PATTERN.matcher(contactDto.getEmail()).matches()) {
-      return ContactStatus.INCORRECT_EMAIL;
-    }
-    return null;
-  }
+//  private ContactStatus isContactValid(ContactDto contactDto) {
+//    if (contactDto.getLastName().length() < 4) {
+//      return ContactStatus.INCORRECT_LAST_NAME;
+//    }
+//    if (contactDto.getName().length() < 4) {
+//      return ContactStatus.INCORRECT_NAME;
+//    }
+//    if (contactDto.getPatronymic().length() < 4) {
+//      return ContactStatus.INCORRECT_PATRONYMIC;
+//    }
+//    if (!PHONE_PATTERN.matcher(contactDto.getMobilePhone()).matches()) {
+//      return ContactStatus.INCORRECT_MOBILE_PHONE;
+//    }
+//    if (!contactDto.getHomePhone().isEmpty() &&
+//        !PHONE_PATTERN.matcher(contactDto.getHomePhone()).matches()) {
+//      return ContactStatus.INCORRECT_HOME_PHONE;
+//    }
+//    if (!contactDto.getEmail().isEmpty() &&
+//        !EMAIL_PATTERN.matcher(contactDto.getEmail()).matches()) {
+//      return ContactStatus.INCORRECT_EMAIL;
+//    }
+//    return null;
+//  }
 
-  @Override
-  public ContactStatus editContact(ContactDto contactDto) {
-    ContactStatus incorrectStatus = isContactValid(contactDto);
-    if (incorrectStatus != null) {
-      return incorrectStatus;
-    }
-    Contact contact = contactDao.findOne(contactDto.getId());
-    System.out.println("contact to update " + contact);
-    System.out.println("contact to update for id " + contact.getId());
-    contact = updateContact(contact, contactDto);
-    contactDao.save(contact);
-    return ContactStatus.SUCCESS;
-  }
+//  @Override
+//  public ContactStatus editContact(ContactDto contactDto) {
+//    ContactStatus incorrectStatus = isContactValid(contactDto);
+//    if (incorrectStatus != null) {
+//      return incorrectStatus;
+//    }
+//    Contact contact = contactDao.findOneById(contactDto.getContactId())
+//        .orElseThrow(() -> new NoSuchElementException(
+//            String.format("Person=%s not found", contactDto.getContactId())));
+//    System.out.println("contact to update " + contact);
+//    System.out.println("contact to update for id " + contact.getContactId());
+//    contact = updateContact(contact, contactDto);
+//    contactDao.saveAndFlush(contact);
+//    return ContactStatus.SUCCESS;
+//  }
 
   private Contact updateContact(Contact contact, ContactDto contactDto) {
-    Person person = personService.getById(contact.getPerson().getId());
+    Person person = personService.getPersonById(contact.getPerson().getId());
     person = updatePerson(person, contactDto);
-    Address address = addressService.getById(contact.getAddress().getId());
+    Address address = addressService.getAddressById(contact.getAddress().getId());
     address = updateAddress(address, contactDto);
     contact.setPerson(person);
     contact.setAddress(address);
@@ -222,11 +210,14 @@ public class ContactServiceImpl implements ContactService {
   }
 
   @Override
-  public void deleteContact(Integer contactId) {
-    Contact contact = contactDao.findOne(contactId);
+  public void deleteContact(Long contactId) {
+    Contact contact = contactDao.findOneById(contactId)
+        .orElseThrow(() -> new NoSuchElementException(
+            String.format("Contact=%s not found", contactId)));
     if (contact != null) {
       contactDao.delete(contact);
     } else {
+      //todo logic
       throw new RuntimeException();
     }
   }

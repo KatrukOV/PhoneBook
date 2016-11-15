@@ -11,7 +11,7 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class Model implements Serializable {
 
-  protected Integer id;
+  protected Long id;
 
   Model() {
   }
@@ -19,11 +19,11 @@ public abstract class Model implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -41,5 +41,4 @@ public abstract class Model implements Serializable {
     return id.equals(model.id);
 
   }
-
 }
