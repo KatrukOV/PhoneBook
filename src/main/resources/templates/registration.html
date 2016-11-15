@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Registration</title>
+</head>
+<body>
+<div>
+    <form action="#" th:action="@{/registration}" th:object="${userDto}" method="POST">
+        <h2>Create your account</h2>
+
+        <div>
+            <input th:field="*{lastName}" type="text" placeholder="Last Name"/>
+            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">lastName Error
+            </span>
+        </div>
+        <div>
+            <input th:field="*{name}" type="text" placeholder="Name"/>
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+        <div>
+            <input th:field="*{patronymic}" type="text" placeholder="Patronymic"/>
+            <div th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}"></div>
+        </div>
+        <div>
+            <input th:field="*{login}" type="text" placeholder="Login"/>
+            <div th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
+        </div>
+        <div>
+            <input th:field="*{password}" type="password" placeholder="Password"/>
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
+        <div>
+            <input th:field="*{confirmPassword}" type="password"
+                   placeholder="Confirm your password"/>
+            <div th:if="${#fields.hasErrors('confirmPassword')}"
+                 th:errors="*{confirmPassword}"></div>
+        </div>
+        <button type="submit">Submit</button>
+
+    </form>
+</div>
+</body>
+</html>
+
+
+<!--<div th:classappend="*{#fields.hasErrors('lastName') ? 'error' : ''}">-->
+<!--<div>-->
+<!--<input type="text" th:field="*{lastName}"/>-->
+<!--<span th:if="*{#fields.hasErrors('lastName')}"-->
+<!--th:each="err : *{#fields.errors('lastName')}"-->
+<!--th:remove="tag">-->
+<!--<span th:text="${'* ' + err}"></span>-->
+<!--</span>-->
+<!--</div>-->
+<!--</div>-->

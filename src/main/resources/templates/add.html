@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Add Contact</title>
+</head>
+<body>
+<h3>Add new Contact</h3>
+<div>
+    <form action="#" th:action="@{/contacts/addContact}" th:object="${contactDto}" method="POST">
+        <div>
+            <input th:field="*{lastName}" type="text" placeholder="Last Name"/>
+            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+        </div>
+        <div>
+            <input th:field="*{name}" type="text" placeholder="Name"/>
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+        <div>
+            <input th:field="*{patronymic}" type="text" placeholder="Patronymic"/>
+            <div th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}"></div>
+        </div>
+        <div>
+            <input th:field="*{mobilePhone}" type="text" placeholder="Format: +380(XX)XXXXXXX"/>
+            <div th:if="${#fields.hasErrors('mobilePhone')}" th:errors="*{mobilePhone}"></div>
+        </div>
+        <div>
+            <input th:field="*{homePhone}" type="text" placeholder="Format: +380(XX)XXXXXXX"/>
+            <div th:if="${#fields.hasErrors('homePhone')}" th:errors="*{homePhone}"></div>
+        </div>
+        <div>
+            <input th:field="*{email}" type="text" placeholder="Format: same@gmail.com"/>
+        </div>
+        <div>
+            <input th:field="*{city}" type="text" placeholder="Address City"/>
+        </div>
+        <div>
+            <input th:field="*{street}" type="text" placeholder="Address Street"/>
+        </div>
+        <div>
+            <input th:field="*{building}" type="text" placeholder="Address Building"/>
+        </div>
+        <div>
+            <input th:field="*{apartment}" type="text" placeholder="Address Apartment"/>
+        </div>
+        <div>
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
+</div>
+<br/>
+<a th:href="@{/contacts}">Back to contacts</a>
+</body>
+</html>

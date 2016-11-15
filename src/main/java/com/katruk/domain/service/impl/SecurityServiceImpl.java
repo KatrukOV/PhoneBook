@@ -1,0 +1,48 @@
+package com.katruk.domain.service.impl;
+
+import com.katruk.domain.service.SecurityService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Service;
+
+@Service
+public class SecurityServiceImpl implements SecurityService {
+
+  @Autowired
+  private AuthenticationManager authenticationManager;
+  @Autowired
+  private UserDetailsService userDetailsService;
+
+  //todo del???
+  @Override
+  public String findLogged() {
+    Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
+
+    System.out.println(">>>>> findLogged userDetails = " + userDetails);
+    if (userDetails instanceof UserDetails) {
+      return ((UserDetails) userDetails).getUsername();
+    }
+    return null;
+  }
+
+  @Override
+  public void autoLogin(String login, String password) {
+    System.out.println(">>>>> autoLogin login = " + login + " password= "+ password);
+    UserDetails userDetails = userDetailsService.loadUserByUsername(login);
+
+    UsernamePasswordAuthenticationToken authenticationToken =
+        new UsernamePasswordAuthenticationToken(userDetails, password,
+                                                userDetails.getAuthorities());
+    authenticationManager.authenticate(authenticationToken);
+    System.out.println(">>>>> authenticationToken  = " + authenticationToken);
+    if (authenticationToken.isAuthenticated()) {
+      SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+      //todo logger    String.format("Successfully %s auto logged in", login)
+    }
+  }
+}
