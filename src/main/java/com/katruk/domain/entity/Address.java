@@ -83,4 +83,14 @@ public class Address extends Model {
     result = 31 * result + (apartment != null ? apartment.hashCode() : 0);
     return result;
   }
+
+  @Override
+  public String toString() {
+    return "Address{" +
+           "city='" + city + '\'' +
+           ", street='" + street + '\'' +
+           ", building='" + building + '\'' +
+           ", apartment=" + apartment +
+           "} " + super.toString();
+  }
 }

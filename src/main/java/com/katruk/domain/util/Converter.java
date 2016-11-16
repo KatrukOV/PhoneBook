@@ -9,8 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class Converter {
 
-  public User makeUser(final UserDto userDto) {
-    System.out.println(">>> makeUser userDto= " + userDto);
+  public User makeUserFromDto(final UserDto userDto) {
+    System.out.println(">>> makeUserFromDto userDto= " + userDto);
     User newUser = new User();
     newUser.setLastName(userDto.getLastName());
     newUser.setName(userDto.getName());
@@ -20,8 +20,8 @@ public class Converter {
     return newUser;
   }
 
-  public ContactDto makeContactDto(final Contact contact) {
-    System.out.println(">>> makeContactDto contact= " + contact);
+  public ContactDto makeDtoFromContact(final Contact contact) {
+    System.out.println(">>> makeDtoFromContact contact= " + contact);
     return new ContactDto.Builder()
         .contactId(contact.getId())
         .lastName(contact.getPerson().getLastName())

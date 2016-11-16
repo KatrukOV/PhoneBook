@@ -9,9 +9,6 @@ import com.katruk.domain.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -30,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User createUser(UserDto userDto) {
-    User newUser = new Converter().makeUser(userDto);
+    User newUser = new Converter().makeUserFromDto(userDto);
     System.out.println(">>> createUser newUser = "+ newUser);
     return this.userDao.saveAndFlush(newUser);
   }

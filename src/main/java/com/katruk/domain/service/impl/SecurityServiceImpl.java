@@ -13,10 +13,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecurityServiceImpl implements SecurityService {
 
+
+  private final AuthenticationManager authenticationManager;
+  private final UserDetailsService userDetailsService;
+
   @Autowired
-  private AuthenticationManager authenticationManager;
-  @Autowired
-  private UserDetailsService userDetailsService;
+  public SecurityServiceImpl(AuthenticationManager authenticationManager,
+                             UserDetailsService userDetailsService) {
+    this.authenticationManager = authenticationManager;
+    this.userDetailsService = userDetailsService;
+  }
 
   //todo del???
   @Override
@@ -32,13 +38,13 @@ public class SecurityServiceImpl implements SecurityService {
 
   @Override
   public void autoLogin(String login, String password) {
-    System.out.println(">>>>> autoLogin login = " + login + " password= "+ password);
-    UserDetails userDetails = userDetailsService.loadUserByUsername(login);
+    System.out.println(">>>>> autoLogin login = " + login + " password= " + password);
+    UserDetails userDetails = this.userDetailsService.loadUserByUsername(login);
 
     UsernamePasswordAuthenticationToken authenticationToken =
         new UsernamePasswordAuthenticationToken(userDetails, password,
                                                 userDetails.getAuthorities());
-    authenticationManager.authenticate(authenticationToken);
+    this.authenticationManager.authenticate(authenticationToken);
     System.out.println(">>>>> authenticationToken  = " + authenticationToken);
     if (authenticationToken.isAuthenticated()) {
       SecurityContextHolder.getContext().setAuthentication(authenticationToken);

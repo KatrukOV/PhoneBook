@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public interface ContactService {
 
-  Set<ContactDto> getByUserLogin(String login);
+  Set<ContactDto> getContactDtoByUserLogin(String login);
 
   ContactDto getById(Long contactId);
 

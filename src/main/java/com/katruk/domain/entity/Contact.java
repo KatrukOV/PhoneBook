@@ -97,9 +97,9 @@ public class Contact extends Model {
       return false;
     }
     Contact contact = (Contact) o;
-    return user.equals(contact.user)
-           && person.equals(contact.person)
-           && mobilePhone.equals(contact.mobilePhone)
+    return (person != null ? person.equals(contact.person) : contact.person == null)
+           && (mobilePhone != null ? mobilePhone.equals(contact.mobilePhone)
+                                   : contact.mobilePhone == null)
            && (homePhone != null ? homePhone.equals(contact.homePhone) : contact.homePhone == null)
            && (address != null ? address.equals(contact.address) : contact.address == null)
            && (email != null ? email.equals(contact.email) : contact.email == null);
@@ -107,12 +107,24 @@ public class Contact extends Model {
 
   @Override
   public int hashCode() {
-    int result = user.hashCode();
-    result = 31 * result + person.hashCode();
-    result = 31 * result + mobilePhone.hashCode();
+    int result = super.hashCode();
+    result = 31 * result + (person != null ? person.hashCode() : 0);
+    result = 31 * result + (mobilePhone != null ? mobilePhone.hashCode() : 0);
     result = 31 * result + (homePhone != null ? homePhone.hashCode() : 0);
     result = 31 * result + (address != null ? address.hashCode() : 0);
     result = 31 * result + (email != null ? email.hashCode() : 0);
     return result;
+  }
+
+  @Override
+  public String toString() {
+    return "Contact{" +
+//           "user=" + user +
+           ", person=" + person +
+           ", mobilePhone='" + mobilePhone + '\'' +
+           ", homePhone='" + homePhone + '\'' +
+           ", address=" + address +
+           ", email='" + email + '\'' +
+           "} " + super.toString();
   }
 }

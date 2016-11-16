@@ -35,10 +35,19 @@ public abstract class Model implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-
     Model model = (Model) o;
+    return id != null ? id.equals(model.id) : model.id == null;
+  }
 
-    return id.equals(model.id);
+  @Override
+  public int hashCode() {
+    return id != null ? id.hashCode() : 0;
+  }
 
+  @Override
+  public String toString() {
+    return "Model{" +
+           "id=" + id +
+           '}';
   }
 }

@@ -23,7 +23,7 @@ public class AddressServiceImpl implements AddressService {
 
   @Override
   public Address save(Address address) {
-    return addressDao.saveAndFlush(address);
+    return this.addressDao.saveAndFlush(address);
   }
 
   @Override

@@ -24,7 +24,6 @@ import javax.servlet.http.HttpSession;
 public class ContactController {
 
   private final ContactService contactService;
-
   private final ContactValidator contactValidator;
 
   @Autowired
@@ -33,14 +32,13 @@ public class ContactController {
     this.contactValidator = contactValidator;
   }
 
-
   @RequestMapping(value = {"/", "contacts"}, method = RequestMethod.GET)
   public String contact(Model model) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String login = authentication.getName();
     System.out.println("!!! contact login= " + login);
 
-    Set<ContactDto> contactDtoSet = contactService.getByUserLogin(login);
+    Set<ContactDto> contactDtoSet = this.contactService.getContactDtoByUserLogin(login);
     model.addAttribute("contacts", contactDtoSet);
     return "contacts";
   }
@@ -65,7 +63,8 @@ public class ContactController {
 
     this.contactValidator.validate(contactDto, bindingResult);
     System.out.println(
-        ">>>> addContact validate ok contactDto = " + contactDto + " bindingResult= " + bindingResult);
+        ">>>> addContact validate ok contactDto = " + contactDto + " bindingResult= "
+        + bindingResult);
     if (bindingResult.hasErrors()) {
       return "add";
     }
@@ -75,100 +74,53 @@ public class ContactController {
     return "redirect:/add";
   }
 
-  @RequestMapping(value = "/contacts/edit/{contactId}")
-  public String edit(@PathVariable Long contactId, Model model) {
-    ContactDto contactDto = contactService.getById(contactId);
-    model.addAttribute("contact", contactDto);
-    return "edit";
-  }
+//  @RequestMapping(value = "/contacts/edit/{contactId}")
+//  public String edit(@PathVariable Long contactId, Model model) {
+//    System.out.println(">>> edit{} contactId= " + contactId);
+//
+//    ContactDto contactDto = this.contactService.getById(contactId);
+//    System.out.println(">>> edit{} contactDto= " + contactDto);
+//    model.addAttribute("contact", contactDto);
+//    return "edit";
+//  }
 
-  @RequestMapping(value = "/contacts/edit/", method = RequestMethod.POST)
-  public String edit1(@RequestParam Long contactId, Model model) {
-    ContactDto contactDto = this.contactService.getById(contactId);
+  @RequestMapping(value = "/contacts/edit", method = RequestMethod.GET)
+  public String edit1(@RequestParam Long contactId, ContactDto contactDto, Model model) {
+    System.out.println(">>> contacts/edit contactId= " + contactId);
+    contactDto = this.contactService.getById(contactId);
+    System.out.println(">>> contacts/edit contactDto= " + contactDto);
     model.addAttribute("contact", contactDto);
     return "edit";
   }
 
   @RequestMapping(value = "/contacts/editContact", method = RequestMethod.POST)
-  public String editContact(
-      @RequestParam Integer contactId,
-      @RequestParam String lastName,
-      @RequestParam String name,
-      @RequestParam String patronymic,
-      @RequestParam String mobilePhone,
-      @RequestParam String homePhone,
-      @RequestParam String email,
-      @RequestParam String city,
-      @RequestParam String street,
-      @RequestParam String building,
-      @RequestParam String apartment,
-      HttpSession session,
-      RedirectAttributes redirectAttributes) {
-//
-//    String login = (String) session.getAttribute("login");
-//    ContactDto contactDto = new ContactDto()
-//        .Builder()
-////        .id(contactId)
-////        .login(login)
-//        .lastName(lastName)
-//        .name(name)
-//        .patronymic(patronymic)
-//        .mobilePhone(mobilePhone)
-//        .homePhone(homePhone)
-//        .email(email)
-//        .city(city)
-//        .street(street)
-//        .building(building)
-//        .apartment(Integer.parseInt(apartment))
-//        .build();
+  public String editContact(ContactDto contactDto, BindingResult bindingResult, Model model) {
+    System.out.println(">>> /contacts/editContact contactDto= " + contactDto);
 
-//    ContactService.ContactStatus status = contactService.editContact(contactDto);
-//    switch (status) {
-//      case INCORRECT_LAST_NAME:
-//        redirectAttributes
-//            .addFlashAttribute("message", "Last Name must contain at least 4 symbols");
-//        break;
-//      case INCORRECT_NAME:
-//        redirectAttributes
-//            .addFlashAttribute("message", "First Name must contain at least 4 symbols");
-//        break;
-//      case INCORRECT_PATRONYMIC:
-//        redirectAttributes
-//            .addFlashAttribute("message", "Patronymic must contain at least 4 symbols");
-//        break;
-//      case INCORRECT_MOBILE_PHONE:
-//        redirectAttributes.addFlashAttribute("message",
-//                                             "Mobile phone must have format: +380(XX)XXX-XX-XX or +380(XX)XXXXXXX");
-//        break;
-//      case INCORRECT_HOME_PHONE:
-//        redirectAttributes.addFlashAttribute("message",
-//                                             "Home phone must have format: +380(XX)XXX-XX-XX or +380(XX)XXXXXXX");
-//        break;
-//      case INCORRECT_EMAIL:
-//        redirectAttributes
-//            .addFlashAttribute("message", "E-mail must have format: some@example.com");
-//        break;
-//      case SUCCESS:
-//        redirectAttributes.addFlashAttribute("message", "Contact changed");
-//        break;
-//    }
-    return "redirect:/contacts/edit/" + contactId;
+    this.contactValidator.validate(contactDto, bindingResult);
+    System.out.println(
+        ">>>> editContact validate ok contactDto = " + contactDto + " bindingResult= "
+        + bindingResult);
+    if (bindingResult.hasErrors()) {
+      return "edit";
+    }
+    System.out.println(">>>> editContact no error  ");
+    this.contactService.editContact(contactDto);
+    System.out.println(">>>> editContact ok  ");
+    return "redirect:/contacts";
   }
 
   @RequestMapping(value = "/contacts/delete", method = RequestMethod.POST)
-  public String delete(
-      @RequestParam String contactId,
-//      HttpSession session,
-//      Model model,
-      RedirectAttributes redirectAttributes
+  public String delete(@RequestParam Long contactId, ContactDto contactDto,
+//                       RedirectAttributes redirectAttributes,
+                       Model model
   ) {
     System.out.println(">>> to del contactId" + contactId);
-    contactService.deleteContact(Long.parseLong(contactId));
-    redirectAttributes.addFlashAttribute("message", "Contact was deleted");
+    this.contactService.deleteContact(contactId);
+//    redirectAttributes.addFlashAttribute("message", "Contact was deleted");
     return "redirect:/contacts";
   }
 }
-
 
 /*
  @RequestMapping(value = "/contact")
@@ -179,7 +131,7 @@ public class ContactController {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String login = authentication.getName();
 
-    Set<ContactDto> contactDtoSet = contactService.getByUserLogin(login);
+    Set<ContactDto> contactDtoSet = contactService.getContactDtoByUserLogin(login);
     model.addAttribute("contacts", contactDtoSet);
     return "contact";
   }
@@ -336,8 +288,8 @@ public class ContactController {
     return "redirect:/contact/edit/" + contactId;
   }
 
-  @RequestMapping(value = "/contact/delete", method = RequestMethod.POST)
-  public String delete(
+  @RequestMapping(value = "/contact/deleteInBatch", method = RequestMethod.POST)
+  public String deleteInBatch(
       @RequestParam String contactId,
 //      HttpSession session,
 //      Model model,

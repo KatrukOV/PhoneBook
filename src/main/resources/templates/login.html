@@ -13,14 +13,14 @@
             <br/>
             <input th:name="password" type="password" placeholder="Password"/>
             <br/>
-            <!--<div th:text="${error}"></div>-->
+            <div th:text="${error}"></div>
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <button type="submit">Log In</button>
             <h4><a th:href="@{/registration}">Registration</a></h4>
         </div>
     </form>
     <h3>
-        <!--<div th:text="${logout}"></div>-->
+        <div th:text="${logout}"></div>
     </h3>
 </div>
 </body>

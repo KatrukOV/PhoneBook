@@ -7,76 +7,69 @@
 <body style="text-align:center;">
 <h3>Change Contact</h3>
 <hr/>
-<form action="#" th:action="@{/contact/updateContact}" th:object="${contactDto}" method="POST">
+<form action="#" th:action="@{/contacts/editContact}" th:object="${contactDto}" method="POST">
 
     <div>
-        <input type="text" th:value="${contactId}"/>
-
-        <label>Last Name *</label>
-        <input th:field="*{lastName}" type="text" placeholder="Last Name"
-               th:value="${contact.lastName}"/>
-
-        <!--<label for="lastName">Last Name *</label>-->
-        <!--<input name="lastName" type="text" id="lastName" placeholder="Last Name"-->
-        <!--th:value="${contact.lastName}"/>-->
-    </div>
-
-    <div>
-        <label>Name *</label>
-        <input th:field="*{name}" type="text" placeholder="Name" th:value="${contact.name}"/>
+        <input type="hidden" name="contactId" value="contactId" th:value="${contact.contactId}"/>
+        <!--<label>Last Name *</label>-->
+        <label for="lastName">Last Name *</label>
+        <input id="lastName" name="lastName" type="text" th:value="${contact.lastName}"
+               placeholder="Last Name"/>
     </div>
     <div>
-        <label>Patronymic *</label>
-        <input th:field="*{patronymic}" type="text" placeholder="Patronymic"
-               th:value="${contact.patronymic}"/>
+        <label for="name">Name *</label>
+        <input id="name" name="name" type="text" th:value="${contact.name}" placeholder="Name"/>
     </div>
     <div>
-        <label>Mobile Phone *</label>
-        <input th:field="*{mobilePhone}" type="text"
-               placeholder="Format: +380(XX)XXXXXXX" th:value="${contact.mobilePhone}"/>
+        <label for="patronymic">Patronymic *</label>
+        <input id="patronymic" name="patronymic" type="text" th:value="${contact.patronymic}"
+               placeholder="Patronymic"/>
     </div>
     <div>
-
-        <input th:field="*{homePhone}" type="text"
-               placeholder="Format: +380(XX)XXXXXXX" th:value="${contact.homePhone}"/>
+        <label for="mobilePhone">Mobile Phone *</label>
+        <input id="mobilePhone" name="mobilePhone" type="text" th:value="${contact.mobilePhone}"
+               placeholder="Format: +380(XX)XXXXXXX"/>
+    </div>
+    <div>
+        <label for="homePhone">Home Phone</label>
+        <input id="homePhone" name="homePhone" type="text" th:value="${contact.homePhone}"
+               placeholder="Format: +380(XX)XXXXXXX"/>
     </div>
     <div>
         <label for="email">E-mail</label>
-        <input th:field="*{email}" type="text" id="email" placeholder="E-mail"
-               th:value="${contact.email}"/>
+        <input id="email" name="email" type="text" th:value="${contact.email}"
+               placeholder="Format: same@gmail.com"/>
     </div>
     <div>
         <label for="city">Address city</label>
-        <input th:field="*{city}" type="text" id="city" placeholder="Address City"
-               th:value="${contact.city}"/>
+        <input id="city" name="city" type="text" th:value="${contact.city}"
+               placeholder="Address City"/>
     </div>
     <div>
         <label for="street">Address street</label>
-        <input th:field="*{street}" type="text" id="street"
-               placeholder="Address Street" th:value="${contact.street}"/>
+        <input id="street" name="street" type="text" th:value="${contact.street}"
+               placeholder="Address Street"/>
     </div>
     <div>
         <label for="building">Address Building</label>
-        <input th:field="*{building}" type="text" id="building"
-               placeholder="Address Building" th:value="${contact.building}"/>
+        <input id="building" name="building" type="text" th:value="${contact.building}"
+               placeholder="Address Building"/>
     </div>
     <div>
         <label for="apartment">Address Apartment</label>
-        <input th:field="*{apartment}" type="text" id="apartment"
-               placeholder="Address Apartment" th:value="${contact.apartment}"/>
+        <input id="apartment" name="apartment" type="text" th:value="${contact.apartment}"
+               placeholder="Address Apartment"/>
     </div>
     <div>
         <button type="submit">Change</button>
         <button type="reset">Reset</button>
     </div>
 </form>
-<div th:text="${message}"></div>
 <div>
     <ul>
-        <li><a href="/contact/add">Add Contact</a></li>
-        <li><a href="/contact">Back</a></li>
+        <li><a th:href="@{/contacts/add}">Add new Contact</a></li>
+        <li><a th:href="@{/contacts}">Back to contacts</a></li>
     </ul>
-    <a href="/logOut">Log Out</a>
 </div>
 </body>
 </html>

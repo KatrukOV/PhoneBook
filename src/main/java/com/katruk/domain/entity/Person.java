@@ -64,17 +64,29 @@ public class Person extends Model {
     if (!super.equals(o)) {
       return false;
     }
+
     Person person = (Person) o;
-    return lastName.equals(person.lastName)
-           && name.equals(person.name)
-           && patronymic.equals(person.patronymic);
+
+    return (lastName != null ? lastName.equals(person.lastName) : person.lastName == null)
+           && (name != null ? name.equals(person.name) : person.name == null)
+           && (patronymic != null ? patronymic.equals(person.patronymic)
+                                  : person.patronymic == null);
   }
 
   @Override
   public int hashCode() {
-    int result = lastName.hashCode();
-    result = 31 * result + name.hashCode();
-    result = 31 * result + patronymic.hashCode();
+    int result = lastName != null ? lastName.hashCode() : 0;
+    result = 31 * result + (name != null ? name.hashCode() : 0);
+    result = 31 * result + (patronymic != null ? patronymic.hashCode() : 0);
     return result;
+  }
+
+  @Override
+  public String toString() {
+    return "Person{" +
+           "lastName='" + lastName + '\'' +
+           ", name='" + name + '\'' +
+           ", patronymic='" + patronymic + '\'' +
+           "} " + super.toString();
   }
 }
