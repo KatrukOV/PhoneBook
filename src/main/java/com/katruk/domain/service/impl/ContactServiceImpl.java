@@ -11,6 +11,7 @@ import com.katruk.domain.entity.User;
 import com.katruk.domain.service.AddressService;
 import com.katruk.domain.service.ContactService;
 import com.katruk.domain.service.PersonService;
+import com.katruk.domain.service.SecurityService;
 import com.katruk.domain.service.UserService;
 import com.katruk.domain.util.Converter;
 
@@ -19,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.text.Format;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -26,14 +28,17 @@ import java.util.Set;
 @Service
 public class ContactServiceImpl implements ContactService {
 
+  private final SecurityService securityService;
   private final ContactDao contactDao;
   private final PersonService personService;
   private final AddressService addressService;
   private final UserService userService;
 
   @Autowired
-  public ContactServiceImpl(ContactDao contactDao, PersonService personService,
+  public ContactServiceImpl(SecurityService securityService, ContactDao contactDao,
+                            PersonService personService,
                             AddressService addressService, UserService userService) {
+    this.securityService = securityService;
     this.contactDao = contactDao;
     this.personService = personService;
     this.addressService = addressService;
@@ -41,12 +46,65 @@ public class ContactServiceImpl implements ContactService {
   }
 
   @Override
-  public Set<ContactDto> getContactDtoByUserLogin(String login) {
+  public Set<ContactDto> getAllContact() {
+    String login = this.securityService.getLogin();
+    return getContactDtoByUserLogin(login);
+  }
 
+  @Override
+  public Set<ContactDto> getContactByLastName(String lastName) {
+    String login = this.securityService.getLogin();
+    Set<ContactDto> allContactDto = getContactDtoByUserLogin(login);
+    Set<ContactDto> contactDtoSet = new HashSet<>();
+    for (ContactDto contact : allContactDto) {
+      if ((contact.getLastName().toLowerCase()).contains(lastName.toLowerCase())) {
+        contactDtoSet.add(contact);
+      }
+    }
+    return contactDtoSet;
+  }
+
+  @Override
+  public Set<ContactDto> getContactByName(String name) {
+    String login = this.securityService.getLogin();
+    Set<ContactDto> allContactDto = getContactDtoByUserLogin(login);
+    Set<ContactDto> contactDtoSet = new HashSet<>();
+    for (ContactDto contact : allContactDto) {
+      if ((contact.getName().toLowerCase()).contains(name.toLowerCase())) {
+        contactDtoSet.add(contact);
+      }
+    }
+    return contactDtoSet;
+  }
+
+  @Override
+  public Set<ContactDto> getContactByPhone(String phone) {
+    String login = this.securityService.getLogin();
+    Set<ContactDto> allContactDto = getContactDtoByUserLogin(login);
+    Set<ContactDto> contactDtoSet = new HashSet<>();
+    for (ContactDto contact : allContactDto) {
+      if (containsNumber(phone, contact)) {
+        contactDtoSet.add(contact);
+      }
+    }
+    return contactDtoSet;
+  }
+
+  private boolean containsNumber(String phone, ContactDto contact) {
+    String mobilePhone = contact.getMobilePhone();
+    mobilePhone = mobilePhone.replaceAll("-", "").trim();
+
+    String homePhone = contact.getHomePhone();
+    homePhone = homePhone.replaceAll("-", "").trim();
+
+    phone = phone.replaceAll("-", "").trim();
+    return mobilePhone.contains(phone) || homePhone.contains(phone);
+  }
+
+
+  private Set<ContactDto> getContactDtoByUserLogin(String login) {
     User user = this.userService.getUserByLogin(login);
-
     System.out.println(">>> getContactDtoByUserLogin user=" + user);
-
     Set<ContactDto> contactDtoSet = new HashSet<>();
     ContactDto contactDto;
     for (Contact contact : user.getContacts()) {
@@ -173,13 +231,8 @@ public class ContactServiceImpl implements ContactService {
 
   @Override
   public void deleteContact(Long contactId) {
-//    Contact contact = this.contactDao.findOneById(contactId)
-//        .orElseThrow(() -> new NoSuchElementException(
-//            String.format("Contact with id=%s not found", contactId)));
-//    System.out.println(">>> deleteContact contact= " + contact);
-//    this.contactDao.delete(contact.getId());
-
     System.out.println(">>> deleteContact contactId= " + contactId);
     this.contactDao.delete(contactId);
   }
+
 }

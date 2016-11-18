@@ -6,6 +6,7 @@
 </head>
 <body>
 <h3>Add new Contact</h3>
+<hr/>
 <div>
     <form action="#" th:action="@{/contacts/addContact}" th:object="${contactDto}" method="POST">
         <div>
@@ -64,6 +65,11 @@
     </form>
 </div>
 <br/>
-<a th:href="@{/contacts}">Back to contacts</a>
+
+<form th:action="@{/contacts}" method="GET">
+    <input type="submit" value="Back to contacts"/>
+</form>
+
+<!--<a th:href="@{/contacts}">Back to contacts</a>-->
 </body>
 </html>

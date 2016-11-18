@@ -5,6 +5,7 @@ import com.katruk.domain.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,16 +26,16 @@ public class SecurityServiceImpl implements SecurityService {
   }
 
   //todo del???
-  @Override
-  public String findLogged() {
-    Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
-
-    System.out.println(">>>>> findLogged userDetails = " + userDetails);
-    if (userDetails instanceof UserDetails) {
-      return ((UserDetails) userDetails).getUsername();
-    }
-    return null;
-  }
+//  @Override
+//  public String findLogged() {
+//    Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
+//
+//    System.out.println(">>>>> findLogged userDetails = " + userDetails);
+//    if (userDetails instanceof UserDetails) {
+//      return ((UserDetails) userDetails).getUsername();
+//    }
+//    return null;
+//  }
 
   @Override
   public void autoLogin(String login, String password) {
@@ -50,5 +51,11 @@ public class SecurityServiceImpl implements SecurityService {
       SecurityContextHolder.getContext().setAuthentication(authenticationToken);
       //todo logger    String.format("Successfully %s auto logged in", login)
     }
+  }
+
+  @Override
+  public String getLogin() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    return authentication.getName();
   }
 }

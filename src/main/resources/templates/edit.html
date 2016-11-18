@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <title>Edit</title>
 </head>
-<body style="text-align:center;">
+<body>
 <h3>Change Contact</h3>
 <hr/>
 <form action="#" th:action="@{/contacts/editContact}" th:object="${contactDto}" method="POST">
@@ -70,10 +70,18 @@
     </div>
 </form>
 <div>
-    <ul>
-        <li><a th:href="@{/contacts/add}">Add new Contact</a></li>
-        <li><a th:href="@{/contacts}">Back to contacts</a></li>
-    </ul>
+    <br/>
+    <form th:action="@{/contacts/add}" method="GET">
+        <input type="submit" value="Add new Contact"/>
+    </form>
+    <form th:action="@{/contacts}" method="GET">
+        <input type="submit" value="Back to contacts"/>
+    </form>
+
+    <!--<ul>-->
+        <!--<li><a th:href="@{/contacts/add}">Add new Contact</a></li>-->
+        <!--<li><a th:href="@{/contacts}">Back to contacts</a></li>-->
+    <!--</ul>-->
 </div>
 </body>
 </html>
