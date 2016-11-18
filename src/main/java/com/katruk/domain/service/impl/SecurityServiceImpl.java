@@ -24,7 +24,6 @@ public class SecurityServiceImpl implements SecurityService {
     this.authenticationManager = authenticationManager;
     this.userDetailsService = userDetailsService;
   }
-
   //todo del???
 //  @Override
 //  public String findLogged() {
