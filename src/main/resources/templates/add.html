@@ -9,39 +9,53 @@
 <div>
     <form action="#" th:action="@{/contacts/addContact}" th:object="${contactDto}" method="POST">
         <div>
-            <input th:field="*{lastName}" type="text" placeholder="Last Name"/>
+            <label for="lastName">Last Name *</label>
+            <input id="lastName" th:field="*{lastName}" type="text" placeholder="Last Name"/>
             <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
         </div>
         <div>
-            <input th:field="*{name}" type="text" placeholder="Name"/>
+            <label for="name">Name *</label>
+            <input id="name" th:field="*{name}" type="text" placeholder="Name"/>
             <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
         </div>
         <div>
-            <input th:field="*{patronymic}" type="text" placeholder="Patronymic"/>
+            <label for="patronymic">Patronymic *</label>
+            <input id="patronymic" th:field="*{patronymic}" type="text" placeholder="Patronymic"/>
             <div th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}"></div>
         </div>
         <div>
-            <input th:field="*{mobilePhone}" type="text" placeholder="Format: +380(XX)XXXXXXX"/>
+            <label for="mobilePhone">Mobile Phone *</label>
+            <input id="mobilePhone" th:field="*{mobilePhone}" type="text"
+                   placeholder="Format: +380(XX)XXXXXXX"/>
             <div th:if="${#fields.hasErrors('mobilePhone')}" th:errors="*{mobilePhone}"></div>
         </div>
         <div>
-            <input th:field="*{homePhone}" type="text" placeholder="Format: +380(XX)XXXXXXX"/>
+            <label for="homePhone">Home Phone</label>
+            <input id="homePhone" th:field="*{homePhone}" type="text"
+                   placeholder="Format: +380(XX)XXXXXXX"/>
             <div th:if="${#fields.hasErrors('homePhone')}" th:errors="*{homePhone}"></div>
         </div>
         <div>
-            <input th:field="*{email}" type="text" placeholder="Format: same@gmail.com"/>
+            <label for="email">E-mail</label>
+            <input id="email" th:field="*{email}" type="text" placeholder="Format: same@example.com"/>
+            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
         </div>
         <div>
-            <input th:field="*{city}" type="text" placeholder="Address City"/>
+            <label for="city">Address city</label>
+            <input id="city" th:field="*{city}" type="text" placeholder="Address City"/>
         </div>
         <div>
-            <input th:field="*{street}" type="text" placeholder="Address Street"/>
+            <label for="street">Address street</label>
+            <input id="street" th:field="*{street}" type="text" placeholder="Address Street"/>
         </div>
         <div>
-            <input th:field="*{building}" type="text" placeholder="Address Building"/>
+            <label for="building">Address Building</label>
+            <input id="building" th:field="*{building}" type="text" placeholder="Address Building"/>
         </div>
         <div>
-            <input th:field="*{apartment}" type="text" placeholder="Address Apartment"/>
+            <label for="apartment">Address Apartment</label>
+            <input id="apartment" th:field="*{apartment}" type="text"
+                   placeholder="Address Apartment"/>
         </div>
         <div>
             <button type="submit">Submit</button>

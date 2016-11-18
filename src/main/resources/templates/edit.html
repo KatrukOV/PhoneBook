@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <title>Edit</title>
@@ -8,37 +8,41 @@
 <h3>Change Contact</h3>
 <hr/>
 <form action="#" th:action="@{/contacts/editContact}" th:object="${contactDto}" method="POST">
-
     <div>
         <input type="hidden" name="contactId" value="contactId" th:value="${contact.contactId}"/>
-        <!--<label>Last Name *</label>-->
         <label for="lastName">Last Name *</label>
         <input id="lastName" name="lastName" type="text" th:value="${contact.lastName}"
                placeholder="Last Name"/>
+        <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
     </div>
     <div>
         <label for="name">Name *</label>
         <input id="name" name="name" type="text" th:value="${contact.name}" placeholder="Name"/>
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
     </div>
     <div>
         <label for="patronymic">Patronymic *</label>
         <input id="patronymic" name="patronymic" type="text" th:value="${contact.patronymic}"
                placeholder="Patronymic"/>
+        <div th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}"></div>
     </div>
     <div>
         <label for="mobilePhone">Mobile Phone *</label>
         <input id="mobilePhone" name="mobilePhone" type="text" th:value="${contact.mobilePhone}"
                placeholder="Format: +380(XX)XXXXXXX"/>
+        <div th:if="${#fields.hasErrors('mobilePhone')}" th:errors="*{mobilePhone}"></div>
     </div>
     <div>
         <label for="homePhone">Home Phone</label>
         <input id="homePhone" name="homePhone" type="text" th:value="${contact.homePhone}"
                placeholder="Format: +380(XX)XXXXXXX"/>
+        <div th:if="${#fields.hasErrors('homePhone')}" th:errors="*{homePhone}"></div>
     </div>
     <div>
         <label for="email">E-mail</label>
         <input id="email" name="email" type="text" th:value="${contact.email}"
-               placeholder="Format: same@gmail.com"/>
+               placeholder="Format: same@example.com"/>
+        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
     </div>
     <div>
         <label for="city">Address city</label>

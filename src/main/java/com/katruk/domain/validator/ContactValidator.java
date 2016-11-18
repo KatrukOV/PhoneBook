@@ -59,10 +59,10 @@ public class ContactValidator implements Validator {
 
   private void validatePhones(Errors errors, ContactDto contactDto) {
     if (!PHONE_PATTERN.matcher(contactDto.getMobilePhone()).matches()) {
-      errors.rejectValue("MobilePhone", "INCORRECT_MOBILE_PHONE");
+      errors.rejectValue("mobilePhone", "INCORRECT_MOBILE_PHONE");
     }
     if (!PHONE_PATTERN.matcher(contactDto.getHomePhone()).matches()) {
-      errors.rejectValue("HomePhone", "INCORRECT_HOME_PHONE");
+      errors.rejectValue("homePhone", "INCORRECT_HOME_PHONE");
     }
   }
 

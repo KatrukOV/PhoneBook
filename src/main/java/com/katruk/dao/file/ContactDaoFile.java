@@ -28,8 +28,11 @@ public class ContactDaoFile extends BaseDaoFile implements ContactDao {
   }
 
   @Override
-  public void delete(Contact contact) {
-    super.<Contact>delete(contact.getId());
+//  public void delete(Contact contact) {
+//    super.<Contact>delete(contact.getId());
+//  }
+  public void delete(Long contactId) {
+    super.<Contact>delete(contactId);
   }
 
 //  @Override

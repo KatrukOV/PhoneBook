@@ -43,8 +43,6 @@ public class ContactServiceImpl implements ContactService {
   @Override
   public Set<ContactDto> getContactDtoByUserLogin(String login) {
 
-//    System.out.println(">>> getContactDtoByUserLogin login=" + login);
-
     User user = this.userService.getUserByLogin(login);
 
     System.out.println(">>> getContactDtoByUserLogin user=" + user);
@@ -175,11 +173,13 @@ public class ContactServiceImpl implements ContactService {
 
   @Override
   public void deleteContact(Long contactId) {
-    Contact contact = this.contactDao.findOneById(contactId)
-        .orElseThrow(() -> new NoSuchElementException(
-            String.format("Contact with id=%s not found", contactId)));
-    System.out.println(">>> deleteContact contact= " + contact);
-    this.contactDao.delete(contact);
+//    Contact contact = this.contactDao.findOneById(contactId)
+//        .orElseThrow(() -> new NoSuchElementException(
+//            String.format("Contact with id=%s not found", contactId)));
+//    System.out.println(">>> deleteContact contact= " + contact);
+//    this.contactDao.delete(contact.getId());
 
+    System.out.println(">>> deleteContact contactId= " + contactId);
+    this.contactDao.delete(contactId);
   }
 }

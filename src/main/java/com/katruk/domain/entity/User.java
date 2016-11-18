@@ -46,7 +46,7 @@ public class User extends Person {
     this.password = password;
   }
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER , cascade = CascadeType.REMOVE)
   public Set<Contact> getContacts() {
     return contacts;
   }

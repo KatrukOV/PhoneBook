@@ -8,11 +8,9 @@
 <div>
     <form action="#" th:action="@{/registration}" th:object="${userDto}" method="POST">
         <h2>Create your account</h2>
-
         <div>
             <input th:field="*{lastName}" type="text" placeholder="Last Name"/>
-            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">lastName Error
-            </span>
+            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
         </div>
         <div>
             <input th:field="*{name}" type="text" placeholder="Name"/>
@@ -42,15 +40,3 @@
 </div>
 </body>
 </html>
-
-
-<!--<div th:classappend="*{#fields.hasErrors('lastName') ? 'error' : ''}">-->
-<!--<div>-->
-<!--<input type="text" th:field="*{lastName}"/>-->
-<!--<span th:if="*{#fields.hasErrors('lastName')}"-->
-<!--th:each="err : *{#fields.errors('lastName')}"-->
-<!--th:remove="tag">-->
-<!--<span th:text="${'* ' + err}"></span>-->
-<!--</span>-->
-<!--</div>-->
-<!--</div>-->
