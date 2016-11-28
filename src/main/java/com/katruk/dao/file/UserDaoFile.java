@@ -18,11 +18,11 @@ public class UserDaoFile extends BaseDaoFile implements UserDao {
   }
 
   @Override
-  public Optional<User> findOneByLogin(String login) {
+  public Optional<User> getUserByLogin(String login) {
     List<User> users = getAll();
     for (User element : users) {
       if (element.getLogin().equals(login)) {
-        return Optional.ofNullable(element);
+        return Optional.of(element);
       }
     }
     return Optional.empty();

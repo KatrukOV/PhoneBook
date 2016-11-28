@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface UserDao {
 
-  Optional<User> findOneByLogin(String login);
+  Optional<User> getUserByLogin(String login);
 
   User saveAndFlush(User user);
 

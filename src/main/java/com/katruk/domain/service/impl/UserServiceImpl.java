@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User getUserByLogin(String login) {
-    return this.userDao.findOneByLogin(login).orElse(new User());
+    return this.userDao.getUserByLogin(login).orElse(new User());
   }
 
   @Override
