@@ -7,8 +7,6 @@ import java.util.Optional;
 
 public interface UserService {
 
-//  Optional<User> getUserById(long id);
-
   User getUserByLogin(String login);
 
   User createUser(UserDto userDto);

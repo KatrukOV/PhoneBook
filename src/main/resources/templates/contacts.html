@@ -8,17 +8,17 @@
 <body>
 <div>
     <h3 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h3>
-
-    <!--<h2>Hello <span th:utext="${login}">login</span>!</h2>-->
-    <!--<h4>Hello ${#httpServletRequest.remoteUser} !</h4>-->
-    <!--<h4>Hello ${login}!</h4>-->
-    <!--<h4>Hello [[${login}]] !</h4>-->
-    <!--<h4>Hello ${session.user.name}!</h4>-->
-    <!--<h4>Hello th:utext="${login}</h4>-->
-    <!--<p>[[${#httpServletRequest.remoteUser}]]</p>-->
-    <!--<h1>End</h1>-->
-
     <hr/>
+
+    <!--<ul id="messages"-->
+        <!--th:with="notifyMessages=${session[T(com.katruk.domain.service.impl.NotificationServiceImpl).NOTIFY_MSG_SESSION_KEY]}">-->
+        <!--<li th:each="msg : ${notifyMessages}" th:text="${msg.text}"-->
+            <!--th:class="${#strings.toLowerCase(msg.type)}">-->
+        <!--</li>-->
+        <!--<span th:if="${notifyMessages}" th:remove="all"-->
+              <!--th:text="${session.remove(T(com.katruk.domain.service.impl.NotificationServiceImpl).NOTIFY_MSG_SESSION_KEY)}"></span>-->
+    <!--</ul>-->
+
     <form th:action="@{/logout}" method="POST">
         <input type="submit" value="Logout"/>
     </form>

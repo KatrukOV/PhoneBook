@@ -25,17 +25,10 @@ public class ContactValidator implements Validator {
   @Override
   public void validate(Object target, Errors errors) {
     ContactDto contactDto = (ContactDto) target;
-    System.out.println(">>> validate contactDto= " + contactDto + " errors= " + errors);
-
     requiredField(errors);
-    System.out.println("1= "+ errors);
     validateNames(errors, contactDto);
-    System.out.println("2= "+ errors);
     validatePhones(errors, contactDto);
-    System.out.println("3= "+ errors);
     validateEmail(errors, contactDto);
-    System.out.println("4= "+ errors);
-
   }
 
   private void requiredField(Errors errors) {

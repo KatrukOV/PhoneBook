@@ -32,19 +32,13 @@ public class UserValidator implements Validator {
 
   @Override
   public void validate(Object target, Errors errors) {
-    System.out.println(">>> validate target= " + target + " errors= " + errors);
     UserDto userDto = (UserDto) target;
 
     requiredField(errors);
-    System.out.println("1");
     validateUserNames(errors, userDto);
-    System.out.println("2");
     validateLogin(errors, userDto);
-    System.out.println("3");
     validatePassword(errors, userDto);
-    System.out.println("4");
     existsUser(errors, userDto);
-    System.out.println("5");
   }
 
   private void requiredField(Errors errors) {
@@ -91,9 +85,7 @@ public class UserValidator implements Validator {
 
   private void existsUser(Errors errors, UserDto userDto) {
     User user = this.userService.getUserByLogin(userDto.getLogin());
-//    System.out.println("user login =" + user.getLogin());
     if (nonNull(user.getLogin())) {
-//    if (isNull(this.userService.getUserByLogin(userDto.getLogin()).getLogin())) {
       errors.rejectValue("login", "USER_EXISTS");
     }
   }

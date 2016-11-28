@@ -119,7 +119,6 @@ public class Contact extends Model {
   @Override
   public String toString() {
     return "Contact{" +
-//           "user=" + user +
            ", person=" + person +
            ", mobilePhone='" + mobilePhone + '\'' +
            ", homePhone='" + homePhone + '\'' +

@@ -11,14 +11,8 @@ public interface ContactDao {
 
   Contact saveAndFlush(Contact contact);
 
-//  void delete(Contact contact);
   void delete(Long contactId);
 
-//  Collection<Contact> findByLastName(String lastName);
-//
-//  Collection<Contact> findByName(String name);
-//
-//  Collection<Contact> findByMobilePhoneLike(String mobilePhone);
 
 }
 

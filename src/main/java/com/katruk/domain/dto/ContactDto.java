@@ -1,9 +1,10 @@
 package com.katruk.domain.dto;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class ContactDto {
 
   private Long contactId = 0L;
-//  private String login = "";
   private String lastName = "";
   private String name = "";
   private String patronymic = "";
@@ -108,7 +109,6 @@ public class ContactDto {
 
   private ContactDto(Builder builder) {
     this.contactId = builder.contactId;
-//    this.login = builder.login;
     this.lastName = builder.lastName;
     this.name = builder.name;
     this.patronymic = builder.patronymic;
@@ -122,8 +122,8 @@ public class ContactDto {
   }
 
   public static class Builder {
+
     private Long contactId;
-//    private String login;
     private String lastName;
     private String name;
     private String patronymic;
@@ -142,11 +142,6 @@ public class ContactDto {
       this.contactId = contactId;
       return this;
     }
-
-//    public Builder login(String login) {
-//      this.login = login;
-//      return this;
-//    }
 
     public Builder lastName(String lastName) {
       this.lastName = lastName;
@@ -205,20 +200,20 @@ public class ContactDto {
 
   @Override
   public String toString() {
-    final StringBuilder sb = new StringBuilder("ContactDto{");
-    sb.append("contactId=").append(contactId);
-//    sb.append(", login='").append(login).append('\'');
-    sb.append(", lastName='").append(lastName).append('\'');
-    sb.append(", name='").append(name).append('\'');
-    sb.append(", patronymic='").append(patronymic).append('\'');
-    sb.append(", mobilePhone='").append(mobilePhone).append('\'');
-    sb.append(", homePhone='").append(homePhone).append('\'');
-    sb.append(", email='").append(email).append('\'');
-    sb.append(", city='").append(city).append('\'');
-    sb.append(", street='").append(street).append('\'');
-    sb.append(", building='").append(building).append('\'');
-    sb.append(", apartment=").append(apartment);
-    sb.append('}');
-    return sb.toString();
+    final AtomicReference<StringBuilder> sb =
+        new AtomicReference<>(new StringBuilder("ContactDto{"));
+    sb.get().append("contactId=").append(contactId);
+    sb.get().append(", lastName='").append(lastName).append('\'');
+    sb.get().append(", name='").append(name).append('\'');
+    sb.get().append(", patronymic='").append(patronymic).append('\'');
+    sb.get().append(", mobilePhone='").append(mobilePhone).append('\'');
+    sb.get().append(", homePhone='").append(homePhone).append('\'');
+    sb.get().append(", email='").append(email).append('\'');
+    sb.get().append(", city='").append(city).append('\'');
+    sb.get().append(", street='").append(street).append('\'');
+    sb.get().append(", building='").append(building).append('\'');
+    sb.get().append(", apartment=").append(apartment);
+    sb.get().append('}');
+    return sb.get().toString();
   }
 }

@@ -86,7 +86,6 @@ public class User extends Person {
     return "User{" +
            "login='" + login + '\'' +
            ", password='" + password + '\'' +
-//           ", contacts=" + contacts +
            "} " + super.toString();
   }
 }

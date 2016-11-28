@@ -30,26 +30,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   @Transactional(readOnly = true)
   public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 
-//    System.out.println(">>>>> loadUserByUsername login = " + login);
-//    boolean enabled = true;
-//    boolean accountNonExpired = true;
-//    boolean credentialsNonExpired = true;
-//    boolean accountNonLocked = true;
-
     User user = this.userService.getUserByLogin(login);
-//    System.out.println(">>>>> loadUserByUsername user = " + user);
     Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-
     grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-    System.out.println(">>>>> loadUserByUsername user.getLogin()=" + user.getLogin()
-                       + " user.getPassword()=" + user.getPassword()
-                       + " grantedAuthorities = " + grantedAuthorities);
     return new org.springframework.security.core.userdetails.User(user.getLogin(),
                                                                   user.getPassword(),
-//                                                                  enabled,
-//                                                                  accountNonExpired,
-//                                                                  credentialsNonExpired,
-//                                                                  accountNonLocked,
                                                                   grantedAuthorities);
   }
 }

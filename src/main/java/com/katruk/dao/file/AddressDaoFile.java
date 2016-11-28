@@ -15,12 +15,13 @@ public class AddressDaoFile extends BaseDaoFile implements AddressDao {
   protected File getJsonFile(String path) {
     return new File("src/main/resources/json/address.json");
   }
-
+  // TODO: this method is redundant (probably)
   @Override
   public Optional<Address> getAddressById(Long addressId) {
     return super.<Address>findOne(addressId);
   }
 
+  // TODO: this method is redundant (the same issue in other dao file classes)
   @Override
   public Address saveAndFlush(Address address) {
     return super.save(address);

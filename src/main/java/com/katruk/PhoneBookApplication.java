@@ -11,32 +11,10 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import java.util.Locale;
 
 @SpringBootApplication
-//@ComponentScan
-//@EnableJpaRepositories(basePackages = {"com.katruk.dao"})
 public class PhoneBookApplication {
 
   public static void main(String[] args) {
 //    Locale.setDefault(Locale.ENGLISH);
     SpringApplication.run(PhoneBookApplication.class, args);
   }
-
-//  @Bean
-//  public SessionLocaleResolver localeResolver() {
-//    SessionLocaleResolver slr = new SessionLocaleResolver();
-//    slr.setDefaultLocale(Locale.ENGLISH);
-//    return slr;
-//  }
-
-
-//  @Bean
-//  public LocaleChangeInterceptor localeChangeInterceptor() {
-//    LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
-//    lci.setParamName("lang");
-//    return lci;
-//  }
-
-//  @Override
-//  public void addInterceptors(InterceptorRegistry registry) {
-//    registry.addInterceptor(localeChangeInterceptor());
-//  }
 }

@@ -104,7 +104,6 @@ public class ContactServiceImpl implements ContactService {
 
   private Set<ContactDto> getContactDtoByUserLogin(String login) {
     User user = this.userService.getUserByLogin(login);
-    System.out.println(">>> getContactDtoByUserLogin user=" + user);
     Set<ContactDto> contactDtoSet = new HashSet<>();
     ContactDto contactDto;
     for (Contact contact : user.getContacts()) {
@@ -114,7 +113,6 @@ public class ContactServiceImpl implements ContactService {
     return contactDtoSet;
   }
 
-  //todo
   @Override
   public ContactDto getById(Long contactId) {
     Contact contact = this.contactDao.findOneById(contactId)
@@ -125,7 +123,6 @@ public class ContactServiceImpl implements ContactService {
 
   @Override
   public Contact addContact(ContactDto contactDto) {
-    System.out.println("begin addContact contactDto= " + contactDto);
     Contact contact = createContact(contactDto);
     return this.contactDao.saveAndFlush(contact);
   }
@@ -135,7 +132,6 @@ public class ContactServiceImpl implements ContactService {
     Contact contact = this.contactDao.findOneById(contactDto.getContactId())
         .orElseThrow(() -> new NoSuchElementException(
             String.format("Contact with id=%s not found", contactDto.getContactId())));
-    System.out.println(">>> contact to update " + contact);
     contact = updateContact(contact, contactDto);
     return this.contactDao.saveAndFlush(contact);
   }
@@ -147,7 +143,6 @@ public class ContactServiceImpl implements ContactService {
     person.setName(contactDto.getName());
     person.setPatronymic(contactDto.getPatronymic());
 
-    System.out.println("Before saving person =" + person);
     person = this.personService.save(person);
 
     Address address = new Address();
@@ -156,12 +151,9 @@ public class ContactServiceImpl implements ContactService {
     address.setBuilding(contactDto.getBuilding());
     address.setApartment(contactDto.getApartment());
 
-    System.out.println("Before saving address =" + address);
     address = this.addressService.save(address);
 
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String login = authentication.getName();
-    System.out.println(">>> createContact login =" + login);
+    String login = this.securityService.getLogin();
     User user = this.userService.getUserByLogin(login);
 
     contact.setPerson(person);
@@ -231,8 +223,6 @@ public class ContactServiceImpl implements ContactService {
 
   @Override
   public void deleteContact(Long contactId) {
-    System.out.println(">>> deleteContact contactId= " + contactId);
     this.contactDao.delete(contactId);
   }
-
 }

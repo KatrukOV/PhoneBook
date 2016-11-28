@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecurityServiceImpl implements SecurityService {
 
-
   private final AuthenticationManager authenticationManager;
   private final UserDetailsService userDetailsService;
 
@@ -24,21 +23,10 @@ public class SecurityServiceImpl implements SecurityService {
     this.authenticationManager = authenticationManager;
     this.userDetailsService = userDetailsService;
   }
-  //todo del???
-//  @Override
-//  public String findLogged() {
-//    Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
-//
-//    System.out.println(">>>>> findLogged userDetails = " + userDetails);
-//    if (userDetails instanceof UserDetails) {
-//      return ((UserDetails) userDetails).getUsername();
-//    }
-//    return null;
-//  }
 
   @Override
   public void autoLogin(String login, String password) {
-    System.out.println(">>>>> autoLogin login = " + login + " password= " + password);
+//    System.out.println(">>>>> autoLogin login = " + login + " password= " + password);
     UserDetails userDetails = this.userDetailsService.loadUserByUsername(login);
 
     UsernamePasswordAuthenticationToken authenticationToken =
@@ -46,6 +34,7 @@ public class SecurityServiceImpl implements SecurityService {
                                                 userDetails.getAuthorities());
     this.authenticationManager.authenticate(authenticationToken);
     System.out.println(">>>>> authenticationToken  = " + authenticationToken);
+
     if (authenticationToken.isAuthenticated()) {
       SecurityContextHolder.getContext().setAuthentication(authenticationToken);
       //todo logger    String.format("Successfully %s auto logged in", login)
@@ -56,5 +45,16 @@ public class SecurityServiceImpl implements SecurityService {
   public String getLogin() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     return authentication.getName();
+  }
+
+  @Override
+  public String findLogged() {
+    Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
+
+    System.out.println(">>>>> findLogged userDetails = " + userDetails);
+    if (userDetails instanceof UserDetails) {
+      return ((UserDetails) userDetails).getUsername();
+    }
+    return null;
   }
 }

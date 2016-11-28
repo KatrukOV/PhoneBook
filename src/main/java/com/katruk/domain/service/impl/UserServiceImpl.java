@@ -21,14 +21,12 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User getUserByLogin(String login) {
-    System.out.println(">>> getUserByLogin login = "+ login);
     return this.userDao.findOneByLogin(login).orElse(new User());
   }
 
   @Override
   public User createUser(UserDto userDto) {
     User newUser = new Converter().makeUserFromDto(userDto);
-    System.out.println(">>> createUser newUser = "+ newUser);
     return this.userDao.saveAndFlush(newUser);
   }
 }
