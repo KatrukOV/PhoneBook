@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ContactDao {
 
-  Optional<Contact> findOneById(Long contactId);
+  Optional<Contact> getContactById(Long contactId);
 
   Contact saveAndFlush(Contact contact);
 

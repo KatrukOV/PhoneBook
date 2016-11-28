@@ -18,7 +18,7 @@ public class ContactDaoFile extends BaseDaoFile implements ContactDao {
   }
 
   @Override
-  public Optional<Contact> findOneById(Long contactId) {
+  public Optional<Contact> getContactById(Long contactId) {
     return super.<Contact>findOne(contactId);
   }
 

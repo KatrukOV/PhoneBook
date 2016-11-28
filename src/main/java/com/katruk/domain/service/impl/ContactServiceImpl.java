@@ -16,11 +16,8 @@ import com.katruk.domain.service.UserService;
 import com.katruk.domain.util.Converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.text.Format;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -115,7 +112,7 @@ public class ContactServiceImpl implements ContactService {
 
   @Override
   public ContactDto getById(Long contactId) {
-    Contact contact = this.contactDao.findOneById(contactId)
+    Contact contact = this.contactDao.getContactById(contactId)
         .orElseThrow(() -> new NoSuchElementException(
             String.format("Contact with id=%s not found", contactId)));
     return new Converter().makeDtoFromContact(contact);
@@ -129,7 +126,7 @@ public class ContactServiceImpl implements ContactService {
 
   @Override
   public Contact editContact(ContactDto contactDto) {
-    Contact contact = this.contactDao.findOneById(contactDto.getContactId())
+    Contact contact = this.contactDao.getContactById(contactDto.getContactId())
         .orElseThrow(() -> new NoSuchElementException(
             String.format("Contact with id=%s not found", contactDto.getContactId())));
     contact = updateContact(contact, contactDto);
