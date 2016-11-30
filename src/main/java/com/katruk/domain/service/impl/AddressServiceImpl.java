@@ -23,12 +23,15 @@ public class AddressServiceImpl implements AddressService {
 
   @Override
   public Address save(Address address) {
+    System.out.println(">>> dao save address="+address);
     return this.addressDao.saveAndFlush(address);
   }
 
   @Override
   public Address getAddressById(Long addressId) {
+    System.out.println(">>> dao getAddressById id="+addressId);
     return this.addressDao.getAddressById(addressId).orElseThrow(() -> new NoSuchElementException(
         String.format("No address present with id: %s", addressId)));
+
   }
 }

@@ -40,9 +40,6 @@ public class UserValidatorTest {
     userDto.setLogin("Login");
     userDto.setPassword("Password");
     userDto.setConfirmPassword("Password");
-
-
-
   }
 
   @After
