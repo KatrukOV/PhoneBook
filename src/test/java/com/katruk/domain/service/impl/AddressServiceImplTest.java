@@ -88,7 +88,7 @@ public class AddressServiceImplTest {
 //        });
 
 
-//    when(addressDao.getAddressById(addressId)).thenReturn(Optional.ofNullable(address));
+    when(addressDao.getAddressById(addressId)).thenReturn(Optional.of(new Address()));
 
 //    when(addressDao.getAddressById(anyLong())).thenAnswer(new Answer<Address>() {
 //      @Override
@@ -106,15 +106,15 @@ public class AddressServiceImplTest {
 
 
 //    System.out.println(">>> address.getId()="+address.getId());
-    address = null;
+//    address = null;
 
-    assertNull(address);
+//    assertNull(address);
 
-    System.out.println(">>> address=" + address);
+//    System.out.println(">>> address=" + address);
 //    System.out.println(">>> addressService="+addressService);
 
 //    address.setId(addressId);
-    address = addressService.getAddressById(addressId);
+    Address address = addressService.getAddressById(addressId);
 
     System.out.println(">>> address 11=" + address);
 
