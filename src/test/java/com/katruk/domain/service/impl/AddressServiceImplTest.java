@@ -87,7 +87,6 @@ public class AddressServiceImplTest {
 //          }
 //        });
 
-
     when(addressDao.getAddressById(addressId)).thenReturn(Optional.of(new Address()));
 
 //    when(addressDao.getAddressById(anyLong())).thenAnswer(new Answer<Address>() {
