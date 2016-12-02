@@ -1,10 +1,13 @@
 package com.katruk.domain.service.impl;
 
 import com.katruk.domain.service.NotificationService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 @Service

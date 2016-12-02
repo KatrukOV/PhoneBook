@@ -5,11 +5,9 @@ import com.katruk.domain.entity.Person;
 import com.katruk.domain.service.PersonService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class PersonServiceImpl implements PersonService {

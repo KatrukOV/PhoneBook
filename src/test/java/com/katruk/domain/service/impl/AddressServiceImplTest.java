@@ -3,18 +3,20 @@ package com.katruk.domain.service.impl;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.katruk.dao.AddressDao;
+import com.katruk.domain.DefaultEntity;
 import com.katruk.domain.entity.Address;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -33,39 +35,43 @@ public class AddressServiceImplTest {
 
   @Before
   public void setUp() throws Exception {
-    addressDao = mock(AddressDao.class);
-//    MockitoAnnotations.initMocks(this);
 
-    addressService = new AddressServiceImpl(addressDao);
+    MockitoAnnotations.initMocks(this);
 
-    address = new Address();
-    address.setCity("City");
-    address.setStreet("Street");
-    address.setBuilding("12/4");
-    address.setApartment(15);
+    this.addressService = new AddressServiceImpl(addressDao);
+
+    this.address = new DefaultEntity().address();
+
   }
 
   @Test
-  public void save() throws Exception {
+  public void saveEasy() throws Exception {
 
-//    when(addressDao.saveAndFlush(any(Address.class))).thenAnswer(returnsFirstArg());
+    when(this.addressDao.saveAndFlush(any(Address.class))).thenAnswer(returnsFirstArg());
 
-    when(addressDao.saveAndFlush(any(Address.class)))
+    Address address = this.addressService.save(this.address);
+
+    assertNotNull(address);
+  }
+
+  @Test
+  public void save_and_check_by_id() throws Exception {
+
+    when(this.addressDao.saveAndFlush(any(Address.class)))
         .thenAnswer(new Answer<Address>() {
           @Override
           public Address answer(InvocationOnMock invocation) throws Throwable {
             Address address = invocation.getArgumentAt(0, Address.class);
-            address.setId(1L);
+            address.setId(2L);
             return address;
           }
         });
 
-    assertNull(address.getId());
+    assertTrue(this.address.getId() == 1L);
 
-    address = addressService.save(address);
+    Address address = this.addressService.save(this.address);
 
-    assertNotNull(address.getId());
-    assertTrue(address.getId() == 1L);
+    assertTrue(address.getId() == 2L);
   }
 
   @Test
@@ -87,7 +93,7 @@ public class AddressServiceImplTest {
 //          }
 //        });
 
-    when(addressDao.getAddressById(addressId)).thenReturn(Optional.of(new Address()));
+    when(this.addressDao.getAddressById(addressId)).thenReturn(Optional.of(new Address()));
 
 //    when(addressDao.getAddressById(anyLong())).thenAnswer(new Answer<Address>() {
 //      @Override
@@ -102,8 +108,6 @@ public class AddressServiceImplTest {
 //      }
 //    });
 
-
-
 //    System.out.println(">>> address.getId()="+address.getId());
 //    address = null;
 
@@ -113,9 +117,9 @@ public class AddressServiceImplTest {
 //    System.out.println(">>> addressService="+addressService);
 
 //    address.setId(addressId);
-    Address address = addressService.getAddressById(addressId);
+    Address address = this.addressService.getAddressById(addressId);
 
-    System.out.println(">>> address 11=" + address);
+//    System.out.println(">>> address 11=" + address);
 
     assertNotNull(address);
 

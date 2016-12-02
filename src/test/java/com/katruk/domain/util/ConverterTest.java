@@ -1,10 +1,8 @@
 package com.katruk.domain.util;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import com.katruk.domain.DefaultEntity;
 import com.katruk.domain.dto.ContactDto;
@@ -12,12 +10,8 @@ import com.katruk.domain.dto.UserDto;
 import com.katruk.domain.entity.Contact;
 import com.katruk.domain.entity.User;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,54 +26,45 @@ public class ConverterTest {
   @Before
   public void setUp() throws Exception {
 
-    converter = new Converter();
-
-    userDto = new DefaultEntity().userDto();
-
-//    userDto = new UserDto();
-//    userDto.setLastName("LastName");
-//    userDto.setName("Name");
-//    userDto.setPatronymic("Patronymic");
-//    userDto.setLogin("Login");
-//    userDto.setPassword("Password");
-//    userDto.setConfirmPassword("Password");
-
-    contact = new DefaultEntity().contact();
-
-//    contact.
-//        .lastName("LastName")
-//        .name("Name")
-//        .patronymic("Patronymic")
-//        .mobilePhone("+380(67)4445566")
-//        .homePhone("+380(44)4445566")
-//        .email("email@same.com")
-//        .city("City")
-//        .street("Street")
-//        .building("15/7")
-//        .apartment(16)
+    this.converter = new Converter();
+    this.userDto = new DefaultEntity().userDto();
+    this.contact = new DefaultEntity().contact();
 
   }
 
   @Test
   public void makeUserFromDto() throws Exception {
 
-//    when(converter.makeUserFromDto(userDto)).thenReturn(new User());
-
-    User user = converter.makeUserFromDto(userDto);
+    User user = this.converter.makeUserFromDto(this.userDto);
 
     assertNotNull(user);
-//    verify(converter, times(1)).makeUserFromDto(userDto);
+
+    assertEquals(this.userDto.getLastName(), user.getLastName());
+    assertEquals(this.userDto.getName(), user.getName());
+    assertEquals(this.userDto.getPatronymic(), user.getPatronymic());
+    assertEquals(this.userDto.getLogin(), user.getLogin());
+    assertNotEquals(this.userDto.getConfirmPassword(), user.getPassword());
+    // TODO:  assertEquals Password
+//    assertEquals(new BCryptPasswordEncoder().encode(userDto.getPassword()), user.getPassword());
+//    assertTrue(new BCryptPasswordEncoder().matches(userDto.getPassword(), user.getPassword()));
+//    assertFalse(new BCryptPasswordEncoder().matches(userDto.getPassword(), user.getPassword()));
   }
 
   @Test
   public void makeDtoFromContact() throws Exception {
 
-//    when(converter.makeDtoFromContact(contact)).thenReturn(mock(ContactDto.class));
-
-    ContactDto contactDto = converter.makeDtoFromContact(contact);
+    ContactDto contactDto = this.converter.makeDtoFromContact(this.contact);
 
     assertNotNull(contactDto);
-
-//    verify(converter, times(1)).makeDtoFromContact(contact);
+    assertEquals(this.contact.getPerson().getLastName(), contactDto.getLastName());
+    assertEquals(this.contact.getPerson().getName(), contactDto.getName());
+    assertEquals(this.contact.getPerson().getPatronymic(), contactDto.getPatronymic());
+    assertEquals(this.contact.getMobilePhone(), contactDto.getMobilePhone());
+    assertEquals(this.contact.getHomePhone(), contactDto.getHomePhone());
+    assertEquals(this.contact.getEmail(), contactDto.getEmail());
+    assertEquals(this.contact.getAddress().getCity(), contactDto.getCity());
+    assertEquals(this.contact.getAddress().getStreet(), contactDto.getStreet());
+    assertEquals(this.contact.getAddress().getBuilding(), contactDto.getBuilding());
+    assertEquals(this.contact.getAddress().getApartment(), contactDto.getApartment());
   }
 }

@@ -1,11 +1,15 @@
 package com.katruk.domain.service.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.katruk.dao.UserDao;
+import com.katruk.domain.DefaultEntity;
 import com.katruk.domain.dto.UserDto;
 import com.katruk.domain.entity.User;
 
@@ -13,10 +17,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import java.util.HashSet;
 import java.util.Optional;
 
 public class UserServiceImplTest {
@@ -28,53 +32,53 @@ public class UserServiceImplTest {
   private UserDao userDao;
   private UserDto userDto;
   private User user;
-  private Long userId;
-  private String login;
+
 
 
   @Before
   public void setUp() throws Exception {
-    userDao = mock(UserDao.class);
-//    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.initMocks(this);
 
-    userService = new UserServiceImpl(userDao);
+    this.userService = new UserServiceImpl(userDao);
+    this.userDto = new DefaultEntity().userDto();
+    this.user = new DefaultEntity().user();
 
-    userDto = new UserDto();
-    userDto.setLastName("LastName");
-    userDto.setName("Name");
-    userDto.setPatronymic("Patronymic");
-    userDto.setLogin("Login");
-    userDto.setPassword("Password");
+  }
+  @Test
+  public void createUserEasy() throws Exception {
 
-    user = new User();
+    when(this.userDao.saveAndFlush(any(User.class))).thenAnswer(returnsFirstArg());
+
+    User user = this.userService.createUser(this.userDto);
+
+    assertNotNull(user);
   }
 
-//  @Test
-//  public void createUser() throws Exception {
-//    userId = 1L;
-//
-//    when(userDao.saveAndFlush(any(User.class))).thenAnswer(new Answer<User>() {
-//      @Override
-//      public User answer(InvocationOnMock invocationOnMock) throws Throwable {
-//        User user = invocationOnMock.getArgumentAt(0, User.class);
-//        user.setId(userId);
-//        return null;
-//      }
-//    });
-//
-//    assertNull(user.getId());
-//
-//    user = userService.createUser(userDto);
-//
-//    assertNotNull(user.getId());
-//    assertEquals(user.getId(), userId);
-//  }
+
+  @Test
+  public void createUser_and_check_by_id() throws Exception {
+    Long userId = 2L;
+
+    when(this.userDao.saveAndFlush(any(User.class))).thenAnswer(new Answer<User>() {
+      @Override
+      public User answer(InvocationOnMock invocationOnMock) throws Throwable {
+        User user = invocationOnMock.getArgumentAt(0, User.class);
+        user.setId(userId);
+        return user;
+      }
+    });
+
+    User user = this.userService.createUser(this.userDto);
+
+    assertNotNull(user);
+    assertEquals(user.getId(), userId);
+  }
 
   @Test
   public void getUserByLogin() throws Exception {
-    login = "Login";
+    String login = "Login";
 
-    when(userDao.getUserByLogin(login)).thenReturn(Optional.of(new User()));
+    when(this.userDao.getUserByLogin(login)).thenReturn(Optional.of(new User()));
     User user = userService.getUserByLogin(login);
 
     assertNotNull(user);

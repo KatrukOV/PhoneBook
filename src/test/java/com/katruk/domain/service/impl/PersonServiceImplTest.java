@@ -1,12 +1,13 @@
 package com.katruk.domain.service.impl;
 
-import static org.junit.Assert.*;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.katruk.dao.PersonDao;
+import com.katruk.domain.DefaultEntity;
 import com.katruk.domain.entity.Person;
 
 import org.junit.Before;
@@ -17,7 +18,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import java.util.Objects;
 import java.util.Optional;
 
 public class PersonServiceImplTest {
@@ -29,26 +29,24 @@ public class PersonServiceImplTest {
   private PersonDao personDao;
 
   private Person person;
-  private Long personId;
 
   @Before
   public void setUp() throws Exception {
-//    personDao = mock(PersonDao.class);
+
     MockitoAnnotations.initMocks(this);
 
-    personService = new PersonServiceImpl(personDao);
+    this.personService = new PersonServiceImpl(this.personDao);
 
-    person = new Person();
-    person.setLastName("LastName");
-    person.setName("Name");
-    person.setPatronymic("Patronymic");
+    this.person = new DefaultEntity().person();
+
   }
 
   @Test
   public void save() throws Exception {
 
-    personId = 1L;
-    when(personDao.saveAndFlush(any(Person.class))).thenAnswer(new Answer<Person>() {
+    Long personId = 3L;
+
+    when(this.personDao.saveAndFlush(any(Person.class))).thenAnswer(new Answer<Person>() {
       @Override
       public Person answer(InvocationOnMock invocationOnMock) throws Throwable {
         Person person = invocationOnMock.getArgumentAt(0, Person.class);
@@ -57,21 +55,19 @@ public class PersonServiceImplTest {
       }
     });
 
-    assertNull(person.getId());
+    Person person = this.personService.save(this.person);
 
-    person = personService.save(person);
-
-    assertNotNull(person.getId());
+    assertNotNull(person);
     assertEquals(person.getId(), personId);
   }
 
   @Test
   public void getPersonById() throws Exception {
-    personId = 2L;
+    Long personId = 2L;
 
-    when(personDao.getPersonById(personId)).thenReturn(Optional.of(new Person()));
+    when(this.personDao.getPersonById(personId)).thenReturn(Optional.of(new Person()));
 
-    Person person = personService.getPersonById(personId);
+    Person person = this.personService.getPersonById(personId);
 
     assertNotNull(person);
   }

@@ -2,7 +2,6 @@ package com.katruk.controller;
 
 import static java.util.Objects.nonNull;
 
-import com.katruk.domain.dto.LoginDto;
 import com.katruk.domain.dto.UserDto;
 import com.katruk.domain.service.NotificationService;
 import com.katruk.domain.service.SecurityService;
@@ -15,8 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.validation.Valid;
 
 @Controller
 public class UserController {

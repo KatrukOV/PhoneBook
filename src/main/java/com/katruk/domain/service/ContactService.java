@@ -4,7 +4,6 @@ import com.katruk.domain.dto.ContactDto;
 import com.katruk.domain.entity.Contact;
 
 import java.util.Set;
-import java.util.regex.Pattern;
 
 public interface ContactService {
 

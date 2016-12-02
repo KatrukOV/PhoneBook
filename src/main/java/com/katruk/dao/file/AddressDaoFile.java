@@ -3,8 +3,6 @@ package com.katruk.dao.file;
 import com.katruk.dao.AddressDao;
 import com.katruk.domain.entity.Address;
 
-import org.springframework.stereotype.Repository;
-
 import java.io.File;
 import java.util.Optional;
 

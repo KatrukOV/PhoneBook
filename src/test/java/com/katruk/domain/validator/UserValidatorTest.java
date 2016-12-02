@@ -1,26 +1,15 @@
 package com.katruk.domain.validator;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import com.katruk.domain.dto.UserDto;
 import com.katruk.domain.service.UserService;
 
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.validation.Errors;
 
-//@RunWith(MockitoJUnitRunner.class)
 public class UserValidatorTest {
 
   @InjectMocks

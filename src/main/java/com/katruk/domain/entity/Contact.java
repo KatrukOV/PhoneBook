@@ -1,7 +1,5 @@
 package com.katruk.domain.entity;
 
-import org.hibernate.validator.constraints.Email;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;

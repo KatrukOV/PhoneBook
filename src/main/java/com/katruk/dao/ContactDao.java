@@ -2,7 +2,6 @@ package com.katruk.dao;
 
 import com.katruk.domain.entity.Contact;
 
-import java.util.Collection;
 import java.util.Optional;
 
 public interface ContactDao {

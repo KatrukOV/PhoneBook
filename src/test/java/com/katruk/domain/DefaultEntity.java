@@ -7,6 +7,9 @@ import com.katruk.domain.entity.Contact;
 import com.katruk.domain.entity.Person;
 import com.katruk.domain.entity.User;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class DefaultEntity {
 
   private Address address;
@@ -43,6 +46,9 @@ public class DefaultEntity {
     user.setPatronymic("Patronymic");
     user.setLogin("Login");
     user.setPassword("Password");
+    Set<Contact> contactSet = new HashSet<>();
+    contactSet.add(contact());
+    user.setContacts(contactSet);
     return user;
   }
 
@@ -65,7 +71,7 @@ public class DefaultEntity {
     contact.setHomePhone("+380(44)4445566");
     contact.setEmail("email@same.com");
     contact.setAddress(address());
-    contact.setUser(user());
+    contact.setUser(new User());
     return contact;
   }
 
