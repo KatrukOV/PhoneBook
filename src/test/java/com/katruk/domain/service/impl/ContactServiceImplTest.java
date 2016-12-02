@@ -3,6 +3,8 @@ package com.katruk.domain.service.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 import com.katruk.dao.ContactDao;
@@ -45,14 +47,13 @@ public class ContactServiceImplTest {
   private Contact contact;
   private User user;
 
-
   @Before
   public void setUp() throws Exception {
 
     MockitoAnnotations.initMocks(this);
 
     this.contactService = new ContactServiceImpl(securityService, contactDao, personService,
-                                            addressService, userService);
+                                                 addressService, userService);
     this.contactDto = new DefaultEntity().contactDto();
     this.user = new DefaultEntity().user();
   }
@@ -65,14 +66,10 @@ public class ContactServiceImplTest {
     Set<ContactDto> allContact = this.contactService.getAllContact();
 
     assertNotNull(allContact);
-
   }
-
-
 
   @Test
   public void getContactByLastName() throws Exception {
-
     String lastName = "LastName";
     whenGetUserWithMock();
 
@@ -85,7 +82,6 @@ public class ContactServiceImplTest {
 
   @Test
   public void getContactByName() throws Exception {
-
     String name = "Name";
     whenGetUserWithMock();
 
@@ -116,7 +112,6 @@ public class ContactServiceImplTest {
   @Test
   public void getById() throws Exception {
     Long contactId = 2L;
-
     when(this.contactDao.getContactById(contactId)).thenReturn(Optional.of(new Contact()));
 
     ContactDto contactDto = this.contactService.getById(contactId);
@@ -126,12 +121,22 @@ public class ContactServiceImplTest {
 
   @Test
   public void addContact() throws Exception {
+    when(this.contactDao.saveAndFlush(any(Contact.class))).thenAnswer(returnsFirstArg());
 
+    Contact contact = this.contactService.addContact(this.contactDto);
+
+    assertNotNull(contact);
   }
 
   @Test
   public void editContact() throws Exception {
+    when(this.contactDao.getContactById(this.contactDto.getContactId()))
+        .thenReturn(Optional.ofNullable(this.contact));
+    when(this.contactDao.saveAndFlush(any(Contact.class))).thenAnswer(returnsFirstArg());
 
+    Contact contact = this.contactService.addContact(this.contactDto);
+
+    assertNotNull(contact);
   }
 
   @Test

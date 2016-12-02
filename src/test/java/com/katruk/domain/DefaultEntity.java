@@ -77,6 +77,7 @@ public class DefaultEntity {
 
   public ContactDto contactDto() {
     contactDto = new ContactDto.Builder()
+        .contactId(1L)
         .lastName("LastName")
         .name("Name")
         .patronymic("Patronymic")

@@ -129,6 +129,7 @@ public class ContactServiceImpl implements ContactService {
     Contact contact = this.contactDao.getContactById(contactDto.getContactId())
         .orElseThrow(() -> new NoSuchElementException(
             String.format("Contact with id=%s not found", contactDto.getContactId())));
+
     contact = updateContact(contact, contactDto);
     return this.contactDao.saveAndFlush(contact);
   }
