@@ -15,7 +15,7 @@ public class ContactValidator implements Validator {
   private final Pattern PHONE_PATTERN = Pattern.compile(
       "^\\+380\\(\\d{2}\\)\\d{3}-{0,1}\\d{2}-{0,1}\\d{2}$");
   private final Pattern EMAIL_PATTERN = Pattern.compile(
-      "^([A-Za-z0-9_-]+\\.)*[A-Za-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$");
+      "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$");
 
   @Override
   public boolean supports(Class<?> clazz) {

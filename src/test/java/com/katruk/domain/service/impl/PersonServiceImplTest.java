@@ -3,7 +3,9 @@ package com.katruk.domain.service.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.katruk.dao.PersonDao;
@@ -18,6 +20,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class PersonServiceImplTest {
@@ -70,6 +73,19 @@ public class PersonServiceImplTest {
     Person person = this.personService.getPersonById(personId);
 
     assertNotNull(person);
+  }
+
+  @Test(expected = NoSuchElementException.class)
+  public void getPersonById_get_null() throws Exception {
+    Long personId = 2L;
+
+    when(this.personDao.getPersonById(personId)).thenThrow(new NoSuchElementException());
+
+    Person person = this.personService.getPersonById(personId);
+
+    verify(this.personService.getPersonById(personId));
+    assertNull(person);
+    fail();
   }
 
 }

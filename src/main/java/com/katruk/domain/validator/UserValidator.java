@@ -18,8 +18,8 @@ import java.util.regex.Pattern;
 @Component
 public class UserValidator implements Validator {
 
-  private final Pattern LOGIN_PATTERN = Pattern.compile("[A-Za-z]");
-  private final Pattern PASSWORD_PATTERN = Pattern.compile("[A-Za-z0-9]");
+  private final Pattern LOGIN_PATTERN = Pattern.compile("[A-Za-z]+");
+  private final Pattern PASSWORD_PATTERN = Pattern.compile("[A-Za-z0-9]+");
 
   private final UserService userService;
 
@@ -35,13 +35,14 @@ public class UserValidator implements Validator {
 
   @Override
   public void validate(Object target, Errors errors) {
+    // TODO: 03.12.2016 if userDto, throw
     UserDto userDto = (UserDto) target;
 
     requiredField(errors);
-    validateUserNames(errors, userDto);
-    validateLogin(errors, userDto);
-    validatePassword(errors, userDto);
-    existsUser(errors, userDto);
+    validateUserNames(userDto, errors);
+    validateLogin(userDto, errors);
+    validatePassword(userDto, errors);
+    existsUser(userDto, errors);
   }
 
   private void requiredField(Errors errors) {
@@ -53,7 +54,7 @@ public class UserValidator implements Validator {
     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmPassword", "REQUIRED");
   }
 
-  private void validateUserNames(Errors errors, UserDto userDto) {
+  private void validateUserNames(UserDto userDto, Errors errors) {
     if (userDto.getLastName().length() < 4 || userDto.getLastName().length() > 30) {
       errors.rejectValue("lastName", "INCORRECT_SIZE_LAST_NAME");
     }
@@ -65,20 +66,20 @@ public class UserValidator implements Validator {
     }
   }
 
-  private void validateLogin(Errors errors, UserDto userDto) {
-    if (userDto.getLogin().length() < 3 || userDto.getLastName().length() > 30) {
+  private void validateLogin(UserDto userDto, Errors errors) {
+    if (userDto.getLogin().length() < 3 || userDto.getLogin().length() > 30) {
       errors.rejectValue("login", "INCORRECT_SIZE_LOGIN");
     }
-    if (LOGIN_PATTERN.matcher(userDto.getLogin()).matches()) {
+    if (!LOGIN_PATTERN.matcher(userDto.getLogin()).matches()) {
       errors.rejectValue("login", "LOGIN_NOT_ENGLISH");
     }
   }
 
-  private void validatePassword(Errors errors, UserDto userDto) {
+  private void validatePassword(UserDto userDto, Errors errors) {
     if (userDto.getPassword().length() < 5) {
       errors.rejectValue("password", "INCORRECT_SIZE_PASSWORD");
     }
-    if (PASSWORD_PATTERN.matcher(userDto.getPassword()).matches()) {
+    if (!PASSWORD_PATTERN.matcher(userDto.getPassword()).matches()) {
       errors.rejectValue("password", "PASSWORD_NOT_ENGLISH");
     }
     if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
@@ -86,7 +87,7 @@ public class UserValidator implements Validator {
     }
   }
 
-  private void existsUser(Errors errors, UserDto userDto) {
+  private void existsUser(UserDto userDto, Errors errors) {
     User user = this.userService.getUserByLogin(userDto.getLogin());
     if (nonNull(user.getLogin())) {
       errors.rejectValue("login", "USER_EXISTS");

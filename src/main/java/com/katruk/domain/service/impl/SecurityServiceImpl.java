@@ -26,14 +26,14 @@ public class SecurityServiceImpl implements SecurityService {
 
   @Override
   public void autoLogin(String login, String password) {
-//    System.out.println(">>>>> autoLogin login = " + login + " password= " + password);
+
     UserDetails userDetails = this.userDetailsService.loadUserByUsername(login);
 
+    System.out.println("userDetails="+userDetails);
     UsernamePasswordAuthenticationToken authenticationToken =
         new UsernamePasswordAuthenticationToken(userDetails, password,
                                                 userDetails.getAuthorities());
     this.authenticationManager.authenticate(authenticationToken);
-    System.out.println(">>>>> authenticationToken  = " + authenticationToken);
 
     if (authenticationToken.isAuthenticated()) {
       SecurityContextHolder.getContext().setAuthentication(authenticationToken);
@@ -45,16 +45,5 @@ public class SecurityServiceImpl implements SecurityService {
   public String getLogin() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     return authentication.getName();
-  }
-
-  @Override
-  public String findLogged() {
-    Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
-
-    System.out.println(">>>>> findLogged userDetails = " + userDetails);
-    if (userDetails instanceof UserDetails) {
-      return ((UserDetails) userDetails).getUsername();
-    }
-    return null;
   }
 }

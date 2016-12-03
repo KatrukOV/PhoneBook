@@ -5,6 +5,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.katruk.dao.ContactDao;
@@ -141,7 +146,11 @@ public class ContactServiceImplTest {
 
   @Test
   public void deleteContact() throws Exception {
+    doNothing().when(contactDao).delete(anyLong());
 
+    this.contactService.deleteContact(anyLong());
+
+    verify(contactDao, times(1)).delete(anyLong());
   }
 
   private void whenGetUserWithMock() {
