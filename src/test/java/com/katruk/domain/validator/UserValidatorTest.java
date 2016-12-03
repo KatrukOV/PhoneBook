@@ -49,8 +49,6 @@ public class UserValidatorTest {
 
   @Test
   public void supports() throws Exception {
-    //given
-
     //when
     boolean result = this.userValidator.supports(userDto.getClass());
 
@@ -60,8 +58,6 @@ public class UserValidatorTest {
 
   @Test
   public void validate_good_user_without_error() throws Exception {
-    //given
-
     //when
     when(userService.getUserByLogin(anyString())).thenReturn(mock(User.class));
     this.userValidator.validate(userDto, errors);

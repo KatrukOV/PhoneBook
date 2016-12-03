@@ -43,29 +43,6 @@ public class UserController {
     return "login";
   }
 
-//  @RequestMapping(value = "/login", method = RequestMethod.POST)
-//  public String login(@Valid LoginDto loginDto, BindingResult bindingResult,
-//                      Model model, String error, String logout) {
-//    if (nonNull(error)) {
-//      model.addAttribute("error", "ERROR_VALUE");
-//    }
-//    if (nonNull(logout)) {
-//      model.addAttribute("logout", "LOGOUT_VALUE");
-//    }
-//
-//    if (bindingResult.hasErrors()) {
-//      notifyService.addErrorMessage("Please fill the form correctly!");
-//    }
-//
-//    if (this.securityService.autoLogin(loginDto.getLogin(), loginDto.getPassword())) {
-//      notifyService.addErrorMessage("Invalid login or password!");
-////      return "redirect:/";
-//    }
-//    notifyService.addInfoMessage("Login successful");
-//    return "login";
-//  }
-
-
   @RequestMapping(value = "/registration", method = RequestMethod.GET)
   public String registration(UserDto userDto, Model model) {
     return "registration";

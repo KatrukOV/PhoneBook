@@ -11,7 +11,13 @@ import com.katruk.domain.entity.Contact;
 import com.katruk.domain.entity.User;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,26 +25,27 @@ public class ConverterTest {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ConverterTest.class);
 
-  private Converter converter;
+  @Spy
   private UserDto userDto;
+  @Spy
   private Contact contact;
+
+  private Converter converter;
 
   @Before
   public void setUp() throws Exception {
-
     this.converter = new Converter();
     this.userDto = new DefaultEntity().userDto();
     this.contact = new DefaultEntity().contact();
-
   }
 
   @Test
   public void makeUserFromDto() throws Exception {
-
+    //when
     User user = this.converter.makeUserFromDto(this.userDto);
 
+    //then
     assertNotNull(user);
-
     assertEquals(this.userDto.getLastName(), user.getLastName());
     assertEquals(this.userDto.getName(), user.getName());
     assertEquals(this.userDto.getPatronymic(), user.getPatronymic());
@@ -52,9 +59,10 @@ public class ConverterTest {
 
   @Test
   public void makeDtoFromContact() throws Exception {
-
+    //when
     ContactDto contactDto = this.converter.makeDtoFromContact(this.contact);
 
+    //then
     assertNotNull(contactDto);
     assertEquals(this.contact.getPerson().getLastName(), contactDto.getLastName());
     assertEquals(this.contact.getPerson().getName(), contactDto.getName());

@@ -13,10 +13,16 @@ import com.katruk.domain.entity.User;
 import com.katruk.domain.service.SecurityService;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,53 +30,50 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+@RunWith(JUnit4.class)
 public class SecurityServiceImplTest {
 
-  @InjectMocks
-  private SecurityService securityService;
-
+  @Rule
+  public MockitoRule rule = MockitoJUnit.rule();
   @Mock
   private AuthenticationManager authenticationManager;
   @Mock
   private UserDetailsService userDetailsService;
+  private SecurityService securityService;
 
   @Before
   public void setUp() throws Exception {
-    // TODO: 03.12.2016   initMocks
-//    MockitoAnnotations.initMocks(this);
-    authenticationManager = mock(AuthenticationManager.class);
-    userDetailsService = mock(UserDetailsService.class);
-
     this.securityService = new SecurityServiceImpl(authenticationManager, userDetailsService);
   }
 
   @Test
   public void autoLogin() throws Exception {
+    //given
     String login = "Login";
     String password = "Password";
+
+    //when
     when(this.userDetailsService.loadUserByUsername(login)).thenReturn(mock(UserDetails.class));
     when(this.authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
         .thenReturn(mock(Authentication.class));
-
     this.securityService.autoLogin(login, password);
 
+    //then
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     assertNotNull(authentication);
   }
 
   @Test
-  public void getLogin_null() throws Exception {
-    Authentication authenticationBefore = SecurityContextHolder.getContext().getAuthentication();
+  public void getLogin() throws Exception {
+    //given
+    String login = "Login";
 
-    assertNull(authenticationBefore);
+    //when
+    when(this.securityService.getLogin()).thenReturn(login);
+    String result = this.securityService.getLogin();
+
+    //then
+    assertNotNull(result);
+    assertEquals(login, result);
   }
-
-  @Test
-  public void getLogin_not_null() throws Exception {
-    SecurityContextHolder.getContext().setAuthentication(mock(Authentication.class));
-    Authentication authenticationAfter = SecurityContextHolder.getContext().getAuthentication();
-
-    assertNotNull(authenticationAfter);
-  }
-
 }
