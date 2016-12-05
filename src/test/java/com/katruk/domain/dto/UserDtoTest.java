@@ -1,7 +1,9 @@
 package com.katruk.domain.dto;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+
 import com.katruk.domain.DefaultEntity;
+
 import org.junit.Test;
 
 

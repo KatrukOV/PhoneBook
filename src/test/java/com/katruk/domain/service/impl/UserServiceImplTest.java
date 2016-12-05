@@ -2,10 +2,9 @@ package com.katruk.domain.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 import com.katruk.dao.UserDao;
@@ -19,15 +18,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.mockito.stubbing.Answer;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RunWith(JUnit4.class)
@@ -91,5 +89,12 @@ public class UserServiceImplTest {
 
     //then
     assertNotNull(user);
+  }
+
+  @Test(expected = NoSuchElementException.class)
+  public void getUserByLogin_then_return_optional_empty() throws Exception {
+    //when
+    when(this.userDao.getUserByLogin(anyString())).thenReturn(Optional.empty());
+    this.userService.getUserByLogin(anyString());
   }
 }

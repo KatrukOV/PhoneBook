@@ -87,29 +87,6 @@ public class ContactServiceImpl implements ContactService {
     return contactDtoSet;
   }
 
-  private boolean containsNumber(String phone, ContactDto contact) {
-    String mobilePhone = contact.getMobilePhone();
-    mobilePhone = mobilePhone.replaceAll("-", "").trim();
-
-    String homePhone = contact.getHomePhone();
-    homePhone = homePhone.replaceAll("-", "").trim();
-
-    phone = phone.replaceAll("-", "").trim();
-    return mobilePhone.contains(phone) || homePhone.contains(phone);
-  }
-
-
-  private Set<ContactDto> getContactDtoByUserLogin(String login) {
-    User user = this.userService.getUserByLogin(login);
-    Set<ContactDto> contactDtoSet = new HashSet<>();
-    ContactDto contactDto;
-    for (Contact contact : user.getContacts()) {
-      contactDto = new Converter().makeDtoFromContact(contact);
-      contactDtoSet.add(contactDto);
-    }
-    return contactDtoSet;
-  }
-
   @Override
   public ContactDto getById(Long contactId) {
     Contact contact = this.contactDao.getContactById(contactId)
@@ -134,21 +111,40 @@ public class ContactServiceImpl implements ContactService {
     return this.contactDao.saveAndFlush(contact);
   }
 
+  @Override
+  public void deleteContact(Long contactId) {
+    this.contactDao.delete(contactId);
+  }
+
+  private boolean containsNumber(String phone, ContactDto contact) {
+    String mobilePhone = contact.getMobilePhone();
+    mobilePhone = mobilePhone.replaceAll("-", "").trim();
+
+    String homePhone = contact.getHomePhone();
+    homePhone = homePhone.replaceAll("-", "").trim();
+
+    phone = phone.replaceAll("-", "").trim();
+    return mobilePhone.contains(phone) || homePhone.contains(phone);
+  }
+
+  private Set<ContactDto> getContactDtoByUserLogin(String login) {
+    User user = this.userService.getUserByLogin(login);
+    Set<ContactDto> contactDtoSet = new HashSet<>();
+    ContactDto contactDto;
+    for (Contact contact : user.getContacts()) {
+      contactDto = new Converter().makeDtoFromContact(contact);
+      contactDtoSet.add(contactDto);
+    }
+    return contactDtoSet;
+  }
+
   private Contact createContact(ContactDto contactDto) {
     Contact contact = new Contact();
-    Person person = new Person();
-    person.setLastName(contactDto.getLastName());
-    person.setName(contactDto.getName());
-    person.setPatronymic(contactDto.getPatronymic());
 
+    Person person = createPerson(contactDto);
     person = this.personService.save(person);
 
-    Address address = new Address();
-    address.setCity(contactDto.getCity());
-    address.setStreet(contactDto.getStreet());
-    address.setBuilding(contactDto.getBuilding());
-    address.setApartment(contactDto.getApartment());
-
+    Address address = createAddress(contactDto);
     address = this.addressService.save(address);
 
     String login = this.securityService.getLogin();
@@ -160,7 +156,25 @@ public class ContactServiceImpl implements ContactService {
     contact.setMobilePhone(contactDto.getMobilePhone());
     contact.setHomePhone(contactDto.getHomePhone());
     contact.setEmail(contactDto.getEmail());
-    return contact;
+
+    return this.contactDao.saveAndFlush(contact);
+  }
+
+  private Address createAddress(ContactDto contactDto) {
+    Address address = new Address();
+    address.setCity(contactDto.getCity());
+    address.setStreet(contactDto.getStreet());
+    address.setBuilding(contactDto.getBuilding());
+    address.setApartment(contactDto.getApartment());
+    return address;
+  }
+
+  private Person createPerson(ContactDto contactDto) {
+    Person person = new Person();
+    person.setLastName(contactDto.getLastName());
+    person.setName(contactDto.getName());
+    person.setPatronymic(contactDto.getPatronymic());
+    return person;
   }
 
   private Contact updateContact(Contact contact, ContactDto contactDto) {
@@ -217,10 +231,5 @@ public class ContactServiceImpl implements ContactService {
       address.setApartment(contactDto.getApartment());
     }
     return this.addressService.save(address);
-  }
-
-  @Override
-  public void deleteContact(Long contactId) {
-    this.contactDao.delete(contactId);
   }
 }

@@ -5,7 +5,8 @@ import com.katruk.domain.entity.User;
 
 public interface UserService {
 
+  User createUser(UserDto userDto);
+
   User getUserByLogin(String login);
 
-  User createUser(UserDto userDto);
 }
