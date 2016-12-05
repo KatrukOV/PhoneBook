@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface ContactService {
 
-  ContactDto getById(Long contactId);
+  ContactDto getContactById(Long contactId);
 
   Contact addContact(ContactDto contactDto);
 

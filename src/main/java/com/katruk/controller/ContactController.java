@@ -55,7 +55,7 @@ public class ContactController {
   @RequestMapping(value = "/contacts/edit", method = RequestMethod.GET)
   public String edit(@RequestParam Long contactId, ContactDto contactDto,
                      BindingResult bindingResult, Model model) {
-    contactDto = this.contactService.getById(contactId);
+    contactDto = this.contactService.getContactById(contactId);
     model.addAttribute("contact", contactDto);
     return "edit";
   }

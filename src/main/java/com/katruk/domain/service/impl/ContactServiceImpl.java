@@ -88,7 +88,7 @@ public class ContactServiceImpl implements ContactService {
   }
 
   @Override
-  public ContactDto getById(Long contactId) {
+  public ContactDto getContactById(Long contactId) {
     Contact contact = this.contactDao.getContactById(contactId)
         .orElseThrow(() -> new NoSuchElementException(
             String.format("Contact with id=%s not found", contactId)));
@@ -153,27 +153,27 @@ public class ContactServiceImpl implements ContactService {
     contact.setPerson(person);
     contact.setAddress(address);
     contact.setUser(user);
-    contact.setMobilePhone(contactDto.getMobilePhone());
-    contact.setHomePhone(contactDto.getHomePhone());
-    contact.setEmail(contactDto.getEmail());
+    contact.setMobilePhone(contactDto.getMobilePhone().trim());
+    contact.setHomePhone(contactDto.getHomePhone().trim());
+    contact.setEmail(contactDto.getEmail().trim());
 
     return this.contactDao.saveAndFlush(contact);
   }
 
   private Address createAddress(ContactDto contactDto) {
     Address address = new Address();
-    address.setCity(contactDto.getCity());
-    address.setStreet(contactDto.getStreet());
-    address.setBuilding(contactDto.getBuilding());
+    address.setCity(contactDto.getCity().trim());
+    address.setStreet(contactDto.getStreet().trim());
+    address.setBuilding(contactDto.getBuilding().trim());
     address.setApartment(contactDto.getApartment());
     return address;
   }
 
   private Person createPerson(ContactDto contactDto) {
     Person person = new Person();
-    person.setLastName(contactDto.getLastName());
-    person.setName(contactDto.getName());
-    person.setPatronymic(contactDto.getPatronymic());
+    person.setLastName(contactDto.getLastName().trim());
+    person.setName(contactDto.getName().trim());
+    person.setPatronymic(contactDto.getPatronymic().trim());
     return person;
   }
 
@@ -200,14 +200,14 @@ public class ContactServiceImpl implements ContactService {
   }
 
   private Person updatePerson(Person person, ContactDto contactDto) {
-    if (!contactDto.getLastName().equals(person.getLastName())) {
-      person.setLastName(contactDto.getLastName());
+    if (!(contactDto.getLastName().trim()).equals(person.getLastName())) {
+      person.setLastName(contactDto.getLastName().trim());
     }
-    if (!contactDto.getName().equals(person.getName())) {
-      person.setName(contactDto.getName());
+    if (!(contactDto.getName().trim()).equals(person.getName())) {
+      person.setName(contactDto.getName().trim());
     }
-    if (!contactDto.getPatronymic().equals(person.getPatronymic())) {
-      person.setPatronymic(contactDto.getPatronymic());
+    if (!(contactDto.getPatronymic().trim()).equals(person.getPatronymic())) {
+      person.setPatronymic(contactDto.getPatronymic().trim());
     }
     return this.personService.save(person);
   }
@@ -216,15 +216,16 @@ public class ContactServiceImpl implements ContactService {
     if (isNull(address)) {
       address = new Address();
     }
-    if (contactDto.getCity() != null && !contactDto.getCity().equals(address.getCity())) {
-      address.setCity(contactDto.getCity());
+    if (contactDto.getCity() != null && !(contactDto.getCity().trim()).equals(address.getCity())) {
+      address.setCity(contactDto.getCity().trim());
     }
-    if (contactDto.getStreet() != null && !contactDto.getStreet().equals(address.getStreet())) {
-      address.setStreet(contactDto.getStreet());
+    if (contactDto.getStreet() != null && !(contactDto.getStreet().trim())
+        .equals(address.getStreet())) {
+      address.setStreet(contactDto.getStreet().trim());
     }
     if (contactDto.getBuilding() != null &&
-        !contactDto.getBuilding().equals(address.getBuilding())) {
-      address.setBuilding(contactDto.getBuilding());
+        !(contactDto.getBuilding().trim()).equals(address.getBuilding())) {
+      address.setBuilding(contactDto.getBuilding().trim());
     }
     if (contactDto.getApartment() != null &&
         !contactDto.getApartment().equals(address.getApartment())) {

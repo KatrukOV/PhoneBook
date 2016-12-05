@@ -1,6 +1,7 @@
 package com.katruk.domain.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -34,6 +35,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -110,55 +112,103 @@ public class ContactServiceImplTest {
   }
 
   @Test
-  public void getContactByPhone_mobile() throws Exception {
+  public void getContactByPhone() throws Exception {
     //given
-    String mPhone = "+380(67)4445566";
-//    String hPhone = "+380(44)444-55-66";
+    String phone = "+380(67)4445566";
 
     //when
     whenGetUserByLogin();
-    Set<ContactDto> contactByPhone = this.contactService.getContactByPhone(mPhone);
-    Set<String> result = new HashSet<>();
-    String mobilePhone = contactByPhone.iterator().next().getMobilePhone();
-    String homePhone = contactByPhone.iterator().next().getHomePhone();
-    result.add(mobilePhone);
-    result.add(homePhone);
+    Set<ContactDto> contactByPhone = this.contactService.getContactByPhone(phone);
 
     //then
     assertNotNull(contactByPhone);
+  }
+
+  @Test
+  public void getContactByPhone_mobile() throws Exception {
+    //given
+    String mPhone = "+380(67)4445566";
+
+    //when
+    whenGetUserByLogin();
+    Set<String> result = getPhones(mPhone);
+
+    //then
     assertTrue(result.contains(mPhone));
   }
 
-//  @Test
-//  public void getContactByPhone_home() throws Exception {
-//    //given
-//    String phone = "+380(44)444-55-66";
-//
-//    //when
-//    whenGetUserByLogin();
-//    Set<ContactDto> contactByPhone = this.contactService.getContactByPhone(phone);
-//    Set<String> result = new HashSet<>();
-//    String mobilePhone = contactByPhone.iterator().next().getMobilePhone();
-//    String homePhone = contactByPhone.iterator().next().getHomePhone();
-//    result.add(mobilePhone);
-//    result.add(homePhone);
-//
-//    //then
-//    assertNotNull(contactByPhone);
-//    assertTrue(result.contains(phone));
-//  }
+  @Test
+  public void getContactByPhone_home() throws Exception {
+    //given
+    String hPhone = "+380(44)4445566";
+
+    //when
+    whenGetUserByLogin();
+    Set<String> result = getPhones(hPhone);
+
+    //then
+    assertTrue(result.contains(hPhone));
+  }
 
   @Test
-  public void getById() throws Exception {
+  public void getContactByPhone_not_exist() throws Exception {
+    //given
+    String notExistPhone = "+380(77)7777777";
+
+    //when
+    whenGetUserByLogin();
+    Set<ContactDto> contactByPhone = this.contactService.getContactByPhone(notExistPhone);
+
+    //then
+    assertTrue(contactByPhone.isEmpty());
+  }
+
+  @Test
+  public void getContactByPhone_with_space() throws Exception {
+    //given
+    String phoneWithSpace = "         +380(67)4445566           ";
+    String phoneWithoutSpace = "+380(67)4445566";
+
+    //when
+    whenGetUserByLogin();
+    Set<String> result = getPhones(phoneWithSpace);
+
+    //then
+    assertTrue(result.contains(phoneWithoutSpace));
+  }
+
+  @Test
+  public void getContactByPhone_with_hyphen() throws Exception {
+    //given
+    String phoneWithHyphen = "+380(67)444-55-66";
+    String phoneWithoutHyphen = "+380(67)4445566";
+
+    //when
+    whenGetUserByLogin();
+    Set<String> result = getPhones(phoneWithHyphen);
+
+    //then
+    assertTrue(result.contains(phoneWithoutHyphen));
+  }
+
+  @Test
+  public void getContactById() throws Exception {
     //given
     Long contactId = 2L;
 
     //when
     when(this.contactDao.getContactById(contactId)).thenReturn(Optional.of(new Contact()));
-    ContactDto contactDto = this.contactService.getById(contactId);
+    ContactDto contactDto = this.contactService.getContactById(contactId);
 
     //then
     assertNotNull(contactDto);
+  }
+
+  @Test(expected = NoSuchElementException.class)
+  public void getContactById_then_return_optional_empty() throws Exception {
+    //when
+    when(this.contactDao.getContactById(anyLong())).thenReturn(Optional.empty());
+    this.contactService.getContactById(anyLong());
   }
 
   @Test
@@ -187,6 +237,13 @@ public class ContactServiceImplTest {
     assertNotNull(contact);
   }
 
+  @Test(expected = NoSuchElementException.class)
+  public void editContact_then_return_optional_empty() throws Exception {
+    //when
+    when(this.contactDao.getContactById(anyLong())).thenReturn(Optional.empty());
+    this.contactService.editContact(contactDto);
+  }
+
   @Test
   public void deleteContact() throws Exception {
     //when
@@ -201,5 +258,15 @@ public class ContactServiceImplTest {
     String login = "Login";
     when(this.securityService.getLogin()).thenReturn(login);
     when(this.userService.getUserByLogin(login)).thenReturn(this.user);
+  }
+
+  private Set<String> getPhones(String phone){
+    Set<ContactDto> contactByPhone = this.contactService.getContactByPhone(phone);
+    Set<String> result = new HashSet<>();
+    String mobilePhone = contactByPhone.iterator().next().getMobilePhone();
+    String homePhone = contactByPhone.iterator().next().getHomePhone();
+    result.add(mobilePhone);
+    result.add(homePhone);
+    return result;
   }
 }
