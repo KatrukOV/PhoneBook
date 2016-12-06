@@ -146,13 +146,9 @@ public class ContactServiceImpl implements ContactService {
   private Contact createContact(ContactDto contactDto) {
     Contact contact = new Contact();
 
-    Person person = createPerson(contactDto);
-    person = this.personService.save(person);
+    Person person = this.personService.create(contactDto);
+    Address address = this.addressService.create(contactDto);
 
-    Address address = createAddress(contactDto);
-    if (nonNull(address)) {
-      address = this.addressService.save(address);
-    }
     String login = this.securityService.getLogin();
     User user = this.userService.getUserByLogin(login);
 
@@ -166,40 +162,17 @@ public class ContactServiceImpl implements ContactService {
     return contact;
   }
 
-  private Address createAddress(ContactDto contactDto) {
-    Address address = null;
-    if (addressNotEmptyField(contactDto)) {
-      address = new Address();
-      address.setCity(contactDto.getCity().trim());
-      address.setStreet(contactDto.getStreet().trim());
-      address.setBuilding(contactDto.getBuilding().trim());
-      address.setApartment(contactDto.getApartment());
-    }
-    return address;
-  }
-
-  private boolean addressNotEmptyField(ContactDto contactDto) {
-    return nonNull(contactDto.getCity()) || nonNull(contactDto.getStreet())
-           || nonNull(contactDto.getBuilding()) || contactDto.getApartment() > 0;
-  }
-
-  private Person createPerson(ContactDto contactDto) {
-    Person person = new Person();
-    person.setLastName(contactDto.getLastName().trim());
-    person.setName(contactDto.getName().trim());
-    person.setPatronymic(contactDto.getPatronymic().trim());
-    return person;
-  }
-
   private Contact updateContact(Contact contact, ContactDto contactDto) {
-    Person person = this.personService.getPersonById(contact.getPerson().getId());
-    person = updatePerson(person, contactDto);
-    contact.setPerson(person);
-    Address address = null;
-    if (nonNull(contact.getAddress())) {
-      address = this.addressService.getAddressById(contact.getAddress().getId());
+
+    Person person = this.personService.updatePerson(contact.getPerson().getId(), contactDto);
+
+    Long addressId = null;
+    if (nonNull(contact.getAddress())){
+      addressId = contact.getAddress().getId();
     }
-    address = updateAddress(address, contactDto);
+    Address address = this.addressService.updateAddress(addressId,contactDto);
+
+    contact.setPerson(person);
     contact.setAddress(address);
 
     if (!contactDto.getMobilePhone().equals(contact.getMobilePhone())) {
@@ -214,46 +187,5 @@ public class ContactServiceImpl implements ContactService {
       contact.setEmail(contactDto.getEmail());
     }
     return contact;
-  }
-
-  private Person updatePerson(Person person, ContactDto contactDto) {
-    if (!(contactDto.getLastName().trim()).equals(person.getLastName())) {
-      person.setLastName(contactDto.getLastName().trim());
-    }
-    if (!(contactDto.getName().trim()).equals(person.getName())) {
-      person.setName(contactDto.getName().trim());
-    }
-    if (!(contactDto.getPatronymic().trim()).equals(person.getPatronymic())) {
-      person.setPatronymic(contactDto.getPatronymic().trim());
-    }
-    return this.personService.save(person);
-  }
-
-  //todo do refactor
-  private Address updateAddress(Address address, ContactDto contactDto) {
-    if (isNull(address)) {
-      address = new Address();
-    }
-
-    if (!addressNotEmptyField(contactDto)) {
-      return null;
-    }
-
-    if (nonNull(contactDto.getCity()) && !(contactDto.getCity().trim()).equals(address.getCity())) {
-      address.setCity(contactDto.getCity().trim());
-    }
-    if (contactDto.getStreet() != null
-        && !(contactDto.getStreet().trim()).equals(address.getStreet())) {
-      address.setStreet(contactDto.getStreet().trim());
-    }
-    if (contactDto.getBuilding() != null
-        && !(contactDto.getBuilding().trim()).equals(address.getBuilding())) {
-      address.setBuilding(contactDto.getBuilding().trim());
-    }
-    if (contactDto.getApartment() <= 0
-        && !contactDto.getApartment().equals(address.getApartment())) {
-      address.setApartment(contactDto.getApartment());
-    }
-    return this.addressService.save(address);
   }
 }
