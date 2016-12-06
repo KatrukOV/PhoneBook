@@ -4,8 +4,6 @@ import com.katruk.dao.AddressDao;
 import com.katruk.domain.entity.Address;
 import com.katruk.domain.service.AddressService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -16,7 +14,11 @@ import javax.annotation.Resource;
 public class AddressServiceImpl implements AddressService {
 
   @Resource(name = "${AddressDao.class}")
-  private  AddressDao addressDao;
+  private final AddressDao addressDao;
+
+  public AddressServiceImpl(AddressDao addressDao) {
+    this.addressDao = addressDao;
+  }
 
 //  @Autowired
 //  public AddressServiceImpl(@Qualifier("AddressDaoMySql") AddressDao addressDao) {
@@ -32,6 +34,5 @@ public class AddressServiceImpl implements AddressService {
   public Address getAddressById(Long addressId) {
     return this.addressDao.getAddressById(addressId).orElseThrow(() -> new NoSuchElementException(
         String.format("No address present with id: %s", addressId)));
-
   }
 }

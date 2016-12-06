@@ -66,7 +66,7 @@ public class ContactServiceImplTest {
 
   @Before
   public void setUp() throws Exception {
-    this.contactService = new ContactServiceImpl(securityService, personService,
+    this.contactService = new ContactServiceImpl(contactDao, securityService, personService,
                                                  addressService, userService);
     this.contactDto = new DefaultEntity().contactDto();
     this.contact = new DefaultEntity().contact();

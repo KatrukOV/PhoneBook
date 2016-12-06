@@ -20,9 +20,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnit;
@@ -45,7 +43,7 @@ public class AddressServiceImplTest {
 
   @Before
   public void setUp() throws Exception {
-    this.addressService = new AddressServiceImpl();
+    this.addressService = new AddressServiceImpl(addressDao);
     this.address = new DefaultEntity().address();
   }
 

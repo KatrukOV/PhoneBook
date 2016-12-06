@@ -6,8 +6,6 @@ import com.katruk.domain.entity.User;
 import com.katruk.domain.service.UserService;
 import com.katruk.domain.util.Converter;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -18,7 +16,11 @@ import javax.annotation.Resource;
 public class UserServiceImpl implements UserService {
 
   @Resource(name = "${UserDao.class}")
-  private UserDao userDao;
+  private final UserDao userDao;
+
+  public UserServiceImpl(UserDao userDao) {
+    this.userDao = userDao;
+  }
 
   //  @Autowired
 //  public UserServiceImpl(@Qualifier("${UserDao.class}") UserDao userDao) {

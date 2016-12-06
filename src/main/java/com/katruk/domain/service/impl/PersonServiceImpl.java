@@ -4,8 +4,6 @@ import com.katruk.dao.PersonDao;
 import com.katruk.domain.entity.Person;
 import com.katruk.domain.service.PersonService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -16,7 +14,11 @@ import javax.annotation.Resource;
 public class PersonServiceImpl implements PersonService {
 
   @Resource(name = "${PersonDao.class}")
-  private PersonDao personDao;
+  private final PersonDao personDao;
+
+  public PersonServiceImpl(PersonDao personDao) {
+    this.personDao = personDao;
+  }
 
 //  @Autowired
 //  public PersonServiceImpl(@Qualifier("PersonDaoMySql") PersonDao personDao) {

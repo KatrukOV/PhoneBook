@@ -41,7 +41,7 @@ public class UserServiceImplTest {
 
   @Before
   public void setUp() throws Exception {
-    this.userService = new UserServiceImpl();
+    this.userService = new UserServiceImpl(userDao);
     this.userDto = new DefaultEntity().userDto();
   }
 

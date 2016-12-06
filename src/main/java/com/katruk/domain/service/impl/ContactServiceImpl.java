@@ -1,6 +1,7 @@
 package com.katruk.domain.service.impl;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 import com.katruk.dao.ContactDao;
 import com.katruk.domain.dto.ContactDto;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -28,25 +30,22 @@ import javax.annotation.Resource;
 @Service
 public class ContactServiceImpl implements ContactService {
 
-    @Resource(name = "${ContactDao.class}")
-  private ContactDao contactDao;
+  @Resource(name = "${ContactDao.class}")
+  private final ContactDao contactDao;
   private final SecurityService securityService;
   private final PersonService personService;
   private final AddressService addressService;
   private final UserService userService;
 
   @Autowired
-  public ContactServiceImpl(
-//      @Qualifier("ContactDaoMySql") ContactDao contactDao,
-
-                            SecurityService securityService, PersonService personService,
-                            AddressService addressService, UserService userService) {
-//    this.contactDao = contactDao;
+  public ContactServiceImpl(ContactDao contactDao, SecurityService securityService,
+                            PersonService personService, AddressService addressService,
+                            UserService userService) {
+    this.contactDao = contactDao;
     this.securityService = securityService;
     this.personService = personService;
     this.addressService = addressService;
     this.userService = userService;
-
   }
 
   @Override
@@ -113,7 +112,6 @@ public class ContactServiceImpl implements ContactService {
     Contact contact = this.contactDao.getContactById(contactDto.getContactId())
         .orElseThrow(() -> new NoSuchElementException(
             String.format("Contact with id=%s not found", contactDto.getContactId())));
-
     contact = updateContact(contact, contactDto);
     return this.contactDao.saveAndFlush(contact);
   }
@@ -152,8 +150,9 @@ public class ContactServiceImpl implements ContactService {
     person = this.personService.save(person);
 
     Address address = createAddress(contactDto);
-    address = this.addressService.save(address);
-
+    if (nonNull(address)) {
+      address = this.addressService.save(address);
+    }
     String login = this.securityService.getLogin();
     User user = this.userService.getUserByLogin(login);
 
@@ -164,16 +163,24 @@ public class ContactServiceImpl implements ContactService {
     contact.setHomePhone(contactDto.getHomePhone().trim());
     contact.setEmail(contactDto.getEmail().trim());
 
-    return this.contactDao.saveAndFlush(contact);
+    return contact;
   }
 
   private Address createAddress(ContactDto contactDto) {
-    Address address = new Address();
-    address.setCity(contactDto.getCity().trim());
-    address.setStreet(contactDto.getStreet().trim());
-    address.setBuilding(contactDto.getBuilding().trim());
-    address.setApartment(contactDto.getApartment());
+    Address address = null;
+    if (addressNotEmptyField(contactDto)) {
+      address = new Address();
+      address.setCity(contactDto.getCity().trim());
+      address.setStreet(contactDto.getStreet().trim());
+      address.setBuilding(contactDto.getBuilding().trim());
+      address.setApartment(contactDto.getApartment());
+    }
     return address;
+  }
+
+  private boolean addressNotEmptyField(ContactDto contactDto) {
+    return nonNull(contactDto.getCity()) || nonNull(contactDto.getStreet())
+           || nonNull(contactDto.getBuilding()) || contactDto.getApartment() > 0;
   }
 
   private Person createPerson(ContactDto contactDto) {
@@ -187,10 +194,14 @@ public class ContactServiceImpl implements ContactService {
   private Contact updateContact(Contact contact, ContactDto contactDto) {
     Person person = this.personService.getPersonById(contact.getPerson().getId());
     person = updatePerson(person, contactDto);
-    Address address = this.addressService.getAddressById(contact.getAddress().getId());
-    address = updateAddress(address, contactDto);
     contact.setPerson(person);
+    Address address = null;
+    if (nonNull(contact.getAddress())) {
+      address = this.addressService.getAddressById(contact.getAddress().getId());
+    }
+    address = updateAddress(address, contactDto);
     contact.setAddress(address);
+
     if (!contactDto.getMobilePhone().equals(contact.getMobilePhone())) {
       contact.setMobilePhone(contactDto.getMobilePhone());
     }
@@ -218,11 +229,17 @@ public class ContactServiceImpl implements ContactService {
     return this.personService.save(person);
   }
 
+  //todo do refactor
   private Address updateAddress(Address address, ContactDto contactDto) {
     if (isNull(address)) {
       address = new Address();
     }
-    if (contactDto.getCity() != null && !(contactDto.getCity().trim()).equals(address.getCity())) {
+
+    if (!addressNotEmptyField(contactDto)) {
+      return null;
+    }
+
+    if (nonNull(contactDto.getCity()) && !(contactDto.getCity().trim()).equals(address.getCity())) {
       address.setCity(contactDto.getCity().trim());
     }
     if (contactDto.getStreet() != null
