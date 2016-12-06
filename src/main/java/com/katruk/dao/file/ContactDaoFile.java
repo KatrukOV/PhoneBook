@@ -13,8 +13,8 @@ import java.util.Optional;
 public class ContactDaoFile extends BaseDaoFile implements ContactDao {
 
   @Override
-  protected File getJsonFile(String path) {
-    return new File("{$Contact.json}");
+  protected File getJsonFile() {
+    return new File("src/main/resources/json/contact.json");
   }
 
   @Override

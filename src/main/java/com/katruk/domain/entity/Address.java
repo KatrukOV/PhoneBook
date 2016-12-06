@@ -1,5 +1,7 @@
 package com.katruk.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Address")
+//@JsonTypeName("Address")
 public class Address extends Model {
 
   private String city;

@@ -3,6 +3,7 @@ package com.katruk.dao.file;
 import com.katruk.dao.UserDao;
 import com.katruk.domain.entity.User;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
@@ -13,8 +14,10 @@ import java.util.Optional;
 public class UserDaoFile extends BaseDaoFile implements UserDao {
 
   @Override
-  protected File getJsonFile(String path) {
-    return new File("src/main/resources/json/user.json");
+  protected File getJsonFile() {
+//  todo  String fileName = "${user.json}";
+    String fileName = "src/main/resources/json/user.json";
+    return new File(fileName);
   }
 
   @Override

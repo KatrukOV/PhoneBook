@@ -32,36 +32,36 @@ public class ContactValidator implements Validator {
   }
 
   private void requiredField(Errors errors) {
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "REQUIRED");
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "REQUIRED");
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "patronymic", "REQUIRED");
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mobilePhone", "REQUIRED");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "required");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "required");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "patronymic", "required");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "mobilePhone", "required");
   }
 
   private void validateNames(Errors errors, ContactDto contactDto) {
     if (contactDto.getLastName().length() < 4 || contactDto.getLastName().length() > 30) {
-      errors.rejectValue("lastName", "INCORRECT_SIZE_LAST_NAME");
+      errors.rejectValue("lastName", "lastName.size");
     }
     if (contactDto.getName().length() < 4 || contactDto.getName().length() > 30) {
-      errors.rejectValue("name", "INCORRECT_SIZE_NAME");
+      errors.rejectValue("name", "name.size");
     }
     if (contactDto.getPatronymic().length() < 4 || contactDto.getPatronymic().length() > 30) {
-      errors.rejectValue("patronymic", "INCORRECT_SIZE_PATRONYMIC");
+      errors.rejectValue("patronymic", "patronymic.size");
     }
   }
 
   private void validatePhones(Errors errors, ContactDto contactDto) {
     if (!PHONE_PATTERN.matcher(contactDto.getMobilePhone()).matches()) {
-      errors.rejectValue("mobilePhone", "INCORRECT_MOBILE_PHONE");
+      errors.rejectValue("mobilePhone", "mobile.phone.incorrect");
     }
     if (!PHONE_PATTERN.matcher(contactDto.getHomePhone()).matches()) {
-      errors.rejectValue("homePhone", "INCORRECT_HOME_PHONE");
+      errors.rejectValue("homePhone", "home.phone.incorrect");
     }
   }
 
   private void validateEmail(Errors errors, ContactDto contactDto) {
     if (!EMAIL_PATTERN.matcher(contactDto.getEmail()).matches()) {
-      errors.rejectValue("email", "INCORRECT_EMAIL");
+      errors.rejectValue("email", "email.incorrect");
     }
   }
 }

@@ -14,7 +14,7 @@ import java.util.Optional;
 public class PersonDaoFile extends BaseDaoFile implements PersonDao {
 
   @Override
-  protected File getJsonFile(String path) {
+  protected File getJsonFile() {
     return new File("src/main/resources/json/person.json");
   }
 

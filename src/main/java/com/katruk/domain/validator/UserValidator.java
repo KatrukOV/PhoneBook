@@ -1,18 +1,12 @@
 package com.katruk.domain.validator;
 
-
-import static java.util.Objects.nonNull;
-
 import com.katruk.domain.dto.UserDto;
-import com.katruk.domain.entity.User;
 import com.katruk.domain.service.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
 import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
@@ -47,51 +41,51 @@ public class UserValidator implements Validator {
   }
 
   private void requiredField(Errors errors) {
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "REQUIRED");
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "REQUIRED");
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "patronymic", "REQUIRED");
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "login", "REQUIRED");
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "REQUIRED");
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmPassword", "REQUIRED");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "required");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "required");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "patronymic", "required");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "login", "required");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "required");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmPassword", "required");
   }
 
   private void validateUserNames(UserDto userDto, Errors errors) {
     if (userDto.getLastName().length() < 4 || userDto.getLastName().length() > 30) {
-      errors.rejectValue("lastName", "INCORRECT_SIZE_LAST_NAME");
+      errors.rejectValue("lastName", "lastName.size");
     }
     if (userDto.getName().length() < 4 || userDto.getName().length() > 30) {
-      errors.rejectValue("name", "INCORRECT_SIZE_NAME");
+      errors.rejectValue("name", "name.size");
     }
     if (userDto.getPatronymic().length() < 4 || userDto.getPatronymic().length() > 30) {
-      errors.rejectValue("patronymic", "INCORRECT_SIZE_PATRONYMIC");
+      errors.rejectValue("patronymic", "patronymic.size");
     }
   }
 
   private void validateLogin(UserDto userDto, Errors errors) {
     if (userDto.getLogin().length() < 3 || userDto.getLogin().length() > 30) {
-      errors.rejectValue("login", "INCORRECT_SIZE_LOGIN");
+      errors.rejectValue("login", "login.size");
     }
     if (!LOGIN_PATTERN.matcher(userDto.getLogin()).matches()) {
-      errors.rejectValue("login", "LOGIN_NOT_ENGLISH");
+      errors.rejectValue("login", "login.not.english");
     }
   }
 
   private void validatePassword(UserDto userDto, Errors errors) {
     if (userDto.getPassword().length() < 5) {
-      errors.rejectValue("password", "INCORRECT_SIZE_PASSWORD");
+      errors.rejectValue("password", "password.size");
     }
     if (!PASSWORD_PATTERN.matcher(userDto.getPassword()).matches()) {
-      errors.rejectValue("password", "PASSWORD_NOT_ENGLISH");
+      errors.rejectValue("password", "password.not.english");
     }
     if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
-      errors.rejectValue("confirmPassword", "DIFFERENT_PASSWORD");
+      errors.rejectValue("confirmPassword", "password.different");
     }
   }
 
   private void existsUser(UserDto userDto, Errors errors) {
     try {
       this.userService.getUserByLogin(userDto.getLogin());
-      errors.rejectValue("login", "USER_EXISTS");
+      errors.rejectValue("login", "user.exists");
     } catch (NoSuchElementException e) {
 
       //log

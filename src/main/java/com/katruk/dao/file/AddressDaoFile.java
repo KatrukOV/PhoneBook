@@ -12,9 +12,10 @@ import java.util.Optional;
 public class AddressDaoFile extends BaseDaoFile implements AddressDao {
 
   @Override
-  protected File getJsonFile(String path) {
+  protected File getJsonFile() {
     return new File("src/main/resources/json/address.json");
   }
+
   // TODO: this method is redundant (probably)
   @Override
   public Optional<Address> getAddressById(Long addressId) {
