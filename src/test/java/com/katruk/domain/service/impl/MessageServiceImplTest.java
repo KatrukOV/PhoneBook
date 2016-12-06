@@ -30,17 +30,9 @@ public class MessageServiceImplTest {
 
   @Rule
   public MockitoRule rule = MockitoJUnit.rule();
-
   @Mock
   private HttpSession httpSession;
-//  @Spy
-
-  //  private MessageServiceImpl.Message message = new MessageServiceImpl(httpSession).new Message(
-//    MessageServiceImpl.MessageType.ERROR,"y");
-
-
   private List<MessageServiceImpl.Message> messages;
-
   private MessageService messageService;
 
   @Before
@@ -104,9 +96,10 @@ public class MessageServiceImplTest {
     String result = messages.get(0).getType().toString();
 
     //then
-    verify(this.httpSession,times(1)).getAttribute(anyString());
+    verify(this.httpSession, times(1)).getAttribute(anyString());
     assertEquals("ERROR", result);
   }
+
   @Test
   public void addErrorMessage_was_empty() throws Exception {
     //given
@@ -117,8 +110,7 @@ public class MessageServiceImplTest {
     this.messageService.addError(msg);
 
     //then
-    verify(this.httpSession,times(1)).getAttribute(anyString());
+    verify(this.httpSession, times(1)).getAttribute(anyString());
     assertTrue(messages.isEmpty());
   }
-
 }
