@@ -8,17 +8,17 @@
 <body>
 <div>
     <h3 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h3>
+
+    <ul id="messages"
+        th:with="messages=${session[T(com.katruk.domain.service.impl.MessageServiceImpl).MSG_SESSION_KEY]}">
+        <li th:each="msg : ${messages}" th:text="${msg.text}"
+            th:class="${#strings.toLowerCase(msg.type)}">
+        </li>
+        <span th:if="${messages}" th:remove="all"
+              th:text="${session.remove(T(com.katruk.domain.service.impl.MessageServiceImpl).MSG_SESSION_KEY)}"></span>
+    </ul>
+
     <hr/>
-
-    <!--<ul id="messages"-->
-        <!--th:with="notifyMessages=${session[T(com.katruk.domain.service.impl.NotificationServiceImpl).NOTIFY_MSG_SESSION_KEY]}">-->
-        <!--<li th:each="msg : ${notifyMessages}" th:text="${msg.text}"-->
-            <!--th:class="${#strings.toLowerCase(msg.type)}">-->
-        <!--</li>-->
-        <!--<span th:if="${notifyMessages}" th:remove="all"-->
-              <!--th:text="${session.remove(T(com.katruk.domain.service.impl.NotificationServiceImpl).NOTIFY_MSG_SESSION_KEY)}"></span>-->
-    <!--</ul>-->
-
     <form th:action="@{/logout}" method="POST">
         <input type="submit" value="Logout"/>
     </form>
@@ -69,7 +69,7 @@
                 <form th:action="@{/contacts/delete}" method="POST">
                     <input type="hidden" name="contactId" value="contactId"
                            th:value="${contact.contactId}"/>
-                    <!--<input type="hidden" th:name="contactId" th:value="${contact.contactId}"/>-->
+                    <!--<input type="hidden" th:name="contactId" th:value="${goContact.contactId}"/>-->
                     <input type="submit" value="Delete"/>
                 </form>
 
@@ -82,7 +82,7 @@
         <input type="submit" value="Add Contact"/>
     </form>
 
-    <!--<a th:href="@{/contacts/add}">Add Contact</a>-->
+    <!--<a th:href="@{/contacts/goAdd}">Add Contact</a>-->
 </div>
 </body>
 </html>

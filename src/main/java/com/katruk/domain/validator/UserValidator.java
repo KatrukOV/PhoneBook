@@ -13,6 +13,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
 @Component
@@ -88,9 +89,17 @@ public class UserValidator implements Validator {
   }
 
   private void existsUser(UserDto userDto, Errors errors) {
-    User user = this.userService.getUserByLogin(userDto.getLogin());
-    if (nonNull(user.getLogin())) {
+    try {
+      this.userService.getUserByLogin(userDto.getLogin());
       errors.rejectValue("login", "USER_EXISTS");
+    } catch (NoSuchElementException e) {
+
+      //log
     }
+
+//    if (nonNull(user.getLogin())) {
+//      errors.rejectValue("login", "USER_EXISTS");
+//    }
+
   }
 }

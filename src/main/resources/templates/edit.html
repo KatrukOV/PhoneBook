@@ -6,7 +6,18 @@
 </head>
 <body>
 <h3>Change Contact</h3>
+
+<ul id="messages"
+    th:with="messages=${session[T(com.katruk.domain.service.impl.MessageServiceImpl).MSG_SESSION_KEY]}">
+    <li th:each="msg : ${messages}" th:text="${msg.text}"
+        th:class="${#strings.toLowerCase(msg.type)}">
+    </li>
+    <span th:if="${messages}" th:remove="all"
+          th:text="${session.remove(T(com.katruk.domain.service.impl.MessageServiceImpl).MSG_SESSION_KEY)}"></span>
+</ul>
+
 <hr/>
+
 <form action="#" th:action="@{/contacts/editContact}" th:object="${contactDto}" method="POST">
     <div>
         <input type="hidden" name="contactId" value="contactId" th:value="${contact.contactId}"/>
@@ -79,8 +90,8 @@
     </form>
 
     <!--<ul>-->
-        <!--<li><a th:href="@{/contacts/add}">Add new Contact</a></li>-->
-        <!--<li><a th:href="@{/contacts}">Back to contacts</a></li>-->
+    <!--<li><a th:href="@{/contacts/goAdd}">Add new Contact</a></li>-->
+    <!--<li><a th:href="@{/contacts}">Back to contacts</a></li>-->
     <!--</ul>-->
 </div>
 </body>

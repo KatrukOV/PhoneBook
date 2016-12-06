@@ -28,6 +28,8 @@ import org.mockito.stubbing.Answer;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DirectFieldBindingResult;
 
+import java.util.NoSuchElementException;
+
 @RunWith(JUnit4.class)
 public class UserValidatorTest {
 
@@ -61,7 +63,7 @@ public class UserValidatorTest {
   @Test
   public void validate_good_user_without_error() throws Exception {
     //when
-    when(userService.getUserByLogin(anyString())).thenReturn(mock(User.class));
+    when(userService.getUserByLogin(anyString())).thenThrow(new NoSuchElementException());
     this.userValidator.validate(userDto, errors);
 
     //then

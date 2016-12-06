@@ -184,8 +184,7 @@ public class ContactServiceImpl implements ContactService {
     address = updateAddress(address, contactDto);
     contact.setPerson(person);
     contact.setAddress(address);
-    if (contactDto.getMobilePhone() != null &&
-        !contactDto.getMobilePhone().equals(contact.getMobilePhone())) {
+    if (!contactDto.getMobilePhone().equals(contact.getMobilePhone())) {
       contact.setMobilePhone(contactDto.getMobilePhone());
     }
     if (contactDto.getHomePhone() != null &&
@@ -219,16 +218,16 @@ public class ContactServiceImpl implements ContactService {
     if (contactDto.getCity() != null && !(contactDto.getCity().trim()).equals(address.getCity())) {
       address.setCity(contactDto.getCity().trim());
     }
-    if (contactDto.getStreet() != null && !(contactDto.getStreet().trim())
-        .equals(address.getStreet())) {
+    if (contactDto.getStreet() != null
+        && !(contactDto.getStreet().trim()).equals(address.getStreet())) {
       address.setStreet(contactDto.getStreet().trim());
     }
-    if (contactDto.getBuilding() != null &&
-        !(contactDto.getBuilding().trim()).equals(address.getBuilding())) {
+    if (contactDto.getBuilding() != null
+        && !(contactDto.getBuilding().trim()).equals(address.getBuilding())) {
       address.setBuilding(contactDto.getBuilding().trim());
     }
-    if (contactDto.getApartment() != null &&
-        !contactDto.getApartment().equals(address.getApartment())) {
+    if (contactDto.getApartment() <= 0
+        && !contactDto.getApartment().equals(address.getApartment())) {
       address.setApartment(contactDto.getApartment());
     }
     return this.addressService.save(address);

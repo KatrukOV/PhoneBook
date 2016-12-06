@@ -26,8 +26,8 @@ public class ContactDaoFile extends BaseDaoFile implements ContactDao {
   }
 
   @Override
-//  public void delete(Contact contact) {
-//    super.<Contact>delete(contact.getId());
+//  public void doDelete(Contact goContact) {
+//    super.<Contact>doDelete(goContact.getId());
 //  }
   public void delete(Long contactId) {
     super.<Contact>delete(contactId);
@@ -43,7 +43,7 @@ public class ContactDaoFile extends BaseDaoFile implements ContactDao {
 //    }
 //    for (Contact element : contacts) {
 //      if (lastName.equals(element.getPerson().getLastName())) {
-//        result.add(element);
+//        result.goAdd(element);
 //      }
 //    }
 //    return result;
@@ -59,7 +59,7 @@ public class ContactDaoFile extends BaseDaoFile implements ContactDao {
 //    }
 //    for (Contact element : contacts) {
 //      if (name.equals(element.getPerson().getName())) {
-//        result.add(element);
+//        result.goAdd(element);
 //      }
 //    }
 //    return result;
@@ -75,7 +75,7 @@ public class ContactDaoFile extends BaseDaoFile implements ContactDao {
 //    }
 //    for (Contact element : contacts) {
 //      if (element.getPerson().getName().contains(mobilePhone)) {
-//        result.add(element);
+//        result.goAdd(element);
 //      }
 //    }
 //    return result;

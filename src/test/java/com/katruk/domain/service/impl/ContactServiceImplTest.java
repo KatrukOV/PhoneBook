@@ -31,8 +31,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.Spy;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.mockito.stubbing.Answer;
 
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -82,33 +84,35 @@ public class ContactServiceImplTest {
   }
 
   @Test
-  public void getContactByLastName() throws Exception {
+  public void getContactByLastName_lower_case() throws Exception {
     //given
-    String lastName = "LastName";
+    String inputLastName = "lastname";
+    String outputLastName = "LastName";
 
     //when
     whenGetUserByLogin();
-    Set<ContactDto> contactByLastName = this.contactService.getContactByLastName(lastName);
+    Set<ContactDto> contactByLastName = this.contactService.getContactByLastName(inputLastName);
     String result = contactByLastName.iterator().next().getLastName();
 
     //then
     assertNotNull(contactByLastName);
-    assertEquals(lastName, result);
+    assertEquals(outputLastName, result);
   }
 
   @Test
-  public void getContactByName() throws Exception {
+  public void getContactByName_lower_case() throws Exception {
     //given
-    String name = "Name";
+    String inputName = "name";
+    String outputName = "Name";
 
     //when
     whenGetUserByLogin();
-    Set<ContactDto> contactByName = this.contactService.getContactByName(name);
+    Set<ContactDto> contactByName = this.contactService.getContactByName(inputName);
     String result = contactByName.iterator().next().getName();
 
     //then
     assertNotNull(contactByName);
-    assertEquals(name, result);
+    assertEquals(outputName, result);
   }
 
   @Test
@@ -224,13 +228,128 @@ public class ContactServiceImplTest {
   @Test
   public void editContact() throws Exception {
     //when
-    when(this.contactDao.getContactById(anyLong())).thenReturn(Optional.of(this.contact));
-    when(this.contactDao.saveAndFlush(any(Contact.class))).thenAnswer(returnsFirstArg());
-    when(this.personService.getPersonById(anyLong())).thenReturn(this.contact.getPerson());
-    when(this.personService.save(any(Person.class))).thenAnswer(returnsFirstArg());
-    when(this.addressService.getAddressById(anyLong())).thenReturn(this.contact.getAddress());
-    when(this.addressService.save(any(Address.class))).thenAnswer(returnsFirstArg());
-    when(this.contactDao.saveAndFlush(any(Contact.class))).thenAnswer(returnsFirstArg());
+    whenDefaultScriptEditContact();
+    Contact contact = this.contactService.editContact(this.contactDto);
+
+    //then
+    assertNotNull(contact);
+  }
+
+  @Test
+  public void editContact_update_person_true() throws Exception {
+    //given
+    Person newPerson = new Person();
+    newPerson.setId(2L);
+    newPerson.setLastName("NewLastName");
+    newPerson.setName("NewName");
+    newPerson.setPatronymic("NewPatronymic");
+
+    //when
+    whenDefaultScriptEditContact();
+    when(this.personService.getPersonById(anyLong())).thenReturn(newPerson);
+    Contact contact = this.contactService.editContact(this.contactDto);
+
+    //then
+    assertNotNull(contact);
+  }
+
+  @Test
+  public void editContact_update_address_was_null() throws Exception {
+    //when
+    whenDefaultScriptEditContact();
+    when(this.addressService.getAddressById(anyLong())).thenReturn(null);
+    Contact contact = this.contactService.editContact(this.contactDto);
+
+    //then
+    assertNotNull(contact);
+  }
+
+  @Test
+  public void editContact_update_address_was_empty_fields() throws Exception {
+    //when
+    whenDefaultScriptEditContact();
+    when(this.addressService.getAddressById(anyLong())).thenReturn(new Address());
+    Contact contact = this.contactService.editContact(this.contactDto);
+
+    //then
+    assertNotNull(contact);
+  }
+
+  @Test
+  public void editContact_update_address_will_empty_fields() throws Exception {
+    //given
+    ContactDto contactWithEmptyAddress = this.contactDto;
+    contactWithEmptyAddress.setCity(null);
+    contactWithEmptyAddress.setStreet(null);
+    contactWithEmptyAddress.setBuilding(null);
+    contactWithEmptyAddress.setApartment(0);
+
+    //when
+    whenDefaultScriptEditContact();
+    Contact contact = this.contactService.editContact(contactWithEmptyAddress);
+
+    //then
+    assertNotNull(contact);
+  }
+
+  @Test
+  public void editContact_update_was_empty_fields() throws Exception {
+    //given
+    Contact contactWithEmptyFields = this.contact;
+    contactWithEmptyFields.setHomePhone(null);
+    contactWithEmptyFields.setEmail(null);
+
+    //when
+    whenDefaultScriptEditContact();
+    when(this.contactDao.getContactById(anyLong())).thenReturn(Optional.of(contactWithEmptyFields));
+    Contact contact = this.contactService.editContact(this.contactDto);
+
+    //then
+    assertNotNull(contact);
+  }
+
+  @Test
+  public void editContact_update_will_empty_fields() throws Exception {
+    //given
+    ContactDto contactWithEmptyFields = this.contactDto;
+    contactWithEmptyFields.setHomePhone(null);
+    contactWithEmptyFields.setEmail(null);
+
+    //when
+    whenDefaultScriptEditContact();
+    Contact contact = this.contactService.editContact(contactWithEmptyFields);
+
+    //then
+    assertNotNull(contact);
+  }
+
+  @Test
+  public void editContact_update_will_new_mobile_phone() throws Exception {
+    //given
+    ContactDto contactWithEmptyFields = this.contactDto;
+    contactWithEmptyFields.setMobilePhone("+380(50)777-77-77");
+
+    //when
+    whenDefaultScriptEditContact();
+    Contact contact = this.contactService.editContact(contactWithEmptyFields);
+
+    //then
+    assertNotNull(contact);
+  }
+
+  @Test
+  public void editContact_update_address_true() throws Exception {
+    //given
+    Address newAddress = new Address();
+    newAddress.setId(2L);
+    newAddress.setCity("NewCity");
+    newAddress.setStreet("NewStreet");
+    newAddress.setBuilding("777a");
+    newAddress.setApartment(99);
+
+    //when
+    whenDefaultScriptEditContact();
+    when(this.addressService.getAddressById(anyLong())).thenReturn(newAddress);
     Contact contact = this.contactService.editContact(this.contactDto);
 
     //then
@@ -260,7 +379,7 @@ public class ContactServiceImplTest {
     when(this.userService.getUserByLogin(login)).thenReturn(this.user);
   }
 
-  private Set<String> getPhones(String phone){
+  private Set<String> getPhones(String phone) {
     Set<ContactDto> contactByPhone = this.contactService.getContactByPhone(phone);
     Set<String> result = new HashSet<>();
     String mobilePhone = contactByPhone.iterator().next().getMobilePhone();
@@ -268,5 +387,15 @@ public class ContactServiceImplTest {
     result.add(mobilePhone);
     result.add(homePhone);
     return result;
+  }
+
+  private void whenDefaultScriptEditContact() {
+    when(this.contactDao.getContactById(anyLong())).thenReturn(Optional.of(this.contact));
+    when(this.contactDao.saveAndFlush(any(Contact.class))).thenAnswer(returnsFirstArg());
+    when(this.personService.getPersonById(anyLong())).thenReturn(this.contact.getPerson());
+    when(this.personService.save(any(Person.class))).thenAnswer(returnsFirstArg());
+    when(this.addressService.getAddressById(anyLong())).thenReturn(this.contact.getAddress());
+    when(this.addressService.save(any(Address.class))).thenAnswer(returnsFirstArg());
+    when(this.contactDao.saveAndFlush(any(Contact.class))).thenAnswer(returnsFirstArg());
   }
 }

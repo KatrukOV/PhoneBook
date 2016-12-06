@@ -3,7 +3,7 @@ package com.katruk.controller;
 import static java.util.Objects.nonNull;
 
 import com.katruk.domain.dto.UserDto;
-import com.katruk.domain.service.NotificationService;
+import com.katruk.domain.service.MessageService;
 import com.katruk.domain.service.SecurityService;
 import com.katruk.domain.service.UserService;
 import com.katruk.domain.validator.UserValidator;
@@ -21,15 +21,15 @@ public class UserController {
   private final UserService userService;
   private final UserValidator userValidator;
   private final SecurityService securityService;
-  private final NotificationService notifyService;
+  private final MessageService messageService;
 
   @Autowired
   public UserController(UserService userService, UserValidator userValidator,
-                        SecurityService securityService, NotificationService notifyService) {
+                        SecurityService securityService, MessageService messageService) {
     this.userService = userService;
     this.userValidator = userValidator;
     this.securityService = securityService;
-    this.notifyService = notifyService;
+    this.messageService = messageService;
   }
 
   @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -44,20 +44,20 @@ public class UserController {
   }
 
   @RequestMapping(value = "/registration", method = RequestMethod.GET)
-  public String registration(UserDto userDto, Model model) {
+  public String registration(UserDto userDto) {
     return "registration";
   }
 
   @RequestMapping(value = "/registration", method = RequestMethod.POST)
-  public String doRegistration(UserDto userDto, BindingResult bindingResult, Model model) {
+  public String doRegistration(UserDto userDto, BindingResult bindingResult) {
     this.userValidator.validate(userDto, bindingResult);
     if (bindingResult.hasErrors()) {
-      this.notifyService.addErrorMessage("Please fill the form correctly!");
+      this.messageService.addError("Please fill the form correctly!");
       return "registration";
     }
     this.userService.createUser(userDto);
     this.securityService.autoLogin(userDto.getLogin(), userDto.getConfirmPassword());
-    notifyService.addInfoMessage("Registration successful");
+    this.messageService.addInfo("Registration successful");
     return "redirect:/contacts";
   }
 }
