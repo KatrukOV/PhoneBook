@@ -16,6 +16,7 @@ import com.katruk.domain.service.UserService;
 import com.katruk.domain.util.Converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -27,7 +28,7 @@ import javax.annotation.Resource;
 @Service
 public class ContactServiceImpl implements ContactService {
 
-  @Resource(name = "${ContactDao.class}")
+    @Resource(name = "${ContactDao.class}")
   private ContactDao contactDao;
   private final SecurityService securityService;
   private final PersonService personService;
@@ -35,12 +36,17 @@ public class ContactServiceImpl implements ContactService {
   private final UserService userService;
 
   @Autowired
-  public ContactServiceImpl(SecurityService securityService, PersonService personService,
+  public ContactServiceImpl(
+//      @Qualifier("ContactDaoMySql") ContactDao contactDao,
+
+                            SecurityService securityService, PersonService personService,
                             AddressService addressService, UserService userService) {
+//    this.contactDao = contactDao;
     this.securityService = securityService;
     this.personService = personService;
     this.addressService = addressService;
     this.userService = userService;
+
   }
 
   @Override

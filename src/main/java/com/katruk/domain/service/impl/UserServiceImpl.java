@@ -6,6 +6,8 @@ import com.katruk.domain.entity.User;
 import com.katruk.domain.service.UserService;
 import com.katruk.domain.util.Converter;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -17,6 +19,15 @@ public class UserServiceImpl implements UserService {
 
   @Resource(name = "${UserDao.class}")
   private UserDao userDao;
+
+  //  @Autowired
+//  public UserServiceImpl(@Qualifier("${UserDao.class}") UserDao userDao) {
+//    this.userDao = userDao;
+//  }
+//  @Autowired
+//  public UserServiceImpl(@Qualifier("UserDaoMySql") UserDao userDao) {
+//    this.userDao = userDao;
+//  }
 
   @Override
   public User createUser(UserDto userDto) {

@@ -28,7 +28,7 @@ public class PersonServiceImplTest {
 
   @Rule
   public MockitoRule rule = MockitoJUnit.rule();
-  @Mock
+  @Mock(name = "${PersonDao.class}")
   private PersonDao personDao;
   @Spy
   private Person person;
@@ -36,9 +36,7 @@ public class PersonServiceImplTest {
 
   @Before
   public void setUp() throws Exception {
-    this.personService = new PersonServiceImpl(
-//        this.personDao
-    );
+    this.personService = new PersonServiceImpl();
     this.person = new DefaultEntity().person();
   }
 

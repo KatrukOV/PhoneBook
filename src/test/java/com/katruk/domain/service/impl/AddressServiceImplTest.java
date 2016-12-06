@@ -37,7 +37,7 @@ public class AddressServiceImplTest {
 
   @Rule
   public MockitoRule rule = MockitoJUnit.rule();
-  @Mock
+  @Mock(name = "${AddressDao.class}")
   private AddressDao addressDao;
   @Spy
   private Address address;
@@ -45,9 +45,7 @@ public class AddressServiceImplTest {
 
   @Before
   public void setUp() throws Exception {
-    this.addressService = new AddressServiceImpl(
-//        addressDao
-    );
+    this.addressService = new AddressServiceImpl();
     this.address = new DefaultEntity().address();
   }
 

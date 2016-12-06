@@ -5,6 +5,7 @@ import com.katruk.domain.entity.Address;
 import com.katruk.domain.service.AddressService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -15,7 +16,12 @@ import javax.annotation.Resource;
 public class AddressServiceImpl implements AddressService {
 
   @Resource(name = "${AddressDao.class}")
-  private AddressDao addressDao;
+  private  AddressDao addressDao;
+
+//  @Autowired
+//  public AddressServiceImpl(@Qualifier("AddressDaoMySql") AddressDao addressDao) {
+//    this.addressDao = addressDao;
+//  }
 
   @Override
   public Address save(Address address) {

@@ -24,7 +24,6 @@ public abstract class BaseDaoFile {
 
 //  private static File jsonFile; //= new File("src/main/resources/json/base.json");
 
-  @Autowired
   protected abstract File getJsonFile();
 
   <S extends Model> Optional<S> findOne(Long id) {

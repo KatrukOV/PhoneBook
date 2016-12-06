@@ -46,10 +46,10 @@ public class ContactServiceImplTest {
 
   @Rule
   public MockitoRule rule = MockitoJUnit.rule();
+  @Mock(name = "${ContactDao.class}")
+  private ContactDao contactDao;
   @Mock
   private SecurityService securityService;
-  @Mock
-  private ContactDao contactDao;
   @Mock
   private PersonService personService;
   @Mock
@@ -66,9 +66,7 @@ public class ContactServiceImplTest {
 
   @Before
   public void setUp() throws Exception {
-    this.contactService = new ContactServiceImpl(securityService,
-//                                                 contactDao,
-                                                 personService,
+    this.contactService = new ContactServiceImpl(securityService, personService,
                                                  addressService, userService);
     this.contactDto = new DefaultEntity().contactDto();
     this.contact = new DefaultEntity().contact();
