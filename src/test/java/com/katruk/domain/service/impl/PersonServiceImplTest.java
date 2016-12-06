@@ -36,7 +36,9 @@ public class PersonServiceImplTest {
 
   @Before
   public void setUp() throws Exception {
-    this.personService = new PersonServiceImpl(this.personDao);
+    this.personService = new PersonServiceImpl(
+//        this.personDao
+    );
     this.person = new DefaultEntity().person();
   }
 

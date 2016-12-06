@@ -4,10 +4,12 @@ package com.katruk.dao.file;
 import com.katruk.dao.ContactDao;
 import com.katruk.domain.entity.Contact;
 
+import org.springframework.stereotype.Repository;
+
 import java.io.File;
 import java.util.Optional;
 
-//@Repository(value = "ContactDaoFile")
+@Repository(value = "ContactDaoFile")
 public class ContactDaoFile extends BaseDaoFile implements ContactDao {
 
   @Override

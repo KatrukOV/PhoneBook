@@ -4,11 +4,13 @@ package com.katruk.dao.file;
 import com.katruk.dao.PersonDao;
 import com.katruk.domain.entity.Person;
 
+import org.springframework.stereotype.Repository;
+
 import java.io.File;
 import java.util.Optional;
 
 
-//@Repository(value = "PersonDaoFile")
+@Repository(value = "PersonDaoFile")
 public class PersonDaoFile extends BaseDaoFile implements PersonDao {
 
   @Override

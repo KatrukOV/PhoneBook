@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.katruk.domain.entity.Model;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
-//@Repository
+@Repository
 public abstract class BaseDaoFile {
 
 //  @Value("${json.path}")
@@ -25,7 +26,7 @@ public abstract class BaseDaoFile {
 
   protected File jsonFile; //= new File("src/main/resources/json/base.json");
 
-  //  @Autowired
+  @Autowired
   protected abstract File getJsonFile(String path);
 
 //    return new File(path);

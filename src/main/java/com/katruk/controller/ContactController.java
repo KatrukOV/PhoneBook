@@ -111,8 +111,8 @@ public class ContactController {
   }
 
   @RequestMapping(value = "/contacts/findByPhone", method = RequestMethod.POST)
-  public String showContactByMobilePhone(@RequestParam(value = "phone") String phone,
-                                         ContactDto contactDto, Model model) {
+  public String showContactByPhone(@RequestParam(value = "phone") String phone,
+                                   ContactDto contactDto, Model model) {
     Set<ContactDto> contactDtoSet = this.contactService.getContactByPhone(phone);
     model.addAttribute("contacts", contactDtoSet);
     return "contacts";

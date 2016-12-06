@@ -9,16 +9,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 
+import javax.annotation.Resource;
+
 @Service
 public class PersonServiceImpl implements PersonService {
 
-  //  @Qualifier("PersonDaoMySql")
-  private final PersonDao personDao;
-
-  @Autowired()
-  public PersonServiceImpl(PersonDao personDao) {
-    this.personDao = personDao;
-  }
+  @Resource(name = "${PersonDao.class}")
+  private PersonDao personDao;
 
   @Override
   public Person save(Person person) {

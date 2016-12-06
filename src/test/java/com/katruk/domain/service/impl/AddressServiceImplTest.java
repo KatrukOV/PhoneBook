@@ -45,7 +45,9 @@ public class AddressServiceImplTest {
 
   @Before
   public void setUp() throws Exception {
-    this.addressService = new AddressServiceImpl(addressDao);
+    this.addressService = new AddressServiceImpl(
+//        addressDao
+    );
     this.address = new DefaultEntity().address();
   }
 

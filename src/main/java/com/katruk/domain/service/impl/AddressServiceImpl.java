@@ -9,16 +9,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 
+import javax.annotation.Resource;
+
 @Service
 public class AddressServiceImpl implements AddressService {
 
-  //  @Qualifier("AddressDaoMySql")
-  private final AddressDao addressDao;
-
-  @Autowired
-  public AddressServiceImpl(AddressDao addressDao) {
-    this.addressDao = addressDao;
-  }
+  @Resource(name = "${AddressDao.class}")
+  private AddressDao addressDao;
 
   @Override
   public Address save(Address address) {

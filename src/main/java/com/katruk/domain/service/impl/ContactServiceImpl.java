@@ -22,21 +22,22 @@ import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 @Service
 public class ContactServiceImpl implements ContactService {
 
+  @Resource(name = "${ContactDao.class}")
+  private ContactDao contactDao;
   private final SecurityService securityService;
-  private final ContactDao contactDao;
   private final PersonService personService;
   private final AddressService addressService;
   private final UserService userService;
 
   @Autowired
-  public ContactServiceImpl(SecurityService securityService, ContactDao contactDao,
-                            PersonService personService,
+  public ContactServiceImpl(SecurityService securityService, PersonService personService,
                             AddressService addressService, UserService userService) {
     this.securityService = securityService;
-    this.contactDao = contactDao;
     this.personService = personService;
     this.addressService = addressService;
     this.userService = userService;
