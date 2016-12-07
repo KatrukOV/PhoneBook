@@ -1,7 +1,7 @@
 package com.katruk.controller;
 
-import static org.junit.Assert.*;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -11,26 +11,20 @@ import static org.mockito.Mockito.when;
 
 import com.katruk.domain.DefaultEntity;
 import com.katruk.domain.dto.UserDto;
-import com.katruk.domain.entity.Address;
 import com.katruk.domain.entity.User;
 import com.katruk.domain.service.MessageService;
 import com.katruk.domain.service.SecurityService;
 import com.katruk.domain.service.UserService;
 import com.katruk.domain.validator.UserValidator;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.mockito.AdditionalAnswers;
 import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.mockito.stubbing.Answer;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

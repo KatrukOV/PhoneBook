@@ -1,7 +1,5 @@
 package com.katruk.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonTypeName;
-
 import java.util.HashSet;
 import java.util.Set;
 

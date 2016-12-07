@@ -1,7 +1,6 @@
 package com.katruk.domain.service.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -16,7 +15,6 @@ import com.katruk.dao.ContactDao;
 import com.katruk.domain.DefaultEntity;
 import com.katruk.domain.dto.ContactDto;
 import com.katruk.domain.entity.Contact;
-import com.katruk.domain.entity.User;
 import com.katruk.domain.service.AddressService;
 import com.katruk.domain.service.PersonService;
 import com.katruk.domain.service.SecurityService;

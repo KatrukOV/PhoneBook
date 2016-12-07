@@ -2,7 +2,6 @@ package com.katruk.domain.service;
 
 import com.katruk.domain.dto.ContactDto;
 import com.katruk.domain.entity.Contact;
-
 import java.util.Set;
 
 public interface ContactService {

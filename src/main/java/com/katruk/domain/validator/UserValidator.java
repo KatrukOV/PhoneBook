@@ -15,7 +15,6 @@ public class UserValidator implements Validator {
 
   private final Pattern LOGIN_PATTERN = Pattern.compile("[A-Za-z]+");
   private final Pattern PASSWORD_PATTERN = Pattern.compile("[A-Za-z0-9]+");
-
   private final UserService userService;
 
   @Autowired
@@ -30,7 +29,6 @@ public class UserValidator implements Validator {
 
   @Override
   public void validate(Object target, Errors errors) {
-    // TODO: 03.12.2016 if userDto, throw
     UserDto userDto = (UserDto) target;
 
     requiredField(errors);
@@ -87,13 +85,7 @@ public class UserValidator implements Validator {
       this.userService.getUserByLogin(userDto.getLogin());
       errors.rejectValue("login", "user.exists");
     } catch (NoSuchElementException e) {
-
       //log
     }
-
-//    if (nonNull(user.getLogin())) {
-//      errors.rejectValue("login", "USER_EXISTS");
-//    }
-
   }
 }

@@ -16,16 +16,14 @@ import java.util.UUID;
 @Repository
 public abstract class BaseDaoFile {
 
-//  @Value("${json.path}")
-//  private String path;
+  private final ObjectMapper objectMapper;
 
   @Autowired
-  private ObjectMapper objectMapper;
-
-//  private static File jsonFile; //= new File("src/main/resources/json/base.json");
+  public BaseDaoFile(ObjectMapper objectMapper) {
+    this.objectMapper = objectMapper;
+  }
 
   protected abstract File getJsonFile();
-
 
   <S extends Model> Optional<S> findOne(Long id) {
 
@@ -83,8 +81,6 @@ public abstract class BaseDaoFile {
   <S extends Model> List<S> getAll() {
     List<S> list = null;
 
-//    System.out.println(">>> before jsonFile=" + jsonFile);
-
     File jsonFile = getJsonFile();
 
     System.out.println(">>> jsonFile=" + jsonFile);
@@ -94,10 +90,9 @@ public abstract class BaseDaoFile {
     if (jsonFile.exists() && !jsonFile.isDirectory()) {
       try {
         System.out.println(">>> try");
+
         list = objectMapper.readValue(jsonFile, new TypeReference<List<S>>() {
         });
-
-        System.out.println(">>> list="+list);
       } catch (IOException e) {
         e.printStackTrace();
 
@@ -108,11 +103,5 @@ public abstract class BaseDaoFile {
     }
     System.out.println(">>> base getAll return="+list);
     return list;
-  }
-
-  protected void checkNull(Object o) {
-    if (o == null) {
-      throw new NullPointerException("Object is NULL");
-    }
   }
 }

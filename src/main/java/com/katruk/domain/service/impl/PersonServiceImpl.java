@@ -4,11 +4,8 @@ import com.katruk.dao.PersonDao;
 import com.katruk.domain.dto.ContactDto;
 import com.katruk.domain.entity.Person;
 import com.katruk.domain.service.PersonService;
-
 import org.springframework.stereotype.Service;
-
 import java.util.NoSuchElementException;
-
 import javax.annotation.Resource;
 
 @Service
@@ -53,5 +50,4 @@ public class PersonServiceImpl implements PersonService {
     }
     return this.personDao.saveAndFlush(person);
   }
-
 }

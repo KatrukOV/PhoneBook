@@ -1,17 +1,5 @@
 package com.katruk.dao.file;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.katruk.domain.entity.Address;
-import com.katruk.domain.entity.Model;
-import com.katruk.domain.entity.Person;
-
-import java.io.IOException;
-
 //public class InstanceDeserializer extends JsonDeserializer<Model> {
 //
 //  @Override

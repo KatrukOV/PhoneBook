@@ -1,18 +1,13 @@
 package com.katruk.domain.service.impl;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-
 import com.katruk.dao.AddressDao;
 import com.katruk.domain.dto.ContactDto;
 import com.katruk.domain.entity.Address;
 import com.katruk.domain.service.AddressService;
-
 import org.springframework.stereotype.Service;
-
 import java.util.NoSuchElementException;
 import java.util.Objects;
-
 import javax.annotation.Resource;
 
 @Service

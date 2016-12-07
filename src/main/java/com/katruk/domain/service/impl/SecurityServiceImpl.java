@@ -1,7 +1,6 @@
 package com.katruk.domain.service.impl;
 
 import com.katruk.domain.service.SecurityService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
