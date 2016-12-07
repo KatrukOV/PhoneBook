@@ -4,7 +4,6 @@ import com.katruk.domain.entity.User;
 import com.katruk.domain.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +24,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   public UserDetailsServiceImpl(UserService userService) {
     this.userService = userService;
   }
+
+//  public UserDetailsServiceImpl() {
+//
+//  }
 
   @Override
   @Transactional(readOnly = true)

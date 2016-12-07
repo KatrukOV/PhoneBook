@@ -11,6 +11,7 @@ import com.katruk.domain.service.AddressService;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import javax.annotation.Resource;
 
@@ -26,7 +27,7 @@ public class AddressServiceImpl implements AddressService {
 
   @Override
   public Address create(ContactDto contactDto) {
-    if (addressEmptyField(contactDto)) {
+    if (!addressNotEmptyField(contactDto)) {
       return null;
     }
     Address address = new Address();
@@ -47,36 +48,42 @@ public class AddressServiceImpl implements AddressService {
   @Override
   public Address updateAddress(Long addressId, ContactDto contactDto) {
 
-    if (isNull(addressId) && addressEmptyField(contactDto)) {
+    if (!addressNotEmptyField(contactDto)) {
+      this.addressDao.delete(addressId);
       return null;
     }
 
     Address address;
-    if (isNull(addressId)) {
+    if (addressId <= 0) {
       address = new Address();
     } else {
       address = getAddressById(addressId);
     }
 
-    if (nonNull(contactDto.getCity()) && !(contactDto.getCity().trim()).equals(address.getCity())) {
+    if (nonNull(contactDto.getCity()) && !contactDto.getCity().equals(address.getCity())) {
       address.setCity(contactDto.getCity().trim());
     }
     if (contactDto.getStreet() != null
-        && !(contactDto.getStreet().trim()).equals(address.getStreet())) {
+        && !contactDto.getStreet().equals(address.getStreet())) {
       address.setStreet(contactDto.getStreet().trim());
     }
     if (contactDto.getBuilding() != null
-        && !(contactDto.getBuilding().trim()).equals(address.getBuilding())) {
+        && !contactDto.getBuilding().equals(address.getBuilding())) {
       address.setBuilding(contactDto.getBuilding().trim());
     }
     if (contactDto.getApartment() <= 0
-        && !contactDto.getApartment().equals(address.getApartment())) {
+        && Objects.equals(contactDto.getApartment(), address.getApartment())) {
       address.setApartment(contactDto.getApartment());
     }
     return this.addressDao.saveAndFlush(address);
   }
 
-  private boolean addressEmptyField(ContactDto contactDto) {
+  @Override
+  public void delete(Long addressId) {
+    this.addressDao.delete(addressId);
+  }
+
+  private boolean addressNotEmptyField(ContactDto contactDto) {
     return nonNull(contactDto.getCity()) || nonNull(contactDto.getStreet())
            || nonNull(contactDto.getBuilding()) || contactDto.getApartment() > 0;
   }

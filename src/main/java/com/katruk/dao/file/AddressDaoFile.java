@@ -25,8 +25,12 @@ public class AddressDaoFile extends BaseDaoFile implements AddressDao {
   // TODO: this method is redundant (the same issue in other dao file classes)
   @Override
   public Address saveAndFlush(Address address) {
-    return super.save(address);
+    return super.<Address>save(address);
   }
 
+  @Override
+  public void delete(Long addressId) {
+    super.<Address>delete(addressId);
+  }
 
 }

@@ -167,10 +167,10 @@ public class ContactServiceImpl implements ContactService {
     Person person = this.personService.updatePerson(contact.getPerson().getId(), contactDto);
 
     Long addressId = null;
-    if (nonNull(contact.getAddress())){
+    if (nonNull(contact.getAddress())) {
       addressId = contact.getAddress().getId();
     }
-    Address address = this.addressService.updateAddress(addressId,contactDto);
+    Address address = this.addressService.updateAddress(addressId, contactDto);
 
     contact.setPerson(person);
     contact.setAddress(address);

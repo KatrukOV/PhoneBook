@@ -37,12 +37,20 @@ public class ContactValidatorTest {
   }
 
   @Test
-  public void supports() throws Exception {
+  public void supports_true() throws Exception {
     //when
     boolean result = this.contactValidator.supports(contactDto.getClass());
 
     //then
     assertTrue(result);
+  }
+  @Test
+  public void supports_false() throws Exception {
+    //when
+    boolean result = this.contactValidator.supports(errors.getClass());
+
+    //then
+    assertFalse(result);
   }
 
   @Test

@@ -83,8 +83,9 @@ public class UserServiceImplTest {
     String login = "Login";
 
     //when
+    System.out.println(">>>>>>>>>>>>>> userDao=" + userDao);
     when(this.userDao.getUserByLogin(login)).thenReturn(Optional.of(new User()));
-    User user = userService.getUserByLogin(login);
+    User user = this.userService.getUserByLogin(login);
 
     //then
     assertNotNull(user);

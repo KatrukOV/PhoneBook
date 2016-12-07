@@ -47,9 +47,9 @@ public class MessageServiceImplTest {
     String msg = "info";
 
     //when
-    when(this.httpSession.getAttribute(anyString())).thenReturn(messages);
+    when(this.httpSession.getAttribute(anyString())).thenReturn(this.messages);
     this.messageService.addInfo(msg);
-    String result = messages.get(0).getText();
+    String result = this.messages.get(0).getText();
 
     //then
     assertEquals(msg, result);
@@ -62,9 +62,9 @@ public class MessageServiceImplTest {
     MessageServiceImpl.MessageType mType = MessageServiceImpl.MessageType.INFO;
 
     //when
-    when(this.httpSession.getAttribute(anyString())).thenReturn(messages);
+    when(this.httpSession.getAttribute(anyString())).thenReturn(this.messages);
     this.messageService.addInfo(msg);
-    String result = messages.get(0).getType().toString();
+    String result = this.messages.get(0).getType().toString();
 
     //then
     assertEquals("INFO", result);
@@ -91,9 +91,9 @@ public class MessageServiceImplTest {
     MessageServiceImpl.MessageType mType = MessageServiceImpl.MessageType.ERROR;
 
     //when
-    when(this.httpSession.getAttribute(anyString())).thenReturn(messages);
+    when(this.httpSession.getAttribute(anyString())).thenReturn(this.messages);
     this.messageService.addError(msg);
-    String result = messages.get(0).getType().toString();
+    String result = this.messages.get(0).getType().toString();
 
     //then
     verify(this.httpSession, times(1)).getAttribute(anyString());
@@ -111,6 +111,6 @@ public class MessageServiceImplTest {
 
     //then
     verify(this.httpSession, times(1)).getAttribute(anyString());
-    assertTrue(messages.isEmpty());
+    assertTrue(this.messages.isEmpty());
   }
 }

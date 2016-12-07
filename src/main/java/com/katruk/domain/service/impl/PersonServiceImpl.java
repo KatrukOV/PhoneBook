@@ -42,13 +42,13 @@ public class PersonServiceImpl implements PersonService {
         .orElseThrow(() -> new NoSuchElementException(
             String.format("No person present with id: %s", personId)));
 
-    if (!(contactDto.getLastName().trim()).equals(person.getLastName())) {
+    if (!contactDto.getLastName().equals(person.getLastName())) {
       person.setLastName(contactDto.getLastName().trim());
     }
-    if (!(contactDto.getName().trim()).equals(person.getName())) {
+    if (!contactDto.getName().equals(person.getName())) {
       person.setName(contactDto.getName().trim());
     }
-    if (!(contactDto.getPatronymic().trim()).equals(person.getPatronymic())) {
+    if (!contactDto.getPatronymic().equals(person.getPatronymic())) {
       person.setPatronymic(contactDto.getPatronymic().trim());
     }
     return this.personDao.saveAndFlush(person);

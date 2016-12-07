@@ -10,5 +10,7 @@ public interface AddressDao {
 
   Address saveAndFlush(Address address);
 
+  void delete(Long addressId);
+
 }
 

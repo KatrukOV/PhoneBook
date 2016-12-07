@@ -10,4 +10,6 @@ public interface AddressService {
   Address getAddressById(Long addressId);
 
   Address updateAddress(Long addressId, ContactDto contactDto);
+
+  void delete(Long addressId);
 }
