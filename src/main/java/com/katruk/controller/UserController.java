@@ -33,10 +33,10 @@ public class UserController {
   @RequestMapping(value = "/login", method = RequestMethod.GET)
   public String login(Model model, String error, String logout) {
     if (nonNull(error)) {
-      model.addAttribute("error", "ERROR_VALUE");
+      model.addAttribute("error", "error.login.or.password");
     }
     if (nonNull(logout)) {
-      model.addAttribute("logout", "LOGOUT_VALUE");
+      model.addAttribute("logout", "logout.success");
     }
     return "login";
   }
