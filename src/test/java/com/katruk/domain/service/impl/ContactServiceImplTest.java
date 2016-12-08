@@ -40,7 +40,7 @@ public class ContactServiceImplTest {
 
   @Rule
   public MockitoRule rule = MockitoJUnit.rule();
-  @Mock(name = "${ContactDao.class}")
+  @Mock
   private ContactDao contactDao;
   @Mock
   private SecurityService securityService;

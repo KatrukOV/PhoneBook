@@ -4,16 +4,18 @@ import com.katruk.dao.PersonDao;
 import com.katruk.domain.dto.ContactDto;
 import com.katruk.domain.entity.Person;
 import com.katruk.domain.service.PersonService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.NoSuchElementException;
-import javax.annotation.Resource;
 
 @Service
 public class PersonServiceImpl implements PersonService {
 
-  @Resource(name = "${PersonDao.class}")
   private final PersonDao personDao;
 
+  @Autowired
   public PersonServiceImpl(PersonDao personDao) {
     this.personDao = personDao;
   }

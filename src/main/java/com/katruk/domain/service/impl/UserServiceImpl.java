@@ -5,18 +5,18 @@ import com.katruk.domain.dto.UserDto;
 import com.katruk.domain.entity.User;
 import com.katruk.domain.service.UserService;
 import com.katruk.domain.util.Converter;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.NoSuchElementException;
-import javax.annotation.Resource;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-  //  @Resource(lookup = "java:com/katruk/dao/UserDaoMySql")
-//  @Resource(mappedName = "UserDaoMySql")
-  @Resource(name = "${UserDao.class}")
-  private final UserDao userDao;
+  private UserDao userDao;
 
+  @Autowired
   public UserServiceImpl(UserDao userDao) {
     this.userDao = userDao;
   }

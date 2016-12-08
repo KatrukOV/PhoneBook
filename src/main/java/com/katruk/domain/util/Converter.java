@@ -4,6 +4,7 @@ import com.katruk.domain.dto.ContactDto;
 import com.katruk.domain.dto.UserDto;
 import com.katruk.domain.entity.Contact;
 import com.katruk.domain.entity.User;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class Converter {

@@ -1,6 +1,8 @@
 package com.katruk.dao.file;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
@@ -10,7 +12,6 @@ import static org.mockito.Mockito.when;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.katruk.domain.DefaultEntity;
-import com.katruk.domain.entity.Address;
 import com.katruk.domain.entity.Contact;
 
 import org.junit.Before;

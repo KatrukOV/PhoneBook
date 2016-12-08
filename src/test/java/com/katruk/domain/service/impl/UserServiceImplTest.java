@@ -33,7 +33,7 @@ public class UserServiceImplTest {
 
   @Rule
   public MockitoRule rule = MockitoJUnit.rule();
-  @Mock(name = "${UserDao.class}")
+  @Mock
   private UserDao userDao;
   @Spy
   private UserDto userDto;
@@ -41,7 +41,9 @@ public class UserServiceImplTest {
 
   @Before
   public void setUp() throws Exception {
-    this.userService = new UserServiceImpl(userDao);
+    this.userService = new UserServiceImpl(
+        userDao
+    );
     this.userDto = new DefaultEntity().userDto();
   }
 
@@ -83,7 +85,6 @@ public class UserServiceImplTest {
     String login = "Login";
 
     //when
-    System.out.println(">>>>>>>>>>>>>> userDao=" + userDao);
     when(this.userDao.getUserByLogin(login)).thenReturn(Optional.of(new User()));
     User user = this.userService.getUserByLogin(login);
 

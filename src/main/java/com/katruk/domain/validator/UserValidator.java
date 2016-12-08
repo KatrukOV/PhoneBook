@@ -2,11 +2,13 @@ package com.katruk.domain.validator;
 
 import com.katruk.domain.dto.UserDto;
 import com.katruk.domain.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
 import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 

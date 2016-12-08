@@ -34,7 +34,7 @@ public class PersonServiceImplTest {
 
   @Rule
   public MockitoRule rule = MockitoJUnit.rule();
-  @Mock(name = "${PersonDao.class}")
+  @Mock
   private PersonDao personDao;
   @Spy
   private ContactDto contactDto;

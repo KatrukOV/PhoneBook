@@ -1,11 +1,13 @@
 package com.katruk.controller;
 
 import static java.util.Objects.nonNull;
+
 import com.katruk.domain.dto.UserDto;
 import com.katruk.domain.service.MessageService;
 import com.katruk.domain.service.SecurityService;
 import com.katruk.domain.service.UserService;
 import com.katruk.domain.validator.UserValidator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

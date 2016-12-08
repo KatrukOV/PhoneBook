@@ -3,11 +3,16 @@ package com.katruk.dao.file;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.katruk.dao.AddressDao;
 import com.katruk.domain.entity.Address;
+
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
-@Repository(value = "AddressDaoFile")
+@Repository
+@Profile(value = "file")
 public class AddressDaoFile extends BaseDaoFile implements AddressDao {
 
   public AddressDaoFile(ObjectMapper objectMapper) {
@@ -16,7 +21,14 @@ public class AddressDaoFile extends BaseDaoFile implements AddressDao {
 
   @Override
   protected File getJsonFile() {
-    return new File("src/main/resources/json/address.json");
+    File jsonFile = null;
+    try {
+      jsonFile = super.createJsonFile("src/main/resources/json/address.json");
+    } catch (IOException e) {
+      //todo log and throw
+      e.printStackTrace();
+    }
+    return jsonFile;
   }
 
   // TODO: this method is redundant (probably)

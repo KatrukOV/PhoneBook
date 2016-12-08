@@ -1,6 +1,7 @@
 package com.katruk.domain.service.impl;
 
 import static java.util.Objects.nonNull;
+
 import com.katruk.dao.ContactDao;
 import com.katruk.domain.dto.ContactDto;
 import com.katruk.domain.entity.Address;
@@ -13,17 +14,17 @@ import com.katruk.domain.service.PersonService;
 import com.katruk.domain.service.SecurityService;
 import com.katruk.domain.service.UserService;
 import com.katruk.domain.util.Converter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import javax.annotation.Resource;
 
 @Service
 public class ContactServiceImpl implements ContactService {
 
-  @Resource(name = "${ContactDao.class}")
   private final ContactDao contactDao;
   private final SecurityService securityService;
   private final PersonService personService;

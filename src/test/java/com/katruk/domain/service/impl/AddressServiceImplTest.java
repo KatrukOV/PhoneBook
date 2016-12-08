@@ -38,7 +38,7 @@ public class AddressServiceImplTest {
 
   @Rule
   public MockitoRule rule = MockitoJUnit.rule();
-  @Mock(name = "${AddressDao.class}")
+  @Mock
   private AddressDao addressDao;
   @Spy
   private ContactDto contactDto;
