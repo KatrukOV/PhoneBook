@@ -36,6 +36,8 @@ public class UserDaoFileTest {
   public MockitoRule rule = MockitoJUnit.rule();
   @Mock
   private ObjectMapper objectMapper;
+//  @Mock
+//  private ContactDaoFile contactDaoFile;
   @Spy
   private User user;
   private List<User> users;
@@ -43,7 +45,7 @@ public class UserDaoFileTest {
 
   @Before
   public void setUp() throws Exception {
-    this.userDaoFile = new UserDaoFile(objectMapper);
+    this.userDaoFile = new UserDaoFile();
     this.user = new DefaultEntity().user();
     this.users = new ArrayList<>();
     this.users.add(this.user);
@@ -91,7 +93,8 @@ public class UserDaoFileTest {
   @Test
   public void saveAndFlush() throws Exception {
     //when
-    when(this.objectMapper.readValue(any(File.class), any(TypeReference.class))).thenReturn(this.users);
+    when(this.objectMapper.readValue(any(File.class), any(TypeReference.class)))
+        .thenReturn(this.users);
     doNothing().when(this.objectMapper).writeValue(any(File.class), any(TypeReference.class));
     User result = this.userDaoFile.saveAndFlush(this.user);
 

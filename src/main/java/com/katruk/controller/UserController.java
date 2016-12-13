@@ -36,6 +36,7 @@ public class UserController {
   public String login(Model model, String error, String logout) {
     if (nonNull(error)) {
       model.addAttribute("error", "error.login.or.password");
+      messageService.addError("error.login.or.password");
     }
     if (nonNull(logout)) {
       model.addAttribute("logout", "logout.success");

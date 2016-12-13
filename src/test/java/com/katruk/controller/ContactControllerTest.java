@@ -100,7 +100,7 @@ public class ContactControllerTest {
   public void doAddContact_success() throws Exception {
     //given
     Contact contact = new DefaultEntity().contact();
-    BindingResult error = new DirectFieldBindingResult(contactDto, "ContactDto");
+    BindingResult error = new DirectFieldBindingResult(contactDto, "ContactJson");
 
     //when
     whenDefaultScript(contact);
@@ -114,7 +114,7 @@ public class ContactControllerTest {
   public void doAddContact_fail() throws Exception {
     //given
     Contact contact = new DefaultEntity().contact();
-    BindingResult error = new DirectFieldBindingResult(contactDto, "ContactDto");
+    BindingResult error = new DirectFieldBindingResult(contactDto, "ContactJson");
     error.reject("error");
 
     //when
@@ -133,7 +133,7 @@ public class ContactControllerTest {
   @Test
   public void goEdit() throws Exception {
     //given
-    BindingResult error = new DirectFieldBindingResult(contactDto, "ContactDto");
+    BindingResult error = new DirectFieldBindingResult(contactDto, "ContactJson");
 
     //when
     when(this.contactService.getContactById(anyLong())).thenReturn(contactDto);
@@ -148,7 +148,7 @@ public class ContactControllerTest {
   public void doEditContact_success() throws Exception {
     //given
     Contact contact = new DefaultEntity().contact();
-    BindingResult error = new DirectFieldBindingResult(contactDto, "ContactDto");
+    BindingResult error = new DirectFieldBindingResult(contactDto, "ContactJson");
 
     //when
     whenDefaultScript(contact);
@@ -162,7 +162,7 @@ public class ContactControllerTest {
   public void doEditContact_fail() throws Exception {
     //given
     Contact contact = new DefaultEntity().contact();
-    BindingResult error = new DirectFieldBindingResult(contactDto, "ContactDto");
+    BindingResult error = new DirectFieldBindingResult(contactDto, "ContactJson");
     error.reject("error");
 
     //when

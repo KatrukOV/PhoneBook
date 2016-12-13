@@ -62,7 +62,7 @@ public class UserDto {
 
   @Override
   public String toString() {
-    return "UserDto{" +
+    return "UserJson{" +
            "lastName='" + lastName + '\'' +
            ", name='" + name + '\'' +
            ", patronymic='" + patronymic + '\'' +

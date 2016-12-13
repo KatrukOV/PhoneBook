@@ -201,7 +201,7 @@ public class ContactDto {
   @Override
   public String toString() {
     final AtomicReference<StringBuilder> sb =
-        new AtomicReference<>(new StringBuilder("ContactDto{"));
+        new AtomicReference<>(new StringBuilder("ContactJson{"));
     sb.get().append("contactId=").append(contactId);
     sb.get().append(", lastName='").append(lastName).append('\'');
     sb.get().append(", name='").append(name).append('\'');

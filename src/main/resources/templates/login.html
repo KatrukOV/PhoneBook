@@ -7,6 +7,14 @@
 <body>
 <div>
     <h3>Log in</h3>
+    <ul id="messages"
+        th:with="messages=${session[T(com.katruk.domain.service.impl.MessageServiceImpl).MSG_SESSION_KEY]}">
+        <li th:each="msg : ${messages}" th:text="${msg.text}"
+            th:class="${#strings.toLowerCase(msg.type)}">
+        </li>
+        <span th:if="${messages}" th:remove="all"
+              th:text="${session.remove(T(com.katruk.domain.service.impl.MessageServiceImpl).MSG_SESSION_KEY)}"></span>
+    </ul>
     <hr/>
 
     <form th:action="@{/login}" method="POST">

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -27,18 +28,13 @@ public class ContactServiceImpl implements ContactService {
 
   private final ContactDao contactDao;
   private final SecurityService securityService;
-  private final PersonService personService;
-  private final AddressService addressService;
   private final UserService userService;
 
   @Autowired
   public ContactServiceImpl(ContactDao contactDao, SecurityService securityService,
-                            PersonService personService, AddressService addressService,
                             UserService userService) {
     this.contactDao = contactDao;
     this.securityService = securityService;
-    this.personService = personService;
-    this.addressService = addressService;
     this.userService = userService;
   }
 
@@ -98,6 +94,10 @@ public class ContactServiceImpl implements ContactService {
   @Override
   public Contact addContact(ContactDto contactDto) {
     Contact contact = createContact(contactDto);
+    String login = this.securityService.getLogin();
+    User user = this.userService.getUserByLogin(login);
+    contact.setUser(user);
+    System.out.println(">>> addContact contact"+contact);
     return this.contactDao.saveAndFlush(contact);
   }
 
@@ -106,7 +106,13 @@ public class ContactServiceImpl implements ContactService {
     Contact contact = this.contactDao.getContactById(contactDto.getContactId())
         .orElseThrow(() -> new NoSuchElementException(
             String.format("Contact with id=%s not found", contactDto.getContactId())));
+    String login = this.securityService.getLogin();
+    User user = this.userService.getUserByLogin(login);
+    contact.setUser(user);
+    System.out.println(">>> editContact before contact"+contact);
+    System.out.println(">>> editContact before contact.user"+contact.getUser());
     contact = updateContact(contact, contactDto);
+    System.out.println(">>> editContact after contact"+contact);
     return this.contactDao.saveAndFlush(contact);
   }
 
@@ -128,9 +134,11 @@ public class ContactServiceImpl implements ContactService {
 
   private Set<ContactDto> getContactDtoByUserLogin(String login) {
     User user = this.userService.getUserByLogin(login);
+    System.out.println(">>> getContactDtoByUserLogin user=" + user);
     Set<ContactDto> contactDtoSet = new HashSet<>();
     ContactDto contactDto;
     for (Contact contact : user.getContacts()) {
+      System.out.println(">>> contact=" + contact);
       contactDto = new Converter().makeDtoFromContact(contact);
       contactDtoSet.add(contactDto);
     }
@@ -138,10 +146,22 @@ public class ContactServiceImpl implements ContactService {
   }
 
   private Contact createContact(ContactDto contactDto) {
+    System.out.println(">>> Service 1 contactDto=" + contactDto);
     Contact contact = new Contact();
 
-    Person person = this.personService.create(contactDto);
-    Address address = this.addressService.create(contactDto);
+    Person person = new Person();
+    person.setLastName(contactDto.getLastName());
+    person.setName(contactDto.getName());
+    person.setPatronymic(contactDto.getPatronymic().trim());
+
+    Address address = null;
+    if (addressNotEmptyField(contactDto)) {
+      address = new Address();
+      address.setCity(contactDto.getCity().trim());
+      address.setStreet(contactDto.getStreet().trim());
+      address.setBuilding(contactDto.getBuilding().trim());
+      address.setApartment(contactDto.getApartment());
+    }
 
     String login = this.securityService.getLogin();
     User user = this.userService.getUserByLogin(login);
@@ -149,36 +169,41 @@ public class ContactServiceImpl implements ContactService {
     contact.setPerson(person);
     contact.setAddress(address);
     contact.setUser(user);
-    contact.setMobilePhone(contactDto.getMobilePhone().trim());
-    contact.setHomePhone(contactDto.getHomePhone().trim());
-    contact.setEmail(contactDto.getEmail().trim());
+    contact.setMobilePhone(contactDto.getMobilePhone());
+    contact.setHomePhone(contactDto.getHomePhone());
+    contact.setEmail(contactDto.getEmail());
+    System.out.println(">>> Service 2 contact=" + contact);
     return contact;
+  }
+
+  private boolean addressNotEmptyField(ContactDto contactDto) {
+    return nonNull(contactDto.getCity()) || nonNull(contactDto.getStreet())
+           || nonNull(contactDto.getBuilding()) || contactDto.getApartment() > 0;
   }
 
   private Contact updateContact(Contact contact, ContactDto contactDto) {
 
-    Person person = this.personService.updatePerson(contact.getPerson().getId(), contactDto);
+    contact.setId(contactDto.getContactId());
 
-    Long addressId = null;
-    if (nonNull(contact.getAddress())) {
-      addressId = contact.getAddress().getId();
+    Person person = new Person();
+    person.setLastName(contactDto.getLastName());
+    person.setName(contactDto.getName());
+    person.setPatronymic(contactDto.getPatronymic());
+
+    Address address = null;
+    if (addressNotEmptyField(contactDto)) {
+      address = new Address();
+      address.setCity(contactDto.getCity().trim());
+      address.setStreet(contactDto.getStreet().trim());
+      address.setBuilding(contactDto.getBuilding().trim());
+      address.setApartment(contactDto.getApartment());
     }
-    Address address = this.addressService.updateAddress(addressId, contactDto);
 
     contact.setPerson(person);
     contact.setAddress(address);
-
-    if (!contactDto.getMobilePhone().equals(contact.getMobilePhone())) {
-      contact.setMobilePhone(contactDto.getMobilePhone());
-    }
-    if (contactDto.getHomePhone() != null &&
-        !contactDto.getHomePhone().equals(contact.getHomePhone())) {
-      contact.setHomePhone(contactDto.getHomePhone());
-    }
-    if (contactDto.getEmail() != null &&
-        !contactDto.getEmail().equals(contact.getEmail())) {
-      contact.setEmail(contactDto.getEmail());
-    }
+    contact.setMobilePhone(contactDto.getMobilePhone());
+    contact.setHomePhone(contactDto.getHomePhone());
+    contact.setEmail(contactDto.getEmail());
     return contact;
   }
 }

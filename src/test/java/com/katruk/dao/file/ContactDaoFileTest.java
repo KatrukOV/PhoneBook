@@ -36,6 +36,9 @@ public class ContactDaoFileTest {
   public MockitoRule rule = MockitoJUnit.rule();
   @Mock
   private ObjectMapper objectMapper;
+//  @Mock
+//  private UserDaoFile userDaoFile;
+
   @Spy
   private Contact contact;
   private List<Contact> contacts;
@@ -43,7 +46,7 @@ public class ContactDaoFileTest {
 
   @Before
   public void setUp() throws Exception {
-    this.contactDaoFile = new ContactDaoFile(objectMapper);
+    this.contactDaoFile = new ContactDaoFile();
     this.contact = new DefaultEntity().contact();
     this.contacts = new ArrayList<>();
     this.contacts.add(this.contact);
@@ -73,7 +76,7 @@ public class ContactDaoFileTest {
     assertTrue(result.isPresent());
   }
 
-@Test
+  @Test
   public void getContactById_empty() throws Exception {
     //given
     Long contactId = 7L;
@@ -91,7 +94,8 @@ public class ContactDaoFileTest {
   @Test
   public void saveAndFlush() throws Exception {
     //when
-    when(this.objectMapper.readValue(any(File.class), any(TypeReference.class))).thenReturn(this.contacts);
+    when(this.objectMapper.readValue(any(File.class), any(TypeReference.class)))
+        .thenReturn(this.contacts);
     doNothing().when(this.objectMapper).writeValue(any(File.class), any(TypeReference.class));
     Contact result = this.contactDaoFile.saveAndFlush(this.contact);
 
@@ -107,7 +111,8 @@ public class ContactDaoFileTest {
     Long contactId = 1L;
 
     //when
-    when(this.objectMapper.readValue(any(File.class), any(TypeReference.class))).thenReturn(this.contacts);
+    when(this.objectMapper.readValue(any(File.class), any(TypeReference.class)))
+        .thenReturn(this.contacts);
     doNothing().when(this.objectMapper).writeValue(any(File.class), any(TypeReference.class));
     this.contactDaoFile.delete(contactId);
 
