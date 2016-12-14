@@ -15,6 +15,4 @@ import java.util.Optional;
 @Transactional
 public interface UserDaoMySql extends JpaRepository<User, Long>, UserDao {
 
-  Optional<User> getUserByLogin(String login);
-
 }

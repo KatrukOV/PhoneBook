@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.katruk.dao.UserDao;
 import com.katruk.domain.entity.User;
 import com.katruk.domain.entity.json.UserJson;
+import com.katruk.domain.util.Converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -46,9 +47,9 @@ public class UserDaoFile implements UserDao {
   public Optional<User> getUserById(Long userId) {
     List<UserJson> users = getAll();
 
-    for (UserJson element : users) {
-      if (element.getUserId().equals(userId)) {
-        User user = createUser(element);
+    for (UserJson userJson : users) {
+      if (userJson.getUserId().equals(userId)) {
+        User user = new Converter().makeUserFromJson(userJson);
         return Optional.of(user);
       }
     }
@@ -61,9 +62,9 @@ public class UserDaoFile implements UserDao {
     List<UserJson> users = getAll();
     System.out.println(">>> getUserByLogin users=" + users + "  login=" + login);
 
-    for (UserJson element : users) {
-      if (element.getLogin().equals(login)) {
-        User user = createUser(element);
+    for (UserJson userJson : users) {
+      if (userJson.getLogin().equals(login)) {
+        User user = new Converter().makeUserFromJson(userJson);
         return Optional.of(user);
       }
     }
@@ -77,7 +78,7 @@ public class UserDaoFile implements UserDao {
   public User saveAndFlush(User user) {
 
     List<UserJson> list = getAll();
-    UserJson userJson = createUserJson(user);
+    UserJson userJson = new Converter().makeJsonFromUser(user);
     boolean isUnique = true;
     for (UserJson element : list) {
       if (element.getUserId().equals(user.getId())) {
@@ -87,7 +88,7 @@ public class UserDaoFile implements UserDao {
     if (isUnique) {
       userJson.setUserId(UUID.randomUUID().getLeastSignificantBits());
     } else {
-      delete(userJson.getUserId());
+      list = remove(userJson.getUserId());
     }
     try {
       list.add(userJson);
@@ -99,23 +100,12 @@ public class UserDaoFile implements UserDao {
     return user;
   }
 
-  private UserJson createUserJson(User user) {
-    UserJson userJson = new UserJson();
-    userJson.setUserId(user.getId());
-    userJson.setLastName(user.getLastName());
-    userJson.setName(user.getName());
-    userJson.setPatronymic(user.getPatronymic());
-    userJson.setLogin(user.getLogin());
-    userJson.setPassword(user.getPassword());
-    return userJson;
-  }
-
-  private void delete(Long userId) {
+  private List<UserJson> remove(Long userId) {
     List<UserJson> list = getAll();
     User user = getUserById(userId)
         .orElseThrow(() -> new NoSuchElementException("Element not found"));
 
-    UserJson userJson = createUserJson(user);
+    UserJson userJson = new Converter().makeJsonFromUser(user);
 
     list.remove(list.indexOf(userJson));
     try {
@@ -123,17 +113,7 @@ public class UserDaoFile implements UserDao {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-  private User createUser(UserJson userJson) {
-    User user = new User();
-    user.setId(userJson.getUserId());
-    user.setLastName(userJson.getLastName());
-    user.setName(userJson.getName());
-    user.setPatronymic(userJson.getPatronymic());
-    user.setLogin(userJson.getLogin());
-    user.setPassword(userJson.getPassword());
-    return user;
+    return list;
   }
 
   private List<UserJson> getAll() {

@@ -1,15 +1,12 @@
 package com.katruk.dao.file;
 
-import static java.util.Objects.nonNull;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.katruk.dao.ContactDao;
-import com.katruk.domain.entity.Address;
 import com.katruk.domain.entity.Contact;
-import com.katruk.domain.entity.Person;
 import com.katruk.domain.entity.User;
 import com.katruk.domain.entity.json.ContactJson;
+import com.katruk.domain.util.Converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -53,9 +50,11 @@ public class ContactDaoFile implements ContactDao {
   public Optional<Contact> getContactById(Long contactId) {
 
     List<ContactJson> lists = getAll();
-    for (ContactJson element : lists) {
-      if (element.getContactId().equals(contactId)) {
-        Contact contact = createContact(element);
+    for (ContactJson contactJson : lists) {
+      if (contactJson.getContactId().equals(contactId)) {
+        User user = this.userDaoFile.getUserById(contactJson.getUserId())
+            .orElseThrow(() -> new NoSuchElementException("Element not found"));
+        Contact contact = new Converter().makeContactFromJson(contactJson, user);
         return Optional.of(contact);
       }
     }
@@ -68,7 +67,9 @@ public class ContactDaoFile implements ContactDao {
     Set<Contact> result = new HashSet<>();
     for (ContactJson contactJson : list) {
       if (contactJson.getUserId().equals(userId)) {
-        Contact contact = createContact(contactJson);
+        User user = this.userDaoFile.getUserById(contactJson.getUserId())
+            .orElseThrow(() -> new NoSuchElementException("Element not found"));
+        Contact contact = new Converter().makeContactFromJson(contactJson, user);
         result.add(contact);
       }
     }
@@ -79,7 +80,9 @@ public class ContactDaoFile implements ContactDao {
   public Contact saveAndFlush(Contact contact) {
 
     List<ContactJson> list = getAll();
-    ContactJson contactJson = createContactJson(contact);
+
+    ContactJson contactJson = new Converter().makeJsonFromContact(contact);
+
     System.out.println(">>> saveAndFlush size=" + list.size() + "  list=" + list);
 
     boolean isUnique = true;
@@ -115,11 +118,32 @@ public class ContactDaoFile implements ContactDao {
     remove(contactId);
   }
 
+  public List<ContactJson> getAll() {
+    System.out.println(">>> getAll ContactJson start");
+    List<ContactJson> list = new ArrayList<>();
+
+    File jsonFile = getJsonFile();
+
+    if (jsonFile.exists() && !jsonFile.isDirectory()) {
+      try {
+        list = objectMapper.readValue(jsonFile, new TypeReference<List<ContactJson>>() {
+        });
+      } catch (IOException e) {
+        // TODO:  log
+        e.printStackTrace();
+      }
+    }
+    for (ContactJson con : list) {
+      System.out.println(">>> getAll contact=  " + con);
+    }
+    return list;
+  }
+
   private List<ContactJson> remove(Long contactId) {
     List<ContactJson> list = getAll();
     Contact contact = getContactById(contactId)
         .orElseThrow(() -> new NoSuchElementException("Element not found"));
-    ContactJson contactJson = createContactJson(contact);
+    ContactJson contactJson = new Converter().makeJsonFromContact(contact);
     System.out.println(">>>>>>>>>>>> to remove List=" + list);
     System.out.println(">>>>>>>>>>>> to remove List size=" + list.size());
     System.out.println(">>>>>>>>>>>> to remove contactJson=" + contactJson);
@@ -148,75 +172,5 @@ public class ContactDaoFile implements ContactDao {
       }
     }
     return result;
-  }
-
-  private ContactJson createContactJson(Contact contact) {
-    System.out.println(">>> createContactJson 1 contact=" + contact);
-    System.out.println(">>> createContactJson 1 contact.user=" + contact.getUser());
-    ContactJson contactJson = new ContactJson();
-    contactJson.setContactId(contact.getId());
-    contactJson.setUserId(contact.getUser().getId());
-    contactJson.setLastName(contact.getPerson().getLastName());
-    contactJson.setName(contact.getPerson().getName());
-    contactJson.setPatronymic(contact.getPerson().getPatronymic());
-    contactJson.setMobilePhone(contact.getMobilePhone());
-    contactJson.setHomePhone(contact.getHomePhone());
-    contactJson.setEmail(contact.getEmail());
-    if (nonNull(contact.getAddress())) {
-      contactJson.setCity(contact.getAddress().getCity());
-      contactJson.setStreet(contact.getAddress().getStreet());
-      contactJson.setBuilding(contact.getAddress().getBuilding());
-      contactJson.setApartment(contact.getAddress().getApartment());
-    }
-    System.out.println(">>> createContactJson 2 contactJson=" + contactJson);
-    return contactJson;
-  }
-
-  private Contact createContact(ContactJson contactJson) {
-
-    System.out.println(">>> createContact 1 contactJson=" + contactJson);
-    Contact contact = new Contact();
-    User user = this.userDaoFile.getUserById(contactJson.getUserId())
-        .orElseThrow(() -> new NoSuchElementException("Element not found"));
-    contact.setUser(user);
-
-    contact.setId(contactJson.getContactId());
-    Person person = new Person();
-    person.setLastName(contactJson.getLastName());
-    person.setName(contactJson.getName());
-    person.setPatronymic(contactJson.getPatronymic());
-    contact.setPerson(person);
-    Address address = new Address();
-    address.setCity(contactJson.getCity());
-    address.setStreet(contactJson.getStreet());
-    address.setBuilding(contactJson.getBuilding());
-    address.setApartment(contactJson.getApartment());
-    contact.setAddress(address);
-    contact.setMobilePhone(contactJson.getMobilePhone());
-    contact.setHomePhone(contactJson.getHomePhone());
-    contact.setEmail(contactJson.getEmail());
-    System.out.println(">>> createContact 2 contact=" + contact);
-    return contact;
-  }
-
-  public List<ContactJson> getAll() {
-    System.out.println(">>> getAll ContactJson start");
-    List<ContactJson> list = new ArrayList<>();
-
-    File jsonFile = getJsonFile();
-
-    if (jsonFile.exists() && !jsonFile.isDirectory()) {
-      try {
-        list = objectMapper.readValue(jsonFile, new TypeReference<List<ContactJson>>() {
-        });
-      } catch (IOException e) {
-        // TODO:  log
-        e.printStackTrace();
-      }
-    }
-    for (ContactJson con : list) {
-      System.out.println(">>> getAll contact=  " + con);
-    }
-    return list;
   }
 }
