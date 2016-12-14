@@ -40,7 +40,7 @@ public class Converter {
         .apartment(contact.getAddress().getApartment())
         .build();
   }
-
+//todo make -> convert entity
   public Contact makeContactFromJson(ContactJson contactJson, User user) {
 
     System.out.println(">>> createContact 1 contactJson=" + contactJson);
@@ -97,6 +97,7 @@ public class Converter {
     user.setPassword(userJson.getPassword());
     return user;
   }
+
   public UserJson makeJsonFromUser(User user) {
     UserJson userJson = new UserJson();
     userJson.setUserId(user.getId());

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.katruk.dao.ContactDao;
 import com.katruk.domain.entity.Contact;
 import com.katruk.domain.entity.User;
+
 import com.katruk.domain.entity.json.ContactJson;
 import com.katruk.domain.util.Converter;
 
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -54,6 +56,7 @@ public class ContactDaoFile implements ContactDao {
       if (contactJson.getContactId().equals(contactId)) {
         User user = this.userDaoFile.getUserById(contactJson.getUserId())
             .orElseThrow(() -> new NoSuchElementException("Element not found"));
+        //todo @Autowired  Converter
         Contact contact = new Converter().makeContactFromJson(contactJson, user);
         return Optional.of(contact);
       }
