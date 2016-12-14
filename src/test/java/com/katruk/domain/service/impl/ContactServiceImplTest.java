@@ -15,8 +15,6 @@ import com.katruk.dao.ContactDao;
 import com.katruk.domain.DefaultEntity;
 import com.katruk.domain.dto.ContactDto;
 import com.katruk.domain.entity.Contact;
-import com.katruk.domain.service.AddressService;
-import com.katruk.domain.service.PersonService;
 import com.katruk.domain.service.SecurityService;
 import com.katruk.domain.service.UserService;
 
@@ -44,10 +42,6 @@ public class ContactServiceImplTest {
   private ContactDao contactDao;
   @Mock
   private SecurityService securityService;
-  @Mock
-  private PersonService personService;
-  @Mock
-  private AddressService addressService;
   @Mock
   private UserService userService;
   @Spy
@@ -305,10 +299,6 @@ public class ContactServiceImplTest {
 
   private void whenEditContactScript() {
     when(this.contactDao.getContactById(anyLong())).thenReturn(Optional.of(this.contact));
-    when(this.personService.updatePerson(anyLong(), any(ContactDto.class)))
-        .thenReturn(this.contact.getPerson());
-    when(this.addressService.updateAddress(anyLong(), any(ContactDto.class)))
-        .thenReturn(this.contact.getAddress());
     when(this.contactDao.saveAndFlush(any(Contact.class))).thenAnswer(returnsFirstArg());
   }
 }

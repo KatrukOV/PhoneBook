@@ -85,17 +85,24 @@ public class ContactDaoFile implements ContactDao, Injectable {
 
     List<ContactJson> list = getAll();
     ContactJson contactJson = createContactJson(contact);
+    System.out.println(">>> saveAndFlush size=" + list.size() + "  list=" + list);
+
     boolean isUnique = true;
     for (ContactJson element : list) {
+      System.out.println(
+          ">>> Unique ??? element.getContactId()=" + element.getContactId() + "  contact.getId()="
+          + contact.getId());
       if (element.getContactId().equals(contact.getId())) {
+        System.out.println(">>> NOT Unique ");
         isUnique = false;
       }
     }
     if (isUnique) {
       contactJson.setContactId(UUID.randomUUID().getLeastSignificantBits());
     } else {
-      delete(contactJson.getContactId());
+      list = remove(contactJson.getContactId());
     }
+    System.out.println(">>> saveAndFlush before add size=" + list.size() + "  list=" + list);
     try {
       list.add(contactJson);
       objectMapper.writeValue(getJsonFile(), list);
@@ -103,23 +110,49 @@ public class ContactDaoFile implements ContactDao, Injectable {
       //// TODO: log + exc
       e.printStackTrace();
     }
+    System.out.println(">>> saveAndFlush after add size=" + list.size() + "  list=" + list);
     return contact;
   }
 
 
   @Override
   public void delete(Long contactId) {
+    remove(contactId);
+  }
 
+  private List<ContactJson> remove(Long contactId) {
     List<ContactJson> list = getAll();
     Contact contact = getContactById(contactId)
         .orElseThrow(() -> new NoSuchElementException("Element not found"));
     ContactJson contactJson = createContactJson(contact);
-    list.remove(list.indexOf(contactJson));
+    System.out.println(">>>>>>>>>>>> to remove List=" + list);
+    System.out.println(">>>>>>>>>>>> to remove List size=" + list.size());
+    System.out.println(">>>>>>>>>>>> to remove contactJson=" + contactJson);
+    System.out.println(">>>>>>>>>>>> to index contactJson=" + list.indexOf(contactJson));
+    System.out.println(">>>>>>>>>>>> to =" + contactJson);
+
+    list = removeFromList(list, contactJson);
+
+    System.out.println(">>>>>>>>>>>> !!!!!!!!!!! after remove List=" + list);
+    System.out.println(">>>>>>>>>>>> after remove List size=" + list.size());
     try {
       objectMapper.writeValue(getJsonFile(), list);
     } catch (IOException e) {
       e.printStackTrace();
     }
+    List<ContactJson> list1 = getAll();
+    System.out.println(">>> after DELETE list" + list1);
+    return list;
+  }
+
+  private List<ContactJson> removeFromList(List<ContactJson> list, ContactJson contactJson) {
+    List<ContactJson> result = new ArrayList<>();
+    for (ContactJson element : list) {
+      if (!element.getContactId().equals(contactJson.getContactId())) {
+        result.add(element);
+      }
+    }
+    return result;
   }
 
   private ContactJson createContactJson(Contact contact) {
@@ -191,6 +224,4 @@ public class ContactDaoFile implements ContactDao, Injectable {
     }
     return list;
   }
-
-
 }

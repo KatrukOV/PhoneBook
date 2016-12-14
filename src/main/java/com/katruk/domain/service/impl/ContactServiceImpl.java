@@ -8,9 +8,7 @@ import com.katruk.domain.entity.Address;
 import com.katruk.domain.entity.Contact;
 import com.katruk.domain.entity.Person;
 import com.katruk.domain.entity.User;
-import com.katruk.domain.service.AddressService;
 import com.katruk.domain.service.ContactService;
-import com.katruk.domain.service.PersonService;
 import com.katruk.domain.service.SecurityService;
 import com.katruk.domain.service.UserService;
 import com.katruk.domain.util.Converter;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -97,7 +94,7 @@ public class ContactServiceImpl implements ContactService {
     String login = this.securityService.getLogin();
     User user = this.userService.getUserByLogin(login);
     contact.setUser(user);
-    System.out.println(">>> addContact contact"+contact);
+    System.out.println(">>> addContact contact" + contact);
     return this.contactDao.saveAndFlush(contact);
   }
 
@@ -109,10 +106,10 @@ public class ContactServiceImpl implements ContactService {
     String login = this.securityService.getLogin();
     User user = this.userService.getUserByLogin(login);
     contact.setUser(user);
-    System.out.println(">>> editContact before contact"+contact);
-    System.out.println(">>> editContact before contact.user"+contact.getUser());
+    System.out.println(">>> editContact before contact" + contact);
+    System.out.println(">>> editContact before contact.user" + contact.getUser());
     contact = updateContact(contact, contactDto);
-    System.out.println(">>> editContact after contact"+contact);
+    System.out.println(">>> editContact after contact" + contact);
     return this.contactDao.saveAndFlush(contact);
   }
 
@@ -135,9 +132,10 @@ public class ContactServiceImpl implements ContactService {
   private Set<ContactDto> getContactDtoByUserLogin(String login) {
     User user = this.userService.getUserByLogin(login);
     System.out.println(">>> getContactDtoByUserLogin user=" + user);
+    Set<Contact> contactSet = this.contactDao.getContactByUserId(user.getId());
     Set<ContactDto> contactDtoSet = new HashSet<>();
     ContactDto contactDto;
-    for (Contact contact : user.getContacts()) {
+    for (Contact contact : contactSet) {
       System.out.println(">>> contact=" + contact);
       contactDto = new Converter().makeDtoFromContact(contact);
       contactDtoSet.add(contactDto);

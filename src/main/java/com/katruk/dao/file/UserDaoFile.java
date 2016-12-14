@@ -61,8 +61,8 @@ public class UserDaoFile implements UserDao, Injectable {
     for (UserJson element : users) {
       if (element.getUserId().equals(userId)) {
         User user = createUser(element);
-        Set<Contact> userContacts = this.contactDaoFile.getContactByUserId(element.getUserId());
-        user.setContacts(userContacts);
+//        Set<Contact> userContacts = this.contactDaoFile.getContactByUserId(user.getId());
+//        user.setContacts(userContacts);
         return Optional.of(user);
       }
     }
@@ -78,8 +78,8 @@ public class UserDaoFile implements UserDao, Injectable {
     for (UserJson element : users) {
       if (element.getLogin().equals(login)) {
         User user = createUser(element);
-        Set<Contact> userContacts = this.contactDaoFile.getContactByUserId(element.getUserId());
-        user.setContacts(userContacts);
+//        Set<Contact> userContacts = this.contactDaoFile.getContactByUserId(user.getId());
+//        user.setContacts(userContacts);
         return Optional.of(user);
       }
     }
