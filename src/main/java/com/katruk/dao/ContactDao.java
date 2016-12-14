@@ -2,8 +2,6 @@ package com.katruk.dao;
 
 import com.katruk.domain.entity.Contact;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 

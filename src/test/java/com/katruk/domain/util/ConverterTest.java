@@ -5,8 +5,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 import com.katruk.domain.DefaultEntity;
-import com.katruk.domain.dto.ContactDto;
-import com.katruk.domain.dto.UserDto;
+import com.katruk.domain.entity.dto.ContactDto;
+import com.katruk.domain.entity.dto.UserDto;
 import com.katruk.domain.entity.Contact;
 import com.katruk.domain.entity.User;
 

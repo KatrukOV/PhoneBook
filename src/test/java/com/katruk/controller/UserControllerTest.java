@@ -10,7 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.katruk.domain.DefaultEntity;
-import com.katruk.domain.dto.UserDto;
+import com.katruk.domain.entity.dto.UserDto;
 import com.katruk.domain.entity.User;
 import com.katruk.domain.service.MessageService;
 import com.katruk.domain.service.SecurityService;

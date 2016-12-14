@@ -1,7 +1,7 @@
 package com.katruk.domain.service;
 
-import com.katruk.domain.dto.ContactDto;
 import com.katruk.domain.entity.Contact;
+import com.katruk.domain.entity.dto.ContactDto;
 
 import java.util.Set;
 

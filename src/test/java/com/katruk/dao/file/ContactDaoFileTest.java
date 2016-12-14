@@ -36,8 +36,8 @@ public class ContactDaoFileTest {
   public MockitoRule rule = MockitoJUnit.rule();
   @Mock
   private ObjectMapper objectMapper;
-//  @Mock
-//  private UserDaoFile userDaoFile;
+  @Mock
+  private UserDaoFile userDaoFile;
 
   @Spy
   private Contact contact;

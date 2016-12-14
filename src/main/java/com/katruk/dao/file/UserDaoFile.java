@@ -1,44 +1,32 @@
 package com.katruk.dao.file;
 
-import static java.util.Objects.nonNull;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.katruk.dao.UserDao;
-import com.katruk.domain.entity.Contact;
 import com.katruk.domain.entity.User;
+import com.katruk.domain.entity.json.UserJson;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.NoSuchMessageException;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 @Repository
 @Profile(value = "file")
-public class UserDaoFile implements UserDao, Injectable {
+public class UserDaoFile implements UserDao {
 
-  //  @Autowired
+  @Autowired
   private ObjectMapper objectMapper;
-  //  @Autowired
-  private ContactDaoFile contactDaoFile;
+
   private File jsonFile;
 
-  @Override
-  public void inject(BeansManager beansManager) {
-    this.objectMapper = beansManager.getObjectMapper();
-    this.contactDaoFile = beansManager.getContactDaoFile();
-  }
 
   protected File getJsonFile() {
 
@@ -61,8 +49,6 @@ public class UserDaoFile implements UserDao, Injectable {
     for (UserJson element : users) {
       if (element.getUserId().equals(userId)) {
         User user = createUser(element);
-//        Set<Contact> userContacts = this.contactDaoFile.getContactByUserId(user.getId());
-//        user.setContacts(userContacts);
         return Optional.of(user);
       }
     }
@@ -78,8 +64,6 @@ public class UserDaoFile implements UserDao, Injectable {
     for (UserJson element : users) {
       if (element.getLogin().equals(login)) {
         User user = createUser(element);
-//        Set<Contact> userContacts = this.contactDaoFile.getContactByUserId(user.getId());
-//        user.setContacts(userContacts);
         return Optional.of(user);
       }
     }
@@ -128,9 +112,8 @@ public class UserDaoFile implements UserDao, Injectable {
 
   private void delete(Long userId) {
     List<UserJson> list = getAll();
-    User
-        user =
-        getUserById(userId).orElseThrow(() -> new NoSuchElementException("Element not found"));
+    User user = getUserById(userId)
+        .orElseThrow(() -> new NoSuchElementException("Element not found"));
 
     UserJson userJson = createUserJson(user);
 

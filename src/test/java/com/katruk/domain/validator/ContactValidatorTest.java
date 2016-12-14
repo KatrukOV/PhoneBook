@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import com.katruk.domain.DefaultEntity;
-import com.katruk.domain.dto.ContactDto;
+import com.katruk.domain.entity.dto.ContactDto;
 
 import org.junit.Before;
 import org.junit.Rule;

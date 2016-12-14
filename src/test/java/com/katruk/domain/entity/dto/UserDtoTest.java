@@ -1,4 +1,4 @@
-package com.katruk.domain.dto;
+package com.katruk.domain.entity.dto;
 
 import static org.junit.Assert.assertNotNull;
 

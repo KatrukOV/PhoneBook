@@ -1,7 +1,7 @@
 package com.katruk.domain;
 
-import com.katruk.domain.dto.ContactDto;
-import com.katruk.domain.dto.UserDto;
+import com.katruk.domain.entity.dto.ContactDto;
+import com.katruk.domain.entity.dto.UserDto;
 import com.katruk.domain.entity.Address;
 import com.katruk.domain.entity.Contact;
 import com.katruk.domain.entity.Person;

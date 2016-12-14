@@ -9,6 +9,7 @@ import com.katruk.domain.entity.Address;
 import com.katruk.domain.entity.Contact;
 import com.katruk.domain.entity.Person;
 import com.katruk.domain.entity.User;
+import com.katruk.domain.entity.json.ContactJson;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -26,26 +27,20 @@ import java.util.UUID;
 
 @Repository
 @Profile(value = "file")
-public class ContactDaoFile implements ContactDao, Injectable {
+public class ContactDaoFile implements ContactDao {
 
-  //  @Autowired
+  @Autowired
   private ObjectMapper objectMapper;
-  //  @Autowired
+  @Autowired
   private UserDaoFile userDaoFile;
 
   private File jsonFile;
 
-  @Override
-  public void inject(BeansManager beansManager) {
-    this.objectMapper = beansManager.getObjectMapper();
-    this.userDaoFile = beansManager.getUserDaoFile();
-  }
-
   protected File getJsonFile() {
     try {
-      jsonFile = new File("src/main/resources/json/contact.json");
+      this.jsonFile = new File("src/main/resources/json/contact.json");
       if (!jsonFile.exists()) {
-        jsonFile.createNewFile();
+        this.jsonFile.createNewFile();
       }
     } catch (IOException e) {
       //todo log and throw

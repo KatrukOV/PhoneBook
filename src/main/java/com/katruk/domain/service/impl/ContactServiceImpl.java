@@ -3,11 +3,11 @@ package com.katruk.domain.service.impl;
 import static java.util.Objects.nonNull;
 
 import com.katruk.dao.ContactDao;
-import com.katruk.domain.dto.ContactDto;
 import com.katruk.domain.entity.Address;
 import com.katruk.domain.entity.Contact;
 import com.katruk.domain.entity.Person;
 import com.katruk.domain.entity.User;
+import com.katruk.domain.entity.dto.ContactDto;
 import com.katruk.domain.service.ContactService;
 import com.katruk.domain.service.SecurityService;
 import com.katruk.domain.service.UserService;

@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 
 import com.katruk.dao.ContactDao;
 import com.katruk.domain.DefaultEntity;
-import com.katruk.domain.dto.ContactDto;
+import com.katruk.domain.entity.dto.ContactDto;
 import com.katruk.domain.entity.Contact;
 import com.katruk.domain.service.SecurityService;
 import com.katruk.domain.service.UserService;

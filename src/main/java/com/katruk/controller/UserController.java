@@ -2,7 +2,7 @@ package com.katruk.controller;
 
 import static java.util.Objects.nonNull;
 
-import com.katruk.domain.dto.UserDto;
+import com.katruk.domain.entity.dto.UserDto;
 import com.katruk.domain.service.MessageService;
 import com.katruk.domain.service.SecurityService;
 import com.katruk.domain.service.UserService;

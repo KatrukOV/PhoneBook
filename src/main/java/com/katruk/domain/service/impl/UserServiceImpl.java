@@ -1,8 +1,8 @@
 package com.katruk.domain.service.impl;
 
 import com.katruk.dao.UserDao;
-import com.katruk.domain.dto.UserDto;
 import com.katruk.domain.entity.User;
+import com.katruk.domain.entity.dto.UserDto;
 import com.katruk.domain.service.UserService;
 import com.katruk.domain.util.Converter;
 

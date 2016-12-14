@@ -1,6 +1,6 @@
 package com.katruk.domain.validator;
 
-import com.katruk.domain.dto.UserDto;
+import com.katruk.domain.entity.dto.UserDto;
 import com.katruk.domain.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;

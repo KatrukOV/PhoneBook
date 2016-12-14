@@ -1,6 +1,6 @@
 package com.katruk.controller;
 
-import com.katruk.domain.dto.ContactDto;
+import com.katruk.domain.entity.dto.ContactDto;
 import com.katruk.domain.service.ContactService;
 import com.katruk.domain.service.MessageService;
 import com.katruk.domain.validator.ContactValidator;
