@@ -1,6 +1,7 @@
 package com.katruk.domain.entity;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,7 +35,7 @@ public class Contact extends Model {
     this.user = user;
   }
 
-  @OneToOne(fetch = FetchType.EAGER)
+  @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinColumn(name = "person_id", nullable = false)
   public Person getPerson() {
     return person;
@@ -74,7 +75,7 @@ public class Contact extends Model {
     this.homePhone = homePhone;
   }
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER ,cascade = CascadeType.ALL)
   @JoinColumn(name = "address_id")
   public Address getAddress() {
     return address;

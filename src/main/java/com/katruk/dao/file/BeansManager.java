@@ -2,6 +2,7 @@ package com.katruk.dao.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,6 +15,7 @@ import javax.annotation.PostConstruct;
  * For circular reference problem
  */
 @Component
+@Profile(value = "file")
 public class BeansManager {
 
   @Autowired
