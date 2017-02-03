@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "Person")
-//@JsonTypeName("Person")
 public class Person extends Model {
 
   protected String lastName;

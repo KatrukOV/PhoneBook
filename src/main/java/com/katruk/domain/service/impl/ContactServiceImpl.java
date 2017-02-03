@@ -170,7 +170,6 @@ public class ContactServiceImpl implements ContactService {
     contact.setMobilePhone(contactDto.getMobilePhone());
     contact.setHomePhone(contactDto.getHomePhone());
     contact.setEmail(contactDto.getEmail());
-    System.out.println(">>> Service 2 contact=" + contact);
     return contact;
   }
 

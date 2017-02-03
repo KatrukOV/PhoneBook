@@ -8,23 +8,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-//@JsonDeserialize(using = InstanceDeserializer.class)
-//@JsonIgnoreProperties(ignoreUnknown = true)
-
-//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "id")
-//@JsonSubTypes({
-//    @JsonSubTypes.Type(value = Address.class, name = "Address"),
-//    @JsonSubTypes.Type(value = Person.class, name = "Person"),
-//    @JsonSubTypes.Type(value = Contact.class, name = "Contact"),
-//    @JsonSubTypes.Type(value = User.class, name = "User")
-//})
 @MappedSuperclass
-public abstract class Model implements Serializable {
+abstract class Model implements Serializable {
 
-//  @JsonProperty("id")
   protected Long id;
 
-//  @JsonCreator
   Model() {
   }
 

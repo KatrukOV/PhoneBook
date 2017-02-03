@@ -16,7 +16,6 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "User")
 @PrimaryKeyJoinColumn(name = "person_Id", referencedColumnName = "Id")
-//@JsonTypeName("User")
 public class User extends Person {
 
   private String login;

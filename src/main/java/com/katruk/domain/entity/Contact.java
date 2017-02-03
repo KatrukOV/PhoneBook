@@ -12,7 +12,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Contact")
-//@JsonTypeName("Contact")
 public class Contact extends Model {
 
   private User user;
@@ -61,6 +60,10 @@ public class Contact extends Model {
     return homePhone;
   }
 
+  public void setHomePhone(String homePhone) {
+    this.homePhone = homePhone;
+  }
+
   @Basic
   @Column(name = "email", length = 30)
   public String getEmail() {
@@ -69,10 +72,6 @@ public class Contact extends Model {
 
   public void setEmail(String email) {
     this.email = email;
-  }
-
-  public void setHomePhone(String homePhone) {
-    this.homePhone = homePhone;
   }
 
   @ManyToOne(fetch = FetchType.EAGER ,cascade = CascadeType.ALL)

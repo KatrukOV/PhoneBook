@@ -7,7 +7,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Address")
-//@JsonTypeName("Address")
 public class Address extends Model {
 
   private String city;

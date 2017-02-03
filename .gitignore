@@ -15,18 +15,10 @@ target/
 *.iml
 *.ipr
 
-### NetBeans ###
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
-
 ###
 .mvn
 mvnw
 mvnw.cmd
 log
-diagram
-json
+src/main/resources/json
+src/main/webapp/
