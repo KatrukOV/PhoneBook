@@ -42,8 +42,6 @@ public class Converter {
   }
 //todo make -> convert entity
   public Contact makeContactFromJson(ContactJson contactJson, User user) {
-
-    System.out.println(">>> createContact 1 contactJson=" + contactJson);
     Contact contact = new Contact();
     contact.setUser(user);
     contact.setId(contactJson.getContactId());
@@ -61,7 +59,6 @@ public class Converter {
     contact.setMobilePhone(contactJson.getMobilePhone());
     contact.setHomePhone(contactJson.getHomePhone());
     contact.setEmail(contactJson.getEmail());
-    System.out.println(">>> createContact 2 contact=" + contact);
     return contact;
   }
 

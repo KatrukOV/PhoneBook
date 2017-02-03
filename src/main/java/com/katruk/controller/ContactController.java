@@ -5,6 +5,7 @@ import com.katruk.domain.service.ContactService;
 import com.katruk.domain.service.MessageService;
 import com.katruk.domain.validator.ContactValidator;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,13 +22,15 @@ public class ContactController {
   private final ContactService contactService;
   private final ContactValidator contactValidator;
   private final MessageService messageService;
+  private final Logger logger;
 
   @Autowired
   public ContactController(ContactService contactService, ContactValidator contactValidator,
-                           MessageService messageService) {
+                           MessageService messageService, Logger logger) {
     this.contactService = contactService;
     this.contactValidator = contactValidator;
     this.messageService = messageService;
+    this.logger = logger;
   }
 
   @RequestMapping(value = {"/", "contacts"}, method = RequestMethod.GET)
@@ -35,6 +38,7 @@ public class ContactController {
     if (!model.containsAttribute("contacts")) {
       Set<ContactDto> contactDtoSet = this.contactService.getAllContact();
       model.addAttribute("contacts", contactDtoSet);
+      this.logger.debug("Contacts was added to page in amount = " + contactDtoSet.size());
     }
     return "contacts";
   }
@@ -49,6 +53,7 @@ public class ContactController {
     this.contactValidator.validate(contactDto, bindingResult);
     if (bindingResult.hasErrors()) {
       this.messageService.addError("Please fill the contact correctly!");
+//      this.logger
       return "add";
     }
     this.contactService.addContact(contactDto);

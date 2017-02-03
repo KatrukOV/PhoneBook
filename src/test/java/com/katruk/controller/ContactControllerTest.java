@@ -11,8 +11,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.katruk.domain.DefaultEntity;
-import com.katruk.domain.entity.dto.ContactDto;
 import com.katruk.domain.entity.Contact;
+import com.katruk.domain.entity.dto.ContactDto;
 import com.katruk.domain.service.ContactService;
 import com.katruk.domain.service.MessageService;
 import com.katruk.domain.validator.ContactValidator;
@@ -53,7 +53,7 @@ public class ContactControllerTest {
   @Before
   public void setUp() throws Exception {
     this.contactController =
-        new ContactController(contactService, contactValidator, messageService);
+        new ContactController(contactService, contactValidator, messageService, logger);
     this.contactDto = new DefaultEntity().contactDto();
     this.model = new ExtendedModelMap();
   }
