@@ -63,8 +63,6 @@ public class Converter {
   }
 
   public ContactJson makeJsonFromContact(Contact contact) {
-    System.out.println(">>> createContactJson 1 contact=" + contact);
-    System.out.println(">>> createContactJson 1 contact.user=" + contact.getUser());
     ContactJson contactJson = new ContactJson();
     contactJson.setContactId(contact.getId());
     contactJson.setUserId(contact.getUser().getId());
@@ -80,7 +78,6 @@ public class Converter {
       contactJson.setBuilding(contact.getAddress().getBuilding());
       contactJson.setApartment(contact.getAddress().getApartment());
     }
-    System.out.println(">>> createContactJson 2 contactJson=" + contactJson);
     return contactJson;
   }
 
@@ -105,5 +102,4 @@ public class Converter {
     userJson.setPassword(user.getPassword());
     return userJson;
   }
-
 }

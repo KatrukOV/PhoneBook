@@ -25,9 +25,7 @@ public class UserDaoFile implements UserDao {
 
   @Autowired
   private ObjectMapper objectMapper;
-
   private File jsonFile;
-
 
   protected File getJsonFile() {
 
@@ -46,37 +44,30 @@ public class UserDaoFile implements UserDao {
   @Override
   public Optional<User> getUserById(Long userId) {
     List<UserJson> users = getAll();
-
     for (UserJson userJson : users) {
       if (userJson.getUserId().equals(userId)) {
         User user = new Converter().makeUserFromJson(userJson);
         return Optional.of(user);
       }
     }
-    System.out.println("return empty");
     return Optional.empty();
   }
 
   @Override
   public Optional<User> getUserByLogin(String login) {
     List<UserJson> users = getAll();
-    System.out.println(">>> getUserByLogin users=" + users + "  login=" + login);
-
     for (UserJson userJson : users) {
       if (userJson.getLogin().equals(login)) {
         User user = new Converter().makeUserFromJson(userJson);
         return Optional.of(user);
       }
     }
-
-    System.out.println(">>> return empty");
     return Optional.empty();
   }
 
 
   @Override
   public User saveAndFlush(User user) {
-
     List<UserJson> list = getAll();
     UserJson userJson = new Converter().makeJsonFromUser(user);
     boolean isUnique = true;
@@ -104,9 +95,7 @@ public class UserDaoFile implements UserDao {
     List<UserJson> list = getAll();
     User user = getUserById(userId)
         .orElseThrow(() -> new NoSuchElementException("Element not found"));
-
     UserJson userJson = new Converter().makeJsonFromUser(user);
-
     list.remove(list.indexOf(userJson));
     try {
       objectMapper.writeValue(getJsonFile(), list);
@@ -117,9 +106,7 @@ public class UserDaoFile implements UserDao {
   }
 
   private List<UserJson> getAll() {
-    System.out.println(">>> getAll UserJson start");
     List<UserJson> list = new ArrayList<>();
-
     File jsonFile = getJsonFile();
     if (jsonFile.exists() && !jsonFile.isDirectory()) {
       try {
@@ -129,9 +116,6 @@ public class UserDaoFile implements UserDao {
         // TODO:  log
         e.printStackTrace();
       }
-    }
-    for (UserJson us : list) {
-      System.out.println(">>> getAll user=   " + us);
     }
     return list;
   }

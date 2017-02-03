@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.katruk.dao.ContactDao;
 import com.katruk.domain.entity.Contact;
 import com.katruk.domain.entity.User;
-
 import com.katruk.domain.entity.json.ContactJson;
 import com.katruk.domain.util.Converter;
 
@@ -17,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -65,7 +63,6 @@ public class ContactDaoFile implements ContactDao {
   }
 
   public Set<Contact> getContactByUserId(Long userId) {
-    System.out.println(">>> getContactByUserId userId=" + userId);
     List<ContactJson> list = getAll();
     Set<Contact> result = new HashSet<>();
     for (ContactJson contactJson : list) {
@@ -81,20 +78,11 @@ public class ContactDaoFile implements ContactDao {
 
   @Override
   public Contact saveAndFlush(Contact contact) {
-
     List<ContactJson> list = getAll();
-
     ContactJson contactJson = new Converter().makeJsonFromContact(contact);
-
-    System.out.println(">>> saveAndFlush size=" + list.size() + "  list=" + list);
-
     boolean isUnique = true;
     for (ContactJson element : list) {
-      System.out.println(
-          ">>> Unique ??? element.getContactId()=" + element.getContactId() + "  contact.getId()="
-          + contact.getId());
       if (element.getContactId().equals(contact.getId())) {
-        System.out.println(">>> NOT Unique ");
         isUnique = false;
       }
     }
@@ -103,7 +91,6 @@ public class ContactDaoFile implements ContactDao {
     } else {
       list = remove(contactJson.getContactId());
     }
-    System.out.println(">>> saveAndFlush before add size=" + list.size() + "  list=" + list);
     try {
       list.add(contactJson);
       objectMapper.writeValue(getJsonFile(), list);
@@ -111,7 +98,6 @@ public class ContactDaoFile implements ContactDao {
       //// TODO: log + exc
       e.printStackTrace();
     }
-    System.out.println(">>> saveAndFlush after add size=" + list.size() + "  list=" + list);
     return contact;
   }
 
@@ -122,11 +108,8 @@ public class ContactDaoFile implements ContactDao {
   }
 
   public List<ContactJson> getAll() {
-    System.out.println(">>> getAll ContactJson start");
     List<ContactJson> list = new ArrayList<>();
-
     File jsonFile = getJsonFile();
-
     if (jsonFile.exists() && !jsonFile.isDirectory()) {
       try {
         list = objectMapper.readValue(jsonFile, new TypeReference<List<ContactJson>>() {
@@ -136,9 +119,6 @@ public class ContactDaoFile implements ContactDao {
         e.printStackTrace();
       }
     }
-    for (ContactJson con : list) {
-      System.out.println(">>> getAll contact=  " + con);
-    }
     return list;
   }
 
@@ -147,23 +127,13 @@ public class ContactDaoFile implements ContactDao {
     Contact contact = getContactById(contactId)
         .orElseThrow(() -> new NoSuchElementException("Element not found"));
     ContactJson contactJson = new Converter().makeJsonFromContact(contact);
-    System.out.println(">>>>>>>>>>>> to remove List=" + list);
-    System.out.println(">>>>>>>>>>>> to remove List size=" + list.size());
-    System.out.println(">>>>>>>>>>>> to remove contactJson=" + contactJson);
-    System.out.println(">>>>>>>>>>>> to index contactJson=" + list.indexOf(contactJson));
-    System.out.println(">>>>>>>>>>>> to =" + contactJson);
-
     list = removeFromList(list, contactJson);
-
-    System.out.println(">>>>>>>>>>>> !!!!!!!!!!! after remove List=" + list);
-    System.out.println(">>>>>>>>>>>> after remove List size=" + list.size());
     try {
       objectMapper.writeValue(getJsonFile(), list);
     } catch (IOException e) {
       e.printStackTrace();
     }
     List<ContactJson> list1 = getAll();
-    System.out.println(">>> after DELETE list" + list1);
     return list;
   }
 

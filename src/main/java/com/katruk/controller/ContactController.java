@@ -53,11 +53,12 @@ public class ContactController {
     this.contactValidator.validate(contactDto, bindingResult);
     if (bindingResult.hasErrors()) {
       this.messageService.addError("Please fill the contact correctly!");
-//      this.logger
+//      this.logger.debug("Not correctly was written the fields of contact");
       return "add";
     }
     this.contactService.addContact(contactDto);
     this.messageService.addInfo("Add contact successful");
+//    this.logger.debug("Add contact successful");
     return "redirect:/contacts/add";
   }
 
@@ -72,7 +73,6 @@ public class ContactController {
   @RequestMapping(value = "/contacts/editContact", method = RequestMethod.POST)
   public String doEditContact(ContactDto contactDto, BindingResult bindingResult, Model model) {
     this.contactValidator.validate(contactDto, bindingResult);
-
     if (bindingResult.hasErrors()) {
       model.addAttribute("contact", contactDto);
       this.messageService.addError("Please fill the contact correctly!");

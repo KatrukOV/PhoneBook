@@ -94,7 +94,6 @@ public class ContactServiceImpl implements ContactService {
     String login = this.securityService.getLogin();
     User user = this.userService.getUserByLogin(login);
     contact.setUser(user);
-    System.out.println(">>> addContact contact" + contact);
     return this.contactDao.saveAndFlush(contact);
   }
 
@@ -106,10 +105,7 @@ public class ContactServiceImpl implements ContactService {
     String login = this.securityService.getLogin();
     User user = this.userService.getUserByLogin(login);
     contact.setUser(user);
-    System.out.println(">>> editContact before contact" + contact);
-    System.out.println(">>> editContact before contact.user" + contact.getUser());
     contact = updateContact(contact, contactDto);
-    System.out.println(">>> editContact after contact" + contact);
     return this.contactDao.saveAndFlush(contact);
   }
 
@@ -131,12 +127,10 @@ public class ContactServiceImpl implements ContactService {
 
   private Set<ContactDto> getContactDtoByUserLogin(String login) {
     User user = this.userService.getUserByLogin(login);
-    System.out.println(">>> getContactDtoByUserLogin user=" + user);
     Set<Contact> contactSet = this.contactDao.getContactByUserId(user.getId());
     Set<ContactDto> contactDtoSet = new HashSet<>();
     ContactDto contactDto;
     for (Contact contact : contactSet) {
-      System.out.println(">>> contact=" + contact);
       contactDto = new Converter().makeDtoFromContact(contact);
       contactDtoSet.add(contactDto);
     }
@@ -144,26 +138,14 @@ public class ContactServiceImpl implements ContactService {
   }
 
   private Contact createContact(ContactDto contactDto) {
-    System.out.println(">>> Service 1 contactDto=" + contactDto);
     Contact contact = new Contact();
-
     Person person = new Person();
     person.setLastName(contactDto.getLastName());
     person.setName(contactDto.getName());
     person.setPatronymic(contactDto.getPatronymic().trim());
-
-    Address address = null;
-    if (addressNotEmptyField(contactDto)) {
-      address = new Address();
-      address.setCity(contactDto.getCity().trim());
-      address.setStreet(contactDto.getStreet().trim());
-      address.setBuilding(contactDto.getBuilding().trim());
-      address.setApartment(contactDto.getApartment());
-    }
-
+    Address address = getAddress(contactDto);
     String login = this.securityService.getLogin();
     User user = this.userService.getUserByLogin(login);
-
     contact.setPerson(person);
     contact.setAddress(address);
     contact.setUser(user);
@@ -179,14 +161,21 @@ public class ContactServiceImpl implements ContactService {
   }
 
   private Contact updateContact(Contact contact, ContactDto contactDto) {
-
     contact.setId(contactDto.getContactId());
-
     Person person = new Person();
     person.setLastName(contactDto.getLastName());
     person.setName(contactDto.getName());
     person.setPatronymic(contactDto.getPatronymic());
+    Address address = getAddress(contactDto);
+    contact.setPerson(person);
+    contact.setAddress(address);
+    contact.setMobilePhone(contactDto.getMobilePhone());
+    contact.setHomePhone(contactDto.getHomePhone());
+    contact.setEmail(contactDto.getEmail());
+    return contact;
+  }
 
+  private Address getAddress(ContactDto contactDto) {
     Address address = null;
     if (addressNotEmptyField(contactDto)) {
       address = new Address();
@@ -195,12 +184,6 @@ public class ContactServiceImpl implements ContactService {
       address.setBuilding(contactDto.getBuilding().trim());
       address.setApartment(contactDto.getApartment());
     }
-
-    contact.setPerson(person);
-    contact.setAddress(address);
-    contact.setMobilePhone(contactDto.getMobilePhone());
-    contact.setHomePhone(contactDto.getHomePhone());
-    contact.setEmail(contactDto.getEmail());
-    return contact;
+    return address;
   }
 }
