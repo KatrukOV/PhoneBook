@@ -1,0 +1,2 @@
+CREATE SCHEMA `phone_book`
+  DEFAULT CHARACTER SET utf8;
