@@ -1,18 +1,10 @@
 package com.katruk.domain.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
-
 import com.katruk.dao.UserDao;
 import com.katruk.domain.DefaultEntity;
-import com.katruk.domain.entity.dto.UserDto;
 import com.katruk.domain.entity.User;
+import com.katruk.domain.entity.dto.UserDto;
 import com.katruk.domain.service.UserService;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,6 +20,13 @@ import org.mockito.stubbing.Answer;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
 @RunWith(JUnit4.class)
 public class UserServiceImplTest {
 
@@ -41,9 +40,7 @@ public class UserServiceImplTest {
 
   @Before
   public void setUp() throws Exception {
-    this.userService = new UserServiceImpl(
-        userDao
-    );
+    this.userService = new UserServiceImpl(userDao);
     this.userDto = new DefaultEntity().userDto();
   }
 

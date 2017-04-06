@@ -4,8 +4,8 @@ import com.katruk.domain.entity.dto.ContactDto;
 import com.katruk.domain.service.ContactService;
 import com.katruk.domain.service.MessageService;
 import com.katruk.domain.validator.ContactValidator;
-
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,15 +22,14 @@ public class ContactController {
   private final ContactService contactService;
   private final ContactValidator contactValidator;
   private final MessageService messageService;
-  private final Logger logger;
+  private final Logger logger = LoggerFactory.getLogger(ContactController.class);
 
   @Autowired
   public ContactController(ContactService contactService, ContactValidator contactValidator,
-                           MessageService messageService, Logger logger) {
+                           MessageService messageService) {
     this.contactService = contactService;
     this.contactValidator = contactValidator;
     this.messageService = messageService;
-    this.logger = logger;
   }
 
   @RequestMapping(value = {"/", "contacts"}, method = RequestMethod.GET)

@@ -1,22 +1,11 @@
 package com.katruk.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.katruk.domain.DefaultEntity;
 import com.katruk.domain.entity.Contact;
 import com.katruk.domain.entity.dto.ContactDto;
 import com.katruk.domain.service.ContactService;
 import com.katruk.domain.service.MessageService;
 import com.katruk.domain.validator.ContactValidator;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,6 +21,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.DirectFieldBindingResult;
 
 import java.util.HashSet;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 @RunWith(JUnit4.class)
 public class ContactControllerTest {
@@ -52,8 +48,7 @@ public class ContactControllerTest {
 
   @Before
   public void setUp() throws Exception {
-    this.contactController =
-        new ContactController(contactService, contactValidator, messageService, logger);
+    this.contactController = new ContactController(contactService, contactValidator, messageService);
     this.contactDto = new DefaultEntity().contactDto();
     this.model = new ExtendedModelMap();
   }
