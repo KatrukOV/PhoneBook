@@ -4,6 +4,7 @@ import com.katruk.domain.entity.dto.ContactDto;
 import com.katruk.domain.service.ContactService;
 import com.katruk.domain.service.MessageService;
 import com.katruk.domain.validator.ContactValidator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,12 +53,12 @@ public class ContactController {
     this.contactValidator.validate(contactDto, bindingResult);
     if (bindingResult.hasErrors()) {
       this.messageService.addError("Please fill the contact correctly!");
-//      this.logger.debug("Not correctly was written the fields of contact");
+      this.logger.debug("Not correctly was written the fields of contact");
       return "add";
     }
     this.contactService.addContact(contactDto);
     this.messageService.addInfo("Add contact successful");
-//    this.logger.debug("Add contact successful");
+    this.logger.debug("Add contact successful");
     return "redirect:/contacts/add";
   }
 
