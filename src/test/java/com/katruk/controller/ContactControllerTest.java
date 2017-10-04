@@ -52,8 +52,7 @@ public class ContactControllerTest {
 
   @Before
   public void setUp() throws Exception {
-    this.contactController =
-        new ContactController(contactService, contactValidator, messageService);
+    this.contactController = new ContactController(contactService, contactValidator, messageService);
     this.contactDto = new DefaultEntity().contactDto();
     this.model = new ExtendedModelMap();
   }

@@ -45,7 +45,7 @@ public class UserController {
   }
 
   @RequestMapping(value = "/registration", method = RequestMethod.GET)
-  public String registration(UserDto userDto) {
+  public String registration() {
     return "registration";
   }
 

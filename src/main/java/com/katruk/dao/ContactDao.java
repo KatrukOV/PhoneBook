@@ -15,6 +15,5 @@ public interface ContactDao {
 
   void delete(Long contactId);
 
-
 }
 

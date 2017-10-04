@@ -53,12 +53,12 @@ public class ContactController {
     this.contactValidator.validate(contactDto, bindingResult);
     if (bindingResult.hasErrors()) {
       this.messageService.addError("Please fill the contact correctly!");
-//      this.logger.debug("Not correctly was written the fields of contact");
+      this.logger.debug("Not correctly was written the fields of contact");
       return "add";
     }
     this.contactService.addContact(contactDto);
     this.messageService.addInfo("Add contact successful");
-//    this.logger.debug("Add contact successful");
+    this.logger.debug("Add contact successful");
     return "redirect:/contacts/add";
   }
 
