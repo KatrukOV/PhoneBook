@@ -23,7 +23,7 @@
         </triggeringPolicy>
     </appender>
 
-    <logger name="com.javacodegeeks.examples.logbackexample.beans" level="INFO" additivity="false">
+    <logger name="com.katruk.beans" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </logger>
@@ -33,6 +33,3 @@
         <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>
-
-
-

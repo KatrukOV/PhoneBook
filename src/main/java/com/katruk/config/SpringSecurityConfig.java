@@ -1,6 +1,7 @@
 package com.katruk.config;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
@@ -21,12 +22,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final UserDetailsService userDetailsService;
-  private final Logger logger;
+  private final Logger logger = LoggerFactory.getLogger(SpringSecurityConfig.class);
 
   @Autowired
-  public SpringSecurityConfig(UserDetailsService userDetailsService, Logger logger) {
+  public SpringSecurityConfig(UserDetailsService userDetailsService) {
     this.userDetailsService = userDetailsService;
-    this.logger = logger;
   }
 
   @Autowired

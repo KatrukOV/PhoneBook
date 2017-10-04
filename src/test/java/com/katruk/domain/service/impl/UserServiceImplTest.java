@@ -9,8 +9,8 @@ import static org.mockito.Mockito.when;
 
 import com.katruk.dao.UserDao;
 import com.katruk.domain.DefaultEntity;
-import com.katruk.domain.entity.dto.UserDto;
 import com.katruk.domain.entity.User;
+import com.katruk.domain.entity.dto.UserDto;
 import com.katruk.domain.service.UserService;
 
 import org.junit.Before;
@@ -41,9 +41,7 @@ public class UserServiceImplTest {
 
   @Before
   public void setUp() throws Exception {
-    this.userService = new UserServiceImpl(
-        userDao
-    );
+    this.userService = new UserServiceImpl(userDao);
     this.userDto = new DefaultEntity().userDto();
   }
 
