@@ -10,8 +10,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.katruk.domain.DefaultEntity;
-import com.katruk.domain.entity.dto.UserDto;
 import com.katruk.domain.entity.User;
+import com.katruk.domain.entity.dto.UserDto;
 import com.katruk.domain.service.MessageService;
 import com.katruk.domain.service.SecurityService;
 import com.katruk.domain.service.UserService;
@@ -89,7 +89,7 @@ public class UserControllerTest {
   @Test
   public void registration() throws Exception {
     //when
-    String result = this.userController.registration(null);
+    String result = this.userController.registration();
 
     //then
     assertEquals("registration", result);
